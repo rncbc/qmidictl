@@ -1,0 +1,15 @@
+<RCC version="1.0">
+	<qresource>
+		<file>images/qmidictl.png</file>
+		<file>images/formAccept.png</file>
+		<file>images/formReject.png</file>
+		<file>images/formReset.png</file>
+		<file>images/formRewind.png</file>
+		<file>images/formForward.png</file>
+		<file>images/formPlay.png</file>
+		<file>images/formStop.png</file>
+		<file>images/formRecord.png</file>
+		<file>images/ledOn.png</file>
+		<file>images/ledOff.png</file>
+	</qresource>
+</RCC>
