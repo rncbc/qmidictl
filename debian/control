@@ -8,7 +8,7 @@ Standards-Version: 3.7.2
 Package: qmidictl
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: A MIDI remote controller via IP/UDP multicast
+Description: A MIDI remote controller via UDP/IP multicast
  A MIDI remote controller application that sends MIDI data
  over the network, using UDP/IP multicast. Inspired by
  multimidicast (http://llg.cubic.org/tools) and designed

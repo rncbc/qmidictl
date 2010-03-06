@@ -4,7 +4,7 @@
 
 %define _prefix	@ac_prefix@
 
-Summary:	A MIDI Remote Controller via IP/UDP Multicast
+Summary:	A MIDI Remote Controller via UDP/IP Multicast
 Name:		%{name}
 Version:	%{version}
 Release:	%{release}

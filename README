@@ -1,4 +1,4 @@
-QmidiCtl - A MIDI Remote Controller via IP/UDP Multicast
+QmidiCtl - A MIDI Remote Controller via UDP/IP Multicast
 --------------------------------------------------------
 
 QmidiCtl is a MIDI remote controller application that sends MIDI data

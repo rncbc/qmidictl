@@ -27,7 +27,7 @@
 #define QMIDICTL_TITLE        PACKAGE_NAME
 #define QMIDICTL_VERSION      PACKAGE_VERSION
 
-#define QMIDICTL_SUBTITLE     "A MIDI Remote Controller via IP/UDP Multicast"
+#define QMIDICTL_SUBTITLE     "A MIDI Remote Controller via UDP/IP Multicast"
 #define QMIDICTL_WEBSITE      "http://qmidictl.sourceforge.net"
 #define QMIDICTL_COPYRIGHT    "Copyright (C) 2010, rncbc aka Rui Nuno Capela. All rights reserved."
 
