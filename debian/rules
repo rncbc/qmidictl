@@ -21,7 +21,7 @@ configure-stamp:
 	# Add here commands to configure the package.
 	-$(MAKE) -f Makefile.svn
 
-	./configure --prefix=/usr
+	./configure --host=any --prefix=/usr
 	touch configure-stamp
 
 

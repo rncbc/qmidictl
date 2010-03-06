@@ -26,6 +26,7 @@
 
 
 // Forward declarations.
+class qmidictlUdpDevice;
 class qmidictlMixerStrip;
 class qmidictlDialStyle;
 
@@ -50,6 +51,9 @@ public:
 	// Strip bank accessors.
 	void setCurrentStripPage(int iStripPage);
 	int currentStripPage() const;
+
+	// Setup method.
+	void setup();
 
 protected:
 
@@ -172,6 +176,9 @@ private:
 
 	// The Qt-designer UI struct...
 	Ui::qmidictlMainForm m_ui;
+
+	// The main network device.
+	qmidictlUdpDevice *m_pUdpDevice;
 
 	// Number of strip pages.
 	int m_iStripPages;

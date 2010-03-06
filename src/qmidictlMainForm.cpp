@@ -46,6 +46,9 @@ qmidictlMainForm::qmidictlMainForm (
 	// Setup UI struct...
 	m_ui.setupUi(this);
 
+	// The main network device.
+	m_pUdpDevice = new qmidictlUdpDevice(this);
+
 	// Strip page/states.
 	m_iStripPages = 4;
 	m_pStripStates = NULL;
@@ -118,7 +121,7 @@ qmidictlMainForm::qmidictlMainForm (
 		SLOT(forwardSlot(bool)));
 
 	// Network signal/slot connections...
-	QObject::connect(qmidictlUdpDevice::getInstance(),
+	QObject::connect(m_pUdpDevice,
 		SIGNAL(received(const QByteArray&)),
 		SLOT(receiveSlot(const QByteArray&)));
 }
@@ -132,6 +135,9 @@ qmidictlMainForm::~qmidictlMainForm (void)
 
 	// No more strip states.
 	delete [] m_pStripStates;
+
+	// No more network device.
+	delete m_pUdpDevice;
 
 	// Pseudo-singleton reference shut-down.
 	g_pMainForm = NULL;
@@ -163,6 +169,22 @@ void qmidictlMainForm::setCurrentStripPage ( int iStripPage )
 int qmidictlMainForm::currentStripPage (void) const
 {
 	return m_iCurrentStripPage;
+}
+
+
+// Setup method.
+void qmidictlMainForm::setup (void)
+{
+	qmidictlOptions *pOptions = qmidictlOptions::getInstance();
+	if (pOptions == NULL)
+		return;
+
+	if (!m_pUdpDevice->open(pOptions->sInterface, pOptions->iUdpPort)) {
+		QMessageBox::critical(this, tr("Network Inferface Error"),
+			tr("The network interface could not be established.\n\n"
+			"Please, make sure you have an on-line network connection "
+			"and try again."));
+	}
 }
 
 
@@ -355,7 +377,7 @@ void qmidictlMainForm::sendData ( unsigned char *data, unsigned short len )
 	fprintf(stderr, "\n");
 #endif
 
-	if (qmidictlUdpDevice::getInstance()->sendData(data, len)) {
+	if (m_pUdpDevice->sendData(data, len)) {
 		if (++m_iMidiOutLed < 2) {
 			m_ui.midiOutLedLabel->setPixmap(QPixmap(":/images/ledOn.png"));
 			QTimer::singleShot(200, this, SLOT(timerSlot()));
@@ -651,16 +673,8 @@ void qmidictlMainForm::timerSlot (void)
 // Options action slot.
 void qmidictlMainForm::optionsSlot (void)
 {
-	if (qmidictlOptionsForm(this).exec()) {
-		qmidictlOptions *pOptions = qmidictlOptions::getInstance();
-		qmidictlUdpDevice *pUdpDevice = qmidictlUdpDevice::getInstance();
-		if (!pUdpDevice->open(pOptions->sInterface, pOptions->iUdpPort)) {
-			QMessageBox::critical(this, tr("Network Inferface Error"),
-				tr("The network interface could not be established.\n\n"
-				"Please, make sure you have an on-line network connection "
-				"and try again."));
-		}
-	}
+	if (qmidictlOptionsForm(this).exec())
+		setup();
 }
 
 

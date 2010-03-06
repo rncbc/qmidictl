@@ -50,9 +50,6 @@ public:
 	// Destructor.
 	~qmidictlUdpDevice();
 
-	// Kind of singleton reference.
-	static qmidictlUdpDevice *getInstance();
-
 	// Device initialization method.
 	bool open(const QString& sInterface, int iUdpPort = 21928);
 
@@ -62,6 +59,9 @@ public:
 	// Data transmission methods.
 	bool sendData(unsigned char *data, unsigned short len) const;
 	void recvData(unsigned char *data, unsigned short len);
+
+	// Listener socket accessor.
+	int sockin() const;
 
 signals:
 
@@ -82,10 +82,7 @@ private:
 	struct sockaddr_in m_addrout;
 
 	// Network receiver thread.
-	class RecvThread *m_pRecvThread;
-
-	// Kind-of singleton reference.
-	static qmidictlUdpDevice *g_pDevice;
+	class qmidictlUdpDeviceThread *m_pRecvThread;
 };
 
 

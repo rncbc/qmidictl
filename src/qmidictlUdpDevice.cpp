@@ -38,15 +38,15 @@ inline void closesocket(int s) { ::close(s); }
 
 
 //----------------------------------------------------------------------------
-// qmidictlUdpDevice::RecvThread -- Network listener thread.
+// qmidictlUdpDeviceThread -- Network listener thread.
 //
 
-class RecvThread : public QThread
+class qmidictlUdpDeviceThread : public QThread
 {
 public:
 
 	// Constructor.
-	RecvThread(int sockin);
+	qmidictlUdpDeviceThread(qmidictlUdpDevice *pUdpDevice);
 
 	// Run-state accessors.
 	void setRunState(bool bRunState);
@@ -60,7 +60,7 @@ protected:
 private:
 
 	// The listener socket.
-	int m_sockin;
+	qmidictlUdpDevice *m_pUdpDevice;
 
 	// Whether the thread is logically running.
 	volatile bool m_bRunState;
@@ -68,37 +68,39 @@ private:
 
 
 // Constructor.
-RecvThread::RecvThread ( int sockin )
-	: QThread(), m_sockin(sockin), m_bRunState(false)
+qmidictlUdpDeviceThread::qmidictlUdpDeviceThread ( qmidictlUdpDevice *pUdpDevice )
+	: QThread(), m_pUdpDevice(pUdpDevice), m_bRunState(false)
 {
 }
 
 
 // Run-state accessors.
-void RecvThread::setRunState ( bool bRunState )
+void qmidictlUdpDeviceThread::setRunState ( bool bRunState )
 {
 	m_bRunState = bRunState;
 }
 
-bool RecvThread::runState (void) const
+bool qmidictlUdpDeviceThread::runState (void) const
 {
 	return m_bRunState;
 }
 
 
 // The main thread executive.
-void RecvThread::run (void)
+void qmidictlUdpDeviceThread::run (void)
 {
 	m_bRunState = true;
 
 	while (m_bRunState) {
 
 		// Wait for an network event...
+		int sockin = m_pUdpDevice->sockin();
+
 		fd_set fds;
 		FD_ZERO(&fds);
-		FD_SET(m_sockin, &fds);
+		FD_SET(sockin, &fds);
 
-		int fdmax = m_sockin;
+		int fdmax = sockin;
 
 		// Set timeout period (1 second)...
 		struct timeval tv;
@@ -116,15 +118,15 @@ void RecvThread::run (void)
 		}
 
 		// A Network event
-		if (FD_ISSET(m_sockin, &fds)) {
+		if (FD_ISSET(sockin, &fds)) {
 			// Read from network...
 			unsigned char buf[1024];
 			struct sockaddr_in sender;
 			socklen_t slen = sizeof(sender);
-			int r = ::recvfrom(m_sockin, (char *) buf, sizeof(buf),
+			int r = ::recvfrom(sockin, (char *) buf, sizeof(buf),
 				0, (struct sockaddr *) &sender, &slen);
 			if (r > 0)
-				qmidictlUdpDevice::getInstance()->recvData(buf, r);
+				m_pUdpDevice->recvData(buf, r);
 			else
 			if (r < 0)
 				::perror("recvfrom");
@@ -137,8 +139,6 @@ void RecvThread::run (void)
 // qmidictlUdpDevice -- Network interface device (UDP/IP).
 //
 
-qmidictlUdpDevice *qmidictlUdpDevice::g_pDevice = NULL;
-
 // Constructor.
 qmidictlUdpDevice::qmidictlUdpDevice ( QObject *pParent )
 	: QObject(pParent), m_sockin(-1), m_sockout(-1), m_pRecvThread(NULL)
@@ -146,8 +146,6 @@ qmidictlUdpDevice::qmidictlUdpDevice ( QObject *pParent )
 #if defined(WIN32)
 	WSAStartup(MAKEWORD(1, 1), &g_wsaData);
 #endif
-
-	g_pDevice = this;
 }
 
 // Destructor.
@@ -155,18 +153,9 @@ qmidictlUdpDevice::~qmidictlUdpDevice (void)
 {
 	close();
 
-	g_pDevice = NULL;
-
 #if defined(WIN32)
 	WSACleanup();
 #endif
-}
-
-
-// Kind of singleton reference.
-qmidictlUdpDevice *qmidictlUdpDevice::getInstance (void)
-{
-	return g_pDevice;
 }
 
 
@@ -271,7 +260,7 @@ bool qmidictlUdpDevice::open ( const QString& sInterface, int iUdpPort )
 	}
 
 	// Start listener thread...
-	m_pRecvThread = new RecvThread(m_sockin);
+	m_pRecvThread = new qmidictlUdpDeviceThread(this);
 	m_pRecvThread->start();
 
 	// Done.
@@ -356,6 +345,13 @@ bool qmidictlUdpDevice::get_address (
 	return false;
 
 #endif	// !WIN32
+}
+
+
+// Listener socket accessor.
+int qmidictlUdpDevice::sockin (void) const
+{
+	return m_sockin;
 }
 
 

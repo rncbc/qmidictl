@@ -38,14 +38,10 @@ int main ( int argc, char *argv[] )
 		return 1;
 	}
 
-	qmidictlUdpDevice udp;
-	if (!udp.open(opt.sInterface, opt.iUdpPort)) {
-		app.quit();
-		return 2;
-	}
-
 	qmidictlMainForm w;
+
 	w.show();
+	w.setup();
 
 	return app.exec();
 }
