@@ -2,26 +2,49 @@
 #
 APPNAME := qmidictl
 
-builddir:
-	mkdir -p builddir
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
 
-builddir/Makefile: builddir
-	cd builddir && qmake-qt4 PREFIX=/usr ../$(APPNAME).pro
+
+CFLAGS = -Wall -g
+
+ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
+	CFLAGS += -O0
+else
+	CFLAGS += -O2
+endif
+
+configure: configure-stamp
+configure-stamp:
+	dh_testdir
+
+	# Add here commands to configure the package.
+	-$(MAKE) -f Makefile.svn
+
+	./configure --prefix=/usr
+	touch configure-stamp
+
 
 build: build-stamp
 
-build-stamp: builddir/Makefile
+build-stamp: configure-stamp 
 	dh_testdir
+
 	# Add here commands to compile the package.
-	cd builddir && $(MAKE)
+	$(MAKE)
+
+	#docbook-to-man debian/$(APPNAME).sgml > $(APPNAME).1
+
 	touch $@
 
 clean:
 	dh_testdir
 	dh_testroot
-	rm -f build-stamp
+	rm -f build-stamp configure-stamp
+
 	# Add here commands to clean up after the build process.
-	rm -rf builddir
+	-$(MAKE) -f Makefile.svn clean
+
 	dh_clean
 
 install: build
@@ -29,8 +52,10 @@ install: build
 	dh_testroot
 	dh_clean -k
 	dh_installdirs
-	# Add here commands to install the package into debian/your_appname
-	cd builddir && $(MAKE) INSTALL_ROOT=$(CURDIR)/debian/$(APPNAME) install
+
+	# Add here commands to install the package
+	$(MAKE) INSTALL_ROOT=$(CURDIR)/debian/$(APPNAME) install
+
 
 # Build architecture-independent files here.
 binary-indep: build install
@@ -40,13 +65,27 @@ binary-indep: build install
 binary-arch: build install
 	dh_testdir
 	dh_testroot
+	dh_installchangelogs ChangeLog
 	dh_installdocs
 	dh_installexamples
+#	dh_install
+#	dh_installmenu
+#	dh_installdebconf	
+#	dh_installlogrotate
+#	dh_installemacsen
+#	dh_installpam
+#	dh_installmime
+#	dh_python
+#	dh_installinit
+#	dh_installcron
+#	dh_installinfo
 	dh_installman
 	dh_link
 	dh_strip
 	dh_compress
 	dh_fixperms
+#	dh_perl
+#	dh_makeshlibs
 	dh_installdeb
 	dh_shlibdeps
 	dh_gencontrol

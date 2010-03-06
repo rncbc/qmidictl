@@ -1,0 +1,50 @@
+%define name    @PACKAGE_TARNAME@
+%define version @PACKAGE_VERSION@
+%define release 1
+
+%define _prefix	@ac_prefix@
+
+Summary:	A MIDI Remote Controller via IP/UDP Multicast
+Name:		%{name}
+Version:	%{version}
+Release:	%{release}
+License:	GPL
+Group:		Productivity/Multimedia/Sound/Midi
+Source0:	%{name}-%{version}.tar.gz
+URL:		http://qmidictl.sourceforge.net/
+Packager:	rncbc.org
+
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
+
+BuildRequires:	libqt4-devel >= 4.4
+
+%description
+QmidiCtl is a MIDI remote controller application that sends MIDI data
+over the network, using UDP/IP multicast. Inspired by multimidicast
+(http://llg.cubic.org/tools) and designed to be compatible with ipMIDI
+for Windows (http://nerds.de).
+
+%prep
+%setup
+[ -f Makefile.svn ] && %__make -f Makefile.svn
+
+%build
+%configure
+%__make
+
+%install
+%__make INSTALL_ROOT=%{buildroot} install
+
+%clean
+[ -d %{buildroot} -a "%{buildroot}" != "" ] && %__rm -rf  %{buildroot}
+
+%files
+%defattr(-,root,root)
+%doc AUTHORS COPYING ChangeLog README TODO
+%{_bindir}/%{name}
+%{_datadir}/applications/%{name}.desktop
+%{_datadir}/pixmaps/%{name}.png
+
+%changelog
+* Fri Mar  6 2010 Rui Nuno Capela <rncbc@users.sourceforge.net> 0.0.1
+- Created initial qmidictl.spec

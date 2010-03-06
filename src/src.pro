@@ -1,12 +1,16 @@
 # qmidictl.pro
-TEMPLATE = app
+#
 TARGET = qmidictl
+
+TEMPLATE = app
 DEPENDPATH += .
 INCLUDEPATH += .
 
+include(src.pri)
+
 #DEFINES += DEBUG
 
-HEADERS += \
+HEADERS += config.h \
 	qmidictlAbout.h \
 	qmidictlOptions.h \
 	qmidictlOptionsForm.h \
@@ -15,7 +19,8 @@ HEADERS += \
 	qmidictlDialStyle.h \
 	qmidictlMainForm.h
 
-SOURCES += qmidictl.cpp \
+SOURCES += \
+	qmidictl.cpp \
 	qmidictlOptions.cpp \
 	qmidictlOptionsForm.cpp \
 	qmidictlUdpDevice.cpp \
@@ -29,7 +34,6 @@ FORMS += \
 	qmidictlMainForm.ui
 
 RESOURCES += qmidictl.qrc
-
 
 unix {
 	#VARIABLES
@@ -50,7 +54,7 @@ unix {
 	desktop.files += $${TARGET}.desktop
 
 	iconxpm.path = $$DATADIR/pixmaps
-	iconxpm.files += data/maemo/$${TARGET}.xpm 
+	iconxpm.files += data/maemo/$${TARGET}.xpm
 
 	icon26.path = $$DATADIR/icons/hicolor/26x26/apps
 	icon26.files += data/26x26/$${TARGET}.png 

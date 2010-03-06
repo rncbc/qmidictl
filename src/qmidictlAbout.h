@@ -22,8 +22,10 @@
 #ifndef __qmidictlAbout_h
 #define __qmidictlAbout_h
 
-#define QMIDICTL_TITLE        "QmidiCtl"
-#define QMIDICTL_VERSION      "0.6"
+#include "config.h"
+
+#define QMIDICTL_TITLE        PACKAGE_NAME
+#define QMIDICTL_VERSION      PACKAGE_VERSION
 
 #define QMIDICTL_SUBTITLE     "A MIDI Remote Controller via IP/UDP Multicast"
 #define QMIDICTL_WEBSITE      "http://qmidictl.sourceforge.net"
@@ -31,6 +33,6 @@
 
 #define QMIDICTL_DOMAIN       "rncbc.org"
 
-#endif  // __qmidinetAbout_h
+#endif  // __qmidictlAbout_h
 
-// end of qmidinetAbout.h
+// end of qmidictlAbout.h

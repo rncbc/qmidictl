@@ -1,10 +1,10 @@
 [Desktop Entry]
 Encoding=UTF-8
-Version=0.6
 Type=Application
-Name=qmidictl
-Exec=/usr/bin/qmidictl
-Icon=qmidictl
+Name=@PACKAGE_NAME@
+Version=@PACKAGE_VERSION@
+Exec=@ac_prefix@/bin/qmidictl
+Icon=@ac_prefix@/share/pixmaps/qmidictl.png
 StartupWMClass=qmidictl
 X-Window-Icon=qmidictl
 X-HildonDesk-ShowInToolbar=true

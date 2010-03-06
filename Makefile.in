@@ -1,0 +1,54 @@
+prefix  = @ac_prefix@
+qmake   = @ac_qmake@
+
+name    = qmidictl
+
+target  = src/$(name)
+
+headers = src/config.h \
+	src/qmidictlAbout.h \
+	src/qmidictlOptions.h \
+	src/qmidictlOptionsForm.h \
+	src/qmidictlUdpDevice.h \
+	src/qmidictlMixerStrip.h \
+	src/qmidictlDialStyle.h \
+	src/qmidictlMainForm.h
+
+sources = \
+	src/qmidictl.cpp \
+	src/qmidictlOptions.cpp \
+	src/qmidictlOptionsForm.cpp \
+	src/qmidictlUdpDevice.cpp \
+	src/qmidictlMixerStrip.cpp \
+	src/qmidictlDialStyle.cpp \
+	src/qmidictlMainForm.cpp
+
+forms = \
+	src/qmidictlOptionsForm.ui \
+	src/qmidictlMixerStrip.ui \
+	src/qmidictlMainForm.ui
+
+resources = \
+	src/qmidictl.qrc
+
+
+all:	$(target)
+
+
+$(target):	$(name).mak $(resources) ${forms} $(sources) $(headers)
+	@make -f $(name).mak
+
+$(name).mak:	$(name).pro
+	@$(qmake) -o $(name).mak $(name).pro
+
+
+install:	$(target)
+	@make -f $(name).mak install
+
+uninstall:	$(DESTDIR)$(prefix)/bin/$(name)
+	@make -f $(name).mak uninstall
+
+clean:	$(name).mak
+	@make -f $(name).mak clean
+	@rm -f $(target) $(target).mak $(name).mak
+	@rm -rf *.cache *.log *.status
