@@ -3,4 +3,9 @@ QmidiCtl - A MIDI Remote Controller via UDP/IP Multicast
 
 ChangeLog
 
+SVN TRUNK
+
+- Attempt to comply with maemo.org extras-testing promotion.
+
+
 0.0.1  2010-03-07  First public release.

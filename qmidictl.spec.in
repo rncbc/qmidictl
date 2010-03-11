@@ -57,7 +57,7 @@ for Windows (http://nerds.de).
 %{_datadir}/icons/hicolor/64x64/apps/%{name}.png
 
 %changelog
-* Wed Mar 11 2010 Rui Nuno Capela <rncbc@users.sourceforge.net> 0.0.1-2
-- Fixed initial qmidictl.spec
+* Thu Mar 11 2010 Rui Nuno Capela <rncbc@users.sourceforge.net> 0.0.1-2
+- Attempt to comply with maemo.org extras-testing promotion.
 * Fri Mar  7 2010 Rui Nuno Capela <rncbc@users.sourceforge.net> 0.0.1-1
 - Created initial qmidictl.spec

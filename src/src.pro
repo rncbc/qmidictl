@@ -59,8 +59,8 @@ unix {
 	icon26.path = $$DATADIR/icons/hicolor/26x26/apps
 	icon26.files += data/26x26/$${TARGET}.png 
 
-	icon40.path = $$DATADIR/icons/hicolor/48x48/apps
-	icon40.files += data/48x48/$${TARGET}.png
+	icon48.path = $$DATADIR/icons/hicolor/48x48/apps
+	icon48.files += data/48x48/$${TARGET}.png
 
 	icon64.path = $$DATADIR/icons/hicolor/64x64/apps
 	icon64.files += data/64x64/$${TARGET}.png
