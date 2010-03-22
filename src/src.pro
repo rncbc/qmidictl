@@ -46,15 +46,15 @@ unix {
 	DEFINES += DATADIR=\"$$DATADIR\" PKGDATADIR=\"$$PKGDATADIR\"
 
 	#MAKE INSTALL
-	INSTALLS += target desktop iconxpm icon26 icon48 icon64
+	INSTALLS += target desktop icon icon26 icon48 icon64
 
 	target.path = $$BINDIR
 
-	desktop.path = $$DATADIR/applications/hildon
+	desktop.path = $$DATADIR/applications
 	desktop.files += $${TARGET}.desktop
 
-	iconxpm.path = $$DATADIR/pixmaps
-	iconxpm.files += data/maemo/$${TARGET}.xpm
+	icon.path = $$DATADIR/pixmaps
+	icon.files += images/$${TARGET}.png
 
 	icon26.path = $$DATADIR/icons/hicolor/26x26/apps
 	icon26.files += data/26x26/$${TARGET}.png 
