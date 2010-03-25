@@ -36,10 +36,16 @@ FORMS += \
 RESOURCES += qmidictl.qrc
 
 unix {
+
 	#VARIABLES
+	OBJECTS_DIR = .obj
+	MOC_DIR     = .moc
+	UI_DIR      = .ui
+
 	isEmpty(PREFIX) {
 		PREFIX = /usr/local
 	}
+
 	BINDIR = $$PREFIX/bin
 	DATADIR = $$PREFIX/share
 
