@@ -5,6 +5,8 @@ ChangeLog
 
 SVN TRUNK
 
+- Use standard dialog buttons as provided by QDialogButtonBox.
+
 - Attempt to comply with maemo.org extras-testing promotion.
 
 

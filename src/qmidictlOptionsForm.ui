@@ -27,7 +27,7 @@
     <x>0</x>
     <y>0</y>
     <width>320</width>
-    <height>240</height>
+    <height>180</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -37,127 +37,104 @@
    <iconset resource="qmidictl.qrc">
     <normaloff>:/images/qmidictl.png</normaloff>:/images/qmidictl.png</iconset>
   </property>
-  <layout class="QVBoxLayout">
+  <layout class="QHBoxLayout">
    <item>
-    <widget class="QGroupBox" name="NetworkGroupBox">
-     <property name="title">
-      <string>Network</string>
-     </property>
-     <property name="flat">
-      <bool>true</bool>
-     </property>
-     <layout class="QFormLayout">
-      <item row="0" column="0">
-       <widget class="QLabel" name="InterfaceTextLabel">
-        <property name="text">
-         <string>&amp;Interface:</string>
-        </property>
-        <property name="buddy">
-         <cstring>InterfaceComboBox</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QComboBox" name="InterfaceComboBox">
-        <property name="editable">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-	   <widget class="QLabel" name="UdpPortTextLabel">
-        <property name="text">
-		 <string>UDP &amp;Port:</string>
-        </property>
-        <property name="buddy">
-		 <cstring>UdpPortSpinBox</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-	   <widget class="QSpinBox" name="UdpPortSpinBox">
-        <property name="accelerated">
-         <bool>true</bool>
-        </property>
-        <property name="maximum">
-         <number>65535</number>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QGroupBox" name="MidiGroupBox">
-     <property name="title">
-      <string>MIDI</string>
-     </property>
-     <property name="flat">
-      <bool>true</bool>
-     </property>
-     <layout class="QFormLayout">
-      <item row="0" column="0">
-       <widget class="QLabel" name="MmcDeviceTextLabel">
-        <property name="text">
-         <string>MMC &amp;Device:</string>
-        </property>
-        <property name="buddy">
-         <cstring>MmcDeviceSpinBox</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QSpinBox" name="MmcDeviceSpinBox">
-        <property name="accelerated">
-         <bool>true</bool>
-        </property>
-        <property name="maximum">
-         <number>127</number>
-        </property>
-        <property name="value">
-         <number>127</number>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <layout class="QHBoxLayout">
+    <layout class="QVBoxLayout">
      <item>
-      <spacer>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+      <widget class="QGroupBox" name="NetworkGroupBox">
+       <property name="title">
+        <string>Network</string>
        </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>160</width>
-         <height>20</height>
-        </size>
+       <property name="flat">
+        <bool>true</bool>
        </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="AcceptButton">
-       <property name="text">
-        <string>OK</string>
-       </property>
-       <property name="icon">
-        <iconset>:/images/formAccept.png</iconset>
-       </property>
+       <layout class="QGridLayout">
+        <item row="0" column="0">
+         <widget class="QLabel" name="InterfaceTextLabel">
+          <property name="text">
+           <string>&amp;Interface:</string>
+          </property>
+          <property name="buddy">
+           <cstring>InterfaceComboBox</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QComboBox" name="InterfaceComboBox">
+          <property name="editable">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="UdpPortTextLabel">
+          <property name="text">
+           <string>UDP &amp;Port:</string>
+          </property>
+          <property name="buddy">
+           <cstring>UdpPortSpinBox</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QSpinBox" name="UdpPortSpinBox">
+          <property name="accelerated">
+           <bool>true</bool>
+          </property>
+          <property name="maximum">
+           <number>65535</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="RejectButton">
-       <property name="text">
-        <string>Cancel</string>
+      <widget class="QGroupBox" name="MidiGroupBox">
+       <property name="title">
+        <string>MIDI</string>
        </property>
-       <property name="icon">
-        <iconset>:/images/formReject.png</iconset>
+       <property name="flat">
+        <bool>true</bool>
        </property>
+       <layout class="QGridLayout">
+        <item row="0" column="0">
+         <widget class="QLabel" name="MmcDeviceTextLabel">
+          <property name="text">
+           <string>MMC &amp;Device:</string>
+          </property>
+          <property name="buddy">
+           <cstring>MmcDeviceSpinBox</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QSpinBox" name="MmcDeviceSpinBox">
+          <property name="accelerated">
+           <bool>true</bool>
+          </property>
+          <property name="maximum">
+           <number>127</number>
+          </property>
+          <property name="value">
+           <number>127</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="DialogButtonBox">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>
@@ -166,8 +143,7 @@
   <tabstop>InterfaceComboBox</tabstop>
   <tabstop>UdpPortSpinBox</tabstop>
   <tabstop>MmcDeviceSpinBox</tabstop>
-  <tabstop>AcceptButton</tabstop>
-  <tabstop>RejectButton</tabstop>
+  <tabstop>DialogButtonBox</tabstop>
  </tabstops>
  <resources>
   <include location="qmidictl.qrc"/>
