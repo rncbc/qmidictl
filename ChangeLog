@@ -5,6 +5,12 @@ ChangeLog
 
 SVN TRUNK
 
+- MIDI controller assignment, any other than mostly MMC, is now
+  user configurable for all widgets, buttons, sliders and knobs,
+  trough the novel "Configure..." menu item.
+
+- Dropped the "About Qt..." menu item.
+
 - Use standard dialog buttons as provided by QDialogButtonBox.
 
 - Attempt to comply with maemo.org extras-testing promotion.

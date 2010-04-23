@@ -9,6 +9,8 @@ headers = src/config.h \
 	src/qmidictlAbout.h \
 	src/qmidictlOptions.h \
 	src/qmidictlOptionsForm.h \
+	src/qmidictlMidiControl.h \
+	src/qmidictlMidiControlForm.h \
 	src/qmidictlUdpDevice.h \
 	src/qmidictlMixerStrip.h \
 	src/qmidictlDialStyle.h \
@@ -18,6 +20,8 @@ sources = \
 	src/qmidictl.cpp \
 	src/qmidictlOptions.cpp \
 	src/qmidictlOptionsForm.cpp \
+	src/qmidictlMidiControl.cpp \
+	src/qmidictlMidiControlForm.cpp \
 	src/qmidictlUdpDevice.cpp \
 	src/qmidictlMixerStrip.cpp \
 	src/qmidictlDialStyle.cpp \
@@ -25,6 +29,7 @@ sources = \
 
 forms = \
 	src/qmidictlOptionsForm.ui \
+	src/qmidictlMidiControlForm.ui \
 	src/qmidictlMixerStrip.ui \
 	src/qmidictlMainForm.ui
 

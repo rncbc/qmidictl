@@ -1,4 +1,4 @@
-// qmidictl.cpp
+// qmidictlMidiControlForm.h
 //
 /****************************************************************************
    Copyright (C) 2010, rncbc aka Rui Nuno Capela. All rights reserved.
@@ -19,34 +19,50 @@
 
 *****************************************************************************/
 
-#include "qmidictlOptions.h"
-#include "qmidictlMidiControl.h"
-#include "qmidictlMainForm.h"
+#ifndef __qmidictlMidiControlForm_h
+#define __qmidictlMidiControlForm_h
 
-#include <QApplication>
+#include "ui_qmidictlMidiControlForm.h"
 
 
-int main ( int argc, char *argv[] )
+//----------------------------------------------------------------------------
+// qmidictlMidiControlForm -- UI wrapper form.
+
+class qmidictlMidiControlForm : public QDialog
 {
-	Q_INIT_RESOURCE(qmidictl);
+	Q_OBJECT
 
-	QApplication app(argc, argv);
+public:
 
-	qmidictlOptions opt;
-	if (!opt.parse_args(app.arguments())) {
-		app.quit();
-		return 1;
-	}
+	// Constructor.
+	qmidictlMidiControlForm(QWidget *pParent = 0, Qt::WindowFlags wflags = 0);
 
-	qmidictlMidiControl ctl;
-	ctl.load(opt.settings());
+protected slots:
 
-	qmidictlMainForm w;
+	void activateCommand(const QString&);
+	void activateControlType(const QString&);
+	void change();
+	void reset();
 
-	w.show();
-	w.setup();
+	void click(QAbstractButton *);
+	void accept();
+	void reject();
 
-	return app.exec();
-}
+protected:
 
-// end of qmidictl.cpp
+	void activateControlTypeEx(const QString&);
+
+private:
+
+	// The Qt-designer UI struct...
+	Ui::qmidictlMidiControlForm m_ui;
+
+	// Instanmce variables.
+	int m_iDirtyCount;
+};
+
+
+#endif	// __qmidictlMidiControlForm_h
+
+
+// end of qmidictlMidiControlForm.h

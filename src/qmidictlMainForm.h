@@ -117,6 +117,18 @@ protected:
 
 	// MMC dispatch special commands.
 	void sendMmcLocate(unsigned long iLocate);
+	void sendMmcStep(int iDelta);
+
+	// MIDI data transmitter helpers.
+	void sendData3(
+		unsigned char data1, unsigned char data2, unsigned char data3);
+	void sendData2(
+		unsigned char data1, unsigned char data2);
+
+	void sendPitchBend(unsigned short iChannel, int iValue);
+
+	// Generic command dispatcher.
+	void sendCommand(int iCommand, int iTrack = 0, int iValue = 0);
 
 	// Network transmitter.
 	void sendData(unsigned char *data, unsigned short len);
@@ -150,7 +162,7 @@ protected slots:
 	void stripSliderSlot(int iStrip, int iValue);
 
 	// Jog wheel slot.
-	void jogShuttleSlot(int iValue);
+	void jogWheelSlot(int iValue);
 
 	// Transport slots.
 	void resetSlot();
@@ -168,8 +180,8 @@ protected slots:
 
 	// Main action slots.
 	void optionsSlot();
+	void configureSlot();
 	void aboutSlot();
-	void aboutQtSlot();
 	void exitSlot();
 
 private:
@@ -197,9 +209,9 @@ private:
 	// Current mixer strip page.
 	int m_iCurrentStripPage;
 
-	// Jog shuttle last known state.
-	int m_iJogShuttleDelta;
-	int m_iJogShuttleValue;
+	// Jog wheel last known state.
+	int m_iJogWheelDelta;
+	int m_iJogWheelValue;
 
 	// Activity LED counters.
 	int m_iMidiInLed;
@@ -208,7 +220,7 @@ private:
 	// Kind of soft-mutex.
 	int m_iBusy;
 
-	// Special style for the jog shuttle dial.
+	// Special style for the jog wheel dial.
 	qmidictlDialStyle *m_pDialStyle;
 
 	// Kind-of singleton reference.

@@ -180,7 +180,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="QDial" name="jogShuttleDial">
+         <widget class="QDial" name="jogWheelDial">
           <property name="minimumSize">
            <size>
             <width>220</width>
@@ -309,8 +309,8 @@
     </rect>
    </property>
    <addaction name="optionsAction"/>
+   <addaction name="configureAction"/>
    <addaction name="aboutAction"/>
-   <addaction name="aboutQtAction"/>
    <addaction name="exitAction"/>
   </widget>
   <action name="optionsAction">
@@ -318,14 +318,14 @@
     <string>&amp;Options...</string>
    </property>
   </action>
+  <action name="configureAction">
+   <property name="text">
+    <string>&amp;Configure...</string>
+   </property>
+  </action>
   <action name="aboutAction">
    <property name="text">
     <string>&amp;About...</string>
-   </property>
-  </action>
-  <action name="aboutQtAction">
-   <property name="text">
-    <string>About &amp;Qt...</string>
    </property>
   </action>
   <action name="exitAction">
@@ -344,7 +344,7 @@
  <tabstops>
   <tabstop>prevStripPageButton</tabstop>
   <tabstop>nextStripPageButton</tabstop>
-  <tabstop>jogShuttleDial</tabstop>
+  <tabstop>jogWheelDial</tabstop>
   <tabstop>resetButton</tabstop>
   <tabstop>rewindButton</tabstop>
   <tabstop>playButton</tabstop>

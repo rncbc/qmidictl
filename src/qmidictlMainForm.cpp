@@ -21,9 +21,12 @@
 
 #include "qmidictlAbout.h"
 #include "qmidictlMainForm.h"
+
 #include "qmidictlOptionsForm.h"
+#include "qmidictlMidiControlForm.h"
 
 #include "qmidictlOptions.h"
+#include "qmidictlMidiControl.h"
 #include "qmidictlUdpDevice.h"
 #include "qmidictlDialStyle.h"
 
@@ -54,9 +57,9 @@ qmidictlMainForm::qmidictlMainForm (
 	m_pStripStates = NULL;
 	m_iCurrentStripPage = 0;
 
-	// Jog shuttle last known state.
-	m_iJogShuttleDelta = 0;
-	m_iJogShuttleValue = 0;
+	// Jog-wheel last known state.
+	m_iJogWheelDelta = 0;
+	m_iJogWheelValue = 0;
 
 	// Activity LED counters.
 	m_iMidiInLed  = 0;
@@ -65,9 +68,9 @@ qmidictlMainForm::qmidictlMainForm (
 	// Kind of soft-mutex.
 	m_iBusy = 0;
 
-	// Hack the jog-shuttle dial style and palette...
+	// Hack the jog-wheel dial style and palette...
 	m_pDialStyle = new qmidictlDialStyle();
-	m_ui.jogShuttleDial->setStyle(m_pDialStyle);
+	m_ui.jogWheelDial->setStyle(m_pDialStyle);
 
 	// Pseudo-singleton reference setup.
 	g_pMainForm = this;
@@ -79,12 +82,12 @@ qmidictlMainForm::qmidictlMainForm (
 	QObject::connect(m_ui.optionsAction,
 		SIGNAL(triggered(bool)),
 		SLOT(optionsSlot()));
+	QObject::connect(m_ui.configureAction,
+		SIGNAL(triggered(bool)),
+		SLOT(configureSlot()));
 	QObject::connect(m_ui.aboutAction,
 		SIGNAL(triggered(bool)),
 		SLOT(aboutSlot()));
-	QObject::connect(m_ui.aboutQtAction,
-		SIGNAL(triggered(bool)),
-		SLOT(aboutQtSlot()));
 	QObject::connect(m_ui.exitAction,
 		SIGNAL(triggered(bool)),
 		SLOT(exitSlot()));
@@ -97,9 +100,9 @@ qmidictlMainForm::qmidictlMainForm (
 		SIGNAL(clicked()),
 		SLOT(nextStripPageSlot()));
 
-	QObject::connect(m_ui.jogShuttleDial,
+	QObject::connect(m_ui.jogWheelDial,
 		SIGNAL(valueChanged(int)),
-		SLOT(jogShuttleSlot(int)));
+		SLOT(jogWheelSlot(int)));
 
 	QObject::connect(m_ui.resetButton,
 		SIGNAL(clicked()),
@@ -367,6 +370,58 @@ void qmidictlMainForm::sendMmcLocate ( unsigned long iLocate )
 }
 
 
+void qmidictlMainForm::sendMmcStep ( int iDelta )
+{
+	unsigned char data;
+	if (iDelta < 0) {
+		data = (-iDelta & 0x3f) | 0x40;
+	} else {
+		data = (+iDelta & 0x3f);
+	}
+
+	sendMmcCommand(MMC_STEP, &data, sizeof(data));
+}
+
+
+// MIDI data transmitter helpers.
+void qmidictlMainForm::sendData3 (
+	unsigned char data1, unsigned char data2, unsigned char data3 )
+{
+	unsigned char data[3];
+
+	data[0] = data1;
+	data[1] = data2;
+	data[2] = data3;
+
+	sendData(data, sizeof(data));
+}
+
+
+void qmidictlMainForm::sendData2 (
+	unsigned char data1, unsigned char data2 )
+{
+	unsigned char data[2];
+
+	data[0] = data1;
+	data[1] = data2;
+
+	sendData(data, sizeof(data));
+}
+
+
+void qmidictlMainForm::sendPitchBend ( unsigned short iChannel, int iValue )
+{
+	unsigned char data[3];
+	unsigned short val = (unsigned short) (0x2000 + iValue);
+
+	data[0] = 0xe0 + iChannel;
+	data[1] = (val & 0x007f);
+	data[2] = (val & 0x3f80) >> 7;
+
+	sendData(data, sizeof(data));
+}
+
+
 // Network transmitter.
 void qmidictlMainForm::sendData ( unsigned char *data, unsigned short len )
 {
@@ -386,6 +441,97 @@ void qmidictlMainForm::sendData ( unsigned char *data, unsigned short len )
 }
 
 
+// Generic command dispatcher.
+void qmidictlMainForm::sendCommand ( int iCommand, int iTrack, int iValue )
+{
+	qmidictlMidiControl *pMidiControl = qmidictlMidiControl::getInstance();
+	if (pMidiControl == NULL)
+		return;
+	
+	qmidictlMidiControl::Command command
+		= qmidictlMidiControl::Command(iCommand);
+	if (!pMidiControl->isCommandMapped(command))
+		return;
+
+	const qmidictlMidiControl::MapKey& key
+		= pMidiControl->commandMap().value(command);
+
+	unsigned short iChannel = key.channel();
+	if (key.isChannelTrack()) {
+		iChannel &= qmidictlMidiControl::TrackParamMask;
+		iChannel += iTrack;
+	}
+
+	unsigned short iParam = key.param();
+	if (key.isParamTrack()) {
+		iParam &= qmidictlMidiControl::TrackParamMask;
+		iParam += iTrack;
+	}
+
+	bool bOn = (iValue > 0);
+	switch (key.type()) {
+	case qmidictlMidiControl::MMC:
+		switch (command) {
+		case qmidictlMidiControl::RST:
+			sendMmcLocate(0);
+			break;
+		case qmidictlMidiControl::REW:
+			sendMmcCommand(bOn ? MMC_REWIND : MMC_STOP);
+			break;
+		case qmidictlMidiControl::STOP:
+			sendMmcCommand(MMC_STOP);
+			break;
+		case qmidictlMidiControl::PLAY:
+			sendMmcCommand(bOn ? MMC_PLAY : MMC_PAUSE);
+			break;
+		case qmidictlMidiControl::REC:
+			sendMmcCommand(bOn ? MMC_RECORD_STROBE : MMC_RECORD_EXIT);
+			break;
+		case qmidictlMidiControl::FFWD:
+			sendMmcCommand(bOn ? MMC_FAST_FORWARD : MMC_STOP);
+			break;
+		case qmidictlMidiControl::JOG_WHEEL:
+			sendMmcStep(iValue);
+			break;
+		case qmidictlMidiControl::TRACK_SOLO:
+			sendMmcMaskedWrite(MMC_TRACK_SOLO, iTrack, bOn);
+			break;
+		case qmidictlMidiControl::TRACK_MUTE:
+			sendMmcMaskedWrite(MMC_TRACK_MUTE, iTrack, bOn);
+			break;
+		case qmidictlMidiControl::TRACK_REC:
+			sendMmcMaskedWrite(MMC_TRACK_RECORD, iTrack, bOn);
+			break;
+		case qmidictlMidiControl::TRACK_VOL: // Not handled here.
+		default:
+			break;
+		}
+		break;
+	case qmidictlMidiControl::NOTE_OFF:
+		sendData3(0x80 + iChannel, iParam, iValue);
+		break;
+	case qmidictlMidiControl::NOTE_ON:
+		sendData3(0x90 + iChannel, iParam, iValue);
+		break;
+	case qmidictlMidiControl::KEY_PRESS:
+		sendData3(0xa0 + iChannel, iParam, iValue);
+		break;
+	case qmidictlMidiControl::CONTROLLER:
+		sendData3(0xb0 + iChannel, iParam, iValue);
+		break;
+	case qmidictlMidiControl::PGM_CHANGE:
+		sendData2(0xc0 + iChannel, iParam);
+		break;
+	case qmidictlMidiControl::CHAN_PRESS:
+		sendData2(0xd0 + iChannel, iValue);
+		break;
+	case qmidictlMidiControl::PITCH_BEND:
+		sendPitchBend(iChannel, iValue);
+		break;
+	}
+}
+
+
 // Mixer strip slots.
 void qmidictlMainForm::stripRecordSlot ( int iStrip, bool bOn )
 {
@@ -393,7 +539,7 @@ void qmidictlMainForm::stripRecordSlot ( int iStrip, bool bOn )
 	if (iStrip >= 0 && iStrip < (4 * m_iStripPages))
 		m_pStripStates[iStrip].record = bOn;
 
-	sendMmcMaskedWrite(MMC_TRACK_RECORD, iStrip, bOn);
+	sendCommand(qmidictlMidiControl::TRACK_REC, iStrip, int(bOn));
 }
 
 
@@ -403,7 +549,7 @@ void qmidictlMainForm::stripMuteSlot ( int iStrip, bool bOn )
 	if (iStrip >= 0 && iStrip < (4 * m_iStripPages))
 		m_pStripStates[iStrip].mute = bOn;
 
-	sendMmcMaskedWrite(MMC_TRACK_MUTE, iStrip, bOn);
+	sendCommand(qmidictlMidiControl::TRACK_MUTE, iStrip, int(bOn));
 }
 
 
@@ -413,7 +559,7 @@ void qmidictlMainForm::stripSoloSlot ( int iStrip, bool bOn )
 	if (iStrip >= 0 && iStrip < (4 * m_iStripPages))
 		m_pStripStates[iStrip].solo = bOn;
 
-	sendMmcMaskedWrite(MMC_TRACK_SOLO, iStrip, bOn);
+	sendCommand(qmidictlMidiControl::TRACK_SOLO, iStrip, int(bOn));
 }
 
 
@@ -423,42 +569,28 @@ void qmidictlMainForm::stripSliderSlot ( int iStrip, int iValue )
 	if (iStrip >= 0 && iStrip < (4 * m_iStripPages))
 		m_pStripStates[iStrip].slider = iValue;
 
-	// Special slider (will send raw controller event...
-	unsigned char data[3];
-
-	data[0] = 0xbf; // Channel 16 controller.
-	data[1] = 0x40 + (iStrip & 0x3f);
-	data[2] = (unsigned char) ((127 * iValue) / 100);
-
-	sendData(data, sizeof(data));
+	sendCommand(qmidictlMidiControl::TRACK_VOL, iStrip, (127 * iValue) / 100);
 }
 
 
 // Jog wheel slot.
-void qmidictlMainForm::jogShuttleSlot ( int iValue )
+void qmidictlMainForm::jogWheelSlot ( int iValue )
 {
-	int iDelta = (iValue - m_iJogShuttleValue);
-	if ((iDelta * m_iJogShuttleDelta) < 0)
-		iDelta = -(m_iJogShuttleDelta);
+	int iDelta = (iValue - m_iJogWheelValue);
+	if ((iDelta * m_iJogWheelDelta) < 0)
+		iDelta = -(m_iJogWheelDelta);
 
-	unsigned char data;
-	if (iDelta < 0) {
-		data = (-iDelta & 0x3f) | 0x40;
-	} else {
-		data = (+iDelta & 0x3f);
-	}
+	sendCommand(qmidictlMidiControl::JOG_WHEEL, 0, iDelta);
 
-	sendMmcCommand(MMC_STEP, &data, sizeof(data));
-
-	m_iJogShuttleValue = iValue;
-	m_iJogShuttleDelta = iDelta;
+	m_iJogWheelValue = iValue;
+	m_iJogWheelDelta = iDelta;
 }
 
 
 // Reset action slot
 void qmidictlMainForm::resetSlot (void)
 {
-	sendMmcLocate(0);
+	sendCommand(qmidictlMidiControl::RST);
 }
 
 
@@ -472,7 +604,7 @@ void qmidictlMainForm::rewindSlot ( bool bOn )
 	m_ui.forwardButton->setChecked(false);
 	m_iBusy--;
 
-	sendMmcCommand(bOn ? MMC_REWIND : MMC_STOP);
+	sendCommand(qmidictlMidiControl::REW, 0, int(bOn));
 }
 
 
@@ -482,7 +614,7 @@ void qmidictlMainForm::playSlot ( bool bOn )
 	if (m_iBusy > 0)
 		return;
 
-	sendMmcCommand(bOn ? MMC_PLAY : MMC_PAUSE);
+	sendCommand(qmidictlMidiControl::PLAY, 0, int(bOn));
 }
 
 
@@ -499,7 +631,7 @@ void qmidictlMainForm::stopSlot (void)
 	m_ui.playButton->setChecked(false);
 	m_iBusy--;
 
-	sendMmcCommand(MMC_STOP);
+	sendCommand(qmidictlMidiControl::STOP);
 }
 
 
@@ -509,7 +641,7 @@ void qmidictlMainForm::recordSlot ( bool bOn )
 	if (m_iBusy > 0)
 		return;
 
-	sendMmcCommand(bOn ? MMC_RECORD_STROBE : MMC_RECORD_EXIT);
+	sendCommand(qmidictlMidiControl::REC, 0, int(bOn));
 }
 
 
@@ -523,7 +655,7 @@ void qmidictlMainForm::forwardSlot ( bool bOn )
 	m_ui.rewindButton->setChecked(false);
 	m_iBusy--;
 
-	sendMmcCommand(bOn ? MMC_FAST_FORWARD : MMC_STOP);
+	sendCommand(qmidictlMidiControl::FFWD, 0, int(bOn));
 }
 
 
@@ -678,6 +810,13 @@ void qmidictlMainForm::optionsSlot (void)
 }
 
 
+// MIDI control configuration dialog.
+void qmidictlMainForm::configureSlot (void)
+{
+	qmidictlMidiControlForm(this).exec();
+}
+
+
 // About dialog.
 void qmidictlMainForm::aboutSlot (void)
 {
@@ -699,13 +838,6 @@ void qmidictlMainForm::aboutSlot (void)
 	sText += "</p>\n";
 
 	QMessageBox::about(this, tr("About %1").arg(QMIDICTL_TITLE), sText);
-}
-
-
-// About Qt dialog.
-void qmidictlMainForm::aboutQtSlot (void)
-{
-	QApplication::aboutQt();
 }
 
 

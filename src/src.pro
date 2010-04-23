@@ -13,6 +13,8 @@ include(src.pri)
 HEADERS += config.h \
 	qmidictlAbout.h \
 	qmidictlOptions.h \
+	qmidictlMidiControl.h \
+	qmidictlMidiControlForm.h \
 	qmidictlOptionsForm.h \
 	qmidictlUdpDevice.h \
 	qmidictlMixerStrip.h \
@@ -23,6 +25,8 @@ SOURCES += \
 	qmidictl.cpp \
 	qmidictlOptions.cpp \
 	qmidictlOptionsForm.cpp \
+	qmidictlMidiControl.cpp \
+	qmidictlMidiControlForm.cpp \
 	qmidictlUdpDevice.cpp \
 	qmidictlMixerStrip.cpp \
 	qmidictlDialStyle.cpp \
@@ -30,6 +34,7 @@ SOURCES += \
 
 FORMS += \
 	qmidictlOptionsForm.ui \
+	qmidictlMidiControlForm.ui \
 	qmidictlMixerStrip.ui \
 	qmidictlMainForm.ui
 
