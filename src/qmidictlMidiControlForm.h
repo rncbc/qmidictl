@@ -42,23 +42,21 @@ protected slots:
 	void activateCommand(const QString&);
 	void activateControlType(const QString&);
 	void change();
-	void reset();
 
 	void click(QAbstractButton *);
+
 	void accept();
 	void reject();
-
-protected:
-
-	void activateControlTypeEx(const QString&);
+	void reset();
 
 private:
 
 	// The Qt-designer UI struct...
 	Ui::qmidictlMidiControlForm m_ui;
 
-	// Instanmce variables.
+	// Instance variables.
 	int m_iDirtyCount;
+	int m_iDirtySetup;
 };
 
 

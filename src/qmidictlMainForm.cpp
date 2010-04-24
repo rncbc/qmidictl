@@ -183,7 +183,8 @@ void qmidictlMainForm::setup (void)
 		return;
 
 	if (!m_pUdpDevice->open(pOptions->sInterface, pOptions->iUdpPort)) {
-		QMessageBox::critical(this, tr("Network Inferface Error"),
+		QMessageBox::critical(this,
+			tr("Network Inferface Error - %1").arg(QMIDICTL_TITLE),
 			tr("The network interface could not be established.\n\n"
 			"Please, make sure you have an on-line network connection "
 			"and try again."));

@@ -5,9 +5,11 @@ ChangeLog
 
 SVN TRUNK
 
+- Message box title confidence fix (whatever it be:)
+
 - MIDI controller assignment, any other than mostly MMC, is now
   user configurable for all widgets, buttons, sliders and knobs,
-  trough the novel "Configure..." menu item.
+  trough the novel "Configure..." menu item. (EXPERIMENTAL)
 
 - Dropped the "About Qt..." menu item.
 

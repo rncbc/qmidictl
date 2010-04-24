@@ -31,7 +31,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>QmidiCtl - MIDI Control</string>
+   <string>Configure - QmidiCtl</string>
   </property>
   <property name="windowIcon">
    <iconset resource="qmidictl.qrc">

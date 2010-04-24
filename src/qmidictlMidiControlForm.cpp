@@ -21,8 +21,8 @@
 
 #include "qmidictlAbout.h"
 #include "qmidictlMidiControlForm.h"
-#include "qmidictlMidiControl.h"
 
+#include "qmidictlMidiControl.h"
 #include "qmidictlOptions.h"
 
 #include <QMessageBox>
@@ -81,11 +81,12 @@ qmidictlMidiControlForm::qmidictlMidiControlForm (
 	m_ui.ControlTypeComboBox->addItem(
 		qmidictlMidiControl::textFromType(qmidictlMidiControl::PITCH_BEND));
 
-	// Populate param list.
-	activateCommand(m_ui.CommandComboBox->currentText());
-
 	// Start clean.
 	m_iDirtyCount = 0;
+	m_iDirtySetup = 0;
+
+	// Populate param list.
+	activateCommand(m_ui.CommandComboBox->currentText());
 
 	// Try to fix window geometry.
 	adjustSize();
@@ -127,6 +128,8 @@ void qmidictlMidiControlForm::activateCommand (
 		sCommand.toUtf8().constData());
 #endif
 
+	m_iDirtySetup++;
+
 	qmidictlMidiControl::Command command
 		= qmidictlMidiControl::commandFromText(sCommand);
 	bool bEnabled = (command != qmidictlMidiControl::Command(0));
@@ -156,7 +159,7 @@ void qmidictlMidiControlForm::activateCommand (
 			= qmidictlMidiControl::textFromType(key.type());
 		m_ui.ControlTypeComboBox->setCurrentIndex(
 			m_ui.ControlTypeComboBox->findText(sControlType));
-		activateControlTypeEx(sControlType);
+		activateControlType(sControlType);
 		int iChannel = 0;
 		if (m_ui.ChannelSpinBox->isEnabled())
 			iChannel = (key.isChannelTrack() ? 0 : key.channel() + 1);
@@ -177,6 +180,8 @@ void qmidictlMidiControlForm::activateCommand (
 		m_ui.ParamComboBox->clear();
 		m_ui.ParamTrackCheckBox->setChecked(false);
 	}
+
+	m_iDirtySetup--;
 }
 
 
@@ -185,19 +190,6 @@ void qmidictlMidiControlForm::activateControlType (
 {
 #ifdef CONFIG_DEBUG
 	qDebug("qmidictlMidiControlForm::activateControlType(\"%s\")",
-		sControlType.toUtf8().constData());
-#endif
-
-	activateControlTypeEx(sControlType);
-	change();
-}
-
-
-void qmidictlMidiControlForm::activateControlTypeEx (
-	const QString& sControlType )
-{
-#ifdef CONFIG_DEBUG
-	qDebug("qmidictlMidiControlForm::activateControlTypeEx(\"%s\")",
 		sControlType.toUtf8().constData());
 #endif
 
@@ -236,12 +228,18 @@ void qmidictlMidiControlForm::activateControlTypeEx (
 		}
 		break;
 	}
+
+	// Try make changes dirty.
+	change();
 }
 
 
-// Change settings (OK button slot).
+// Change settings (anything else slot).
 void qmidictlMidiControlForm::change (void)
 {
+	if (m_iDirtySetup > 0)
+		return;
+
 #ifdef CONFIG_DEBUG
 	qDebug("qmidictlMidiControlForm::change()");
 #endif
@@ -290,23 +288,6 @@ void qmidictlMidiControlForm::change (void)
 }
 
 
-// Reset settings (Reset button slot).
-void qmidictlMidiControlForm::reset (void)
-{
-#ifdef CONFIG_DEBUG
-	qDebug("qmidictlMidiControlForm::reset()");
-#endif
-
-	qmidictlMidiControl *pMidiControl = qmidictlMidiControl::getInstance();
-	if (pMidiControl) {
-		pMidiControl->clear();
-		m_iDirtyCount++;
-	}
-
-	activateCommand(m_ui.CommandComboBox->currentText());
-}
-
-
 // Reset settings (action button slot).
 void qmidictlMidiControlForm::click ( QAbstractButton *pButton )
 {
@@ -314,7 +295,9 @@ void qmidictlMidiControlForm::click ( QAbstractButton *pButton )
 	qDebug("qmidictlMidiControlForm::buttonClick(%p)", pButton);
 #endif
 
-	if (m_ui.DialogButtonBox->buttonRole(pButton) & QDialogButtonBox::ResetRole)
+	QDialogButtonBox::ButtonRole role
+		= m_ui.DialogButtonBox->buttonRole(pButton);
+	if ((role & QDialogButtonBox::ResetRole) == QDialogButtonBox::ResetRole)
 		reset();
 }
 
@@ -350,11 +333,28 @@ void qmidictlMidiControlForm::reject (void)
 	qDebug("qmidictlMidiControlForm::reject()");
 #endif
 
-	// Reload settings...
+	// Check if there's any pending changes...
 	if (m_iDirtyCount > 0) {
-		qmidictlMidiControl *pMidiControl = qmidictlMidiControl::getInstance();
+		switch (QMessageBox::warning(this,
+			QDialog::windowTitle(),
+			tr("Some settings have been changed.\n\n"
+			"Do you want to apply the changes?"),
+			QMessageBox::Apply |
+			QMessageBox::Discard |
+			QMessageBox::Cancel)) {
+		case QMessageBox::Discard:
+			break;
+		case QMessageBox::Apply:
+			accept();
+		default:
+			return;
+		}
+		// Reload settings...
+		qmidictlMidiControl *pMidiControl
+			= qmidictlMidiControl::getInstance();
 		if (pMidiControl) {
-			qmidictlOptions *pOptions = qmidictlOptions::getInstance();
+			qmidictlOptions *pOptions
+				= qmidictlOptions::getInstance();
 			if (pOptions) {
 				pMidiControl->load(pOptions->settings());
 				m_iDirtyCount = 0;
@@ -364,6 +364,31 @@ void qmidictlMidiControlForm::reject (void)
 
 	// Just go with dialog rejection...
 	QDialog::reject();
+}
+
+
+// Reset settings (Reset button slot).
+void qmidictlMidiControlForm::reset (void)
+{
+#ifdef CONFIG_DEBUG
+	qDebug("qmidictlMidiControlForm::reset()");
+#endif
+
+	if (QMessageBox::warning(this,
+		QDialog::windowTitle(),
+		tr("All settings will be reset to the original default.\n\n"
+		"Are you sure to apply the changes?"),
+		QMessageBox::Reset |
+		QMessageBox::Cancel) == QMessageBox::Cancel)
+		return;
+
+	qmidictlMidiControl *pMidiControl = qmidictlMidiControl::getInstance();
+	if (pMidiControl) {
+		pMidiControl->clear();
+		m_iDirtyCount++;
+	}
+
+	activateCommand(m_ui.CommandComboBox->currentText());
 }
 
 

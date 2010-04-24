@@ -39,12 +39,18 @@ public:
 
 protected slots:
 
+	void change();
+
 	void accept();
+	void reject();
 
 private:
 
 	// The Qt-designer UI struct...
 	Ui::qmidictlOptionsForm m_ui;
+
+	// Instance variables.
+	int m_iDirtyCount;
 
 	// Default (translatable) interface name.
 	QString m_sDefInterface;
