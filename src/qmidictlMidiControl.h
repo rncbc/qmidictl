@@ -164,6 +164,10 @@ public:
 	bool isChannelParamMapped(ControlType ctype,
 		unsigned short iChannel, unsigned short iParam) const;
 
+	// Lookup the command mapping...
+	ControlMap::ConstIterator find(ControlType ctype,
+		unsigned short iChannel, unsigned short iParam) const;
+
 	// Load from/save into global settings.
 	void load(QSettings& settings);
 	void save(QSettings& settings);

@@ -425,8 +425,8 @@ void qmidictlMainForm::sendPitchBend ( unsigned short iChannel, int iValue )
 // Network transmitter.
 void qmidictlMainForm::sendData ( unsigned char *data, unsigned short len )
 {
-#if defined(DEBUG)
-	fprintf(stderr, "SEND:");
+#ifdef CONFIG_DEBUG
+	fprintf(stderr, "sendData:");
 	for(int i = 0; i < len; ++i)
 		fprintf(stderr, " %02X", data[i]);
 	fprintf(stderr, "\n");
@@ -667,10 +667,14 @@ void qmidictlMainForm::receiveSlot ( const QByteArray& data )
 
 void qmidictlMainForm::recvData ( unsigned char *data, unsigned short len )
 {
+	qmidictlMidiControl *pMidiControl = qmidictlMidiControl::getInstance();
+	if (pMidiControl == NULL)
+		return;
+
 	m_iBusy++;
 
-#if defined(DEBUG)
-	fprintf(stderr, "RECV:");
+#ifdef CONFIG_DEBUG
+	fprintf(stderr, "recvData:");
 	for(int i = 0; i < len; ++i)
 		fprintf(stderr, " %02X", data[i]);
 	fprintf(stderr, "\n");
@@ -685,53 +689,62 @@ void qmidictlMainForm::recvData ( unsigned char *data, unsigned short len )
 	// Handle immediate incoming MIDI data...
 	int iTracks = (4 * m_iStripPages);
 	int iTrack  = -1;
-	
+
+	qmidictlMidiControl::ControlType ctype
+		= qmidictlMidiControl::ControlType(0);
+	unsigned short iChannel = 0;
+	unsigned short iParam = 0;
+	int iValue = 0;
+
 	// SysEx (actually)...
 	if (data[0] == 0xf0 && data[len - 1] == 0xf7) {
 		// MMC command...
 		unsigned char mmcid = qmidictlOptions::getInstance()->iMmcDevice;
 		if (data[1] == 0x7f && data[3] == 0x06
 			&& (mmcid == 0x7f || data[2] == mmcid)) {
+			ctype = qmidictlMidiControl::MMC;
 			MmcCommand cmd = MmcCommand(data[4]);
 			switch (cmd) {
 			case MMC_STOP:
 			case MMC_RESET:
-				m_ui.rewindButton->setChecked(false);
-				m_ui.playButton->setChecked(false);
-				m_ui.recordButton->setChecked(false);
-				m_ui.forwardButton->setChecked(false);
+				iParam = int(qmidictlMidiControl::STOP);
+				iValue = int(true);
 				break;
 			case MMC_PLAY:
 			case MMC_DEFERRED_PLAY:
-				m_ui.playButton->setChecked(true);
+				iParam = int(qmidictlMidiControl::PLAY);
+				iValue = int(true);
 				break;
 			case MMC_REWIND:
-				m_ui.rewindButton->setChecked(true);
-				m_ui.forwardButton->setChecked(false);
+				iParam = int(qmidictlMidiControl::REW);
+				iValue = int(true);
 				break;
 			case MMC_FAST_FORWARD:
-				m_ui.rewindButton->setChecked(false);
-				m_ui.forwardButton->setChecked(true);
+				iParam = int(qmidictlMidiControl::FFWD);
+				iValue = int(true);
 				break;
 			case MMC_RECORD_STROBE:
-				m_ui.recordButton->setChecked(true);
+				iParam = int(qmidictlMidiControl::REC);
+				iValue = int(true);
 				break;
 			case MMC_RECORD_EXIT:
 			case MMC_RECORD_PAUSE:
-				m_ui.recordButton->setChecked(false);
+				iParam = int(qmidictlMidiControl::REC);
+				iValue = int(false);
 				break;
 			case MMC_PAUSE:
-				m_ui.playButton->setChecked(false);
+				iParam = int(qmidictlMidiControl::PLAY);
+				iValue = int(false);
 				break;
 			case MMC_MASKED_WRITE:
 				if (int(data[5]) > 3) {
 					MmcSubCommand scmd = MmcSubCommand(data[6]);
 					iTrack = (data[7] > 0 ? (data[7] * 7) : 0) - 5;
-					bool bOn = false;
+					iValue = int(false);
 					for (int i = 0; i < 7; ++i) {
 						int iMask = (1 << i);
 						if (data[8] & iMask) {
-							bOn = (data[9] & iMask);
+							iValue = (data[9] & iMask);
 							break;
 						}
 						++iTrack;
@@ -740,13 +753,13 @@ void qmidictlMainForm::recvData ( unsigned char *data, unsigned short len )
 					if (iTrack >= 0 && iTrack < iTracks) {
 						switch (scmd) {
 						case MMC_TRACK_RECORD:
-							m_pStripStates[iTrack].record = bOn;
+							iParam = int(qmidictlMidiControl::TRACK_REC);
 							break;
 						case MMC_TRACK_MUTE:
-							m_pStripStates[iTrack].mute = bOn;
+							iParam = int(qmidictlMidiControl::TRACK_MUTE);
 							break;
 						case MMC_TRACK_SOLO:
-							m_pStripStates[iTrack].solo = bOn;
+							iParam = int(qmidictlMidiControl::TRACK_SOLO);
 							break;
 						default:
 							break;
@@ -758,15 +771,102 @@ void qmidictlMainForm::recvData ( unsigned char *data, unsigned short len )
 				break;
 			}
 		}
+	} else {
+		// Channel event...
+		iChannel = (data[0] & 0x0f);
+		iParam = data[1];
+		if (len > 2)
+			iValue = data[2];
+		// Channel control type...
+		switch (data[0] & 0xf0) {
+		case 0x80:
+			ctype = qmidictlMidiControl::NOTE_OFF;
+			break;
+		case 0x90:
+			ctype = qmidictlMidiControl::NOTE_ON;
+			break;
+		case 0xa0:
+			ctype = qmidictlMidiControl::KEY_PRESS;
+			break;
+		case 0xb0:
+			ctype = qmidictlMidiControl::CONTROLLER;
+			break;
+		case 0xc0:
+			ctype = qmidictlMidiControl::PGM_CHANGE;
+			break;
+		case 0xd0:
+			ctype = qmidictlMidiControl::CHAN_PRESS;			
+			break;
+		case 0xe0:
+			ctype = qmidictlMidiControl::PITCH_BEND;
+			iParam = 0;
+			iValue = ((int(data[2]) << 7) | data[1]) - 0x2000;
+			break;
+		}
 	}
-	else
-	// Channel Controller...
-	if (data[0] == 0xbf && len > 2) {
-		iTrack = int(data[1]) - 0x40;
-		int iValue = (100 * int(data[2])) / 127;
-		// Patch corresponding track/strip state...
-		if (iTrack >= 0 && iTrack < iTracks)
-			m_pStripStates[iTrack].slider = iValue;
+
+	// Lookup the command mapping...
+	qmidictlMidiControl::ControlMap::ConstIterator iter
+		= pMidiControl->find(ctype, iChannel, iParam);
+	if (iter != pMidiControl->controlMap().constEnd()) {
+		const qmidictlMidiControl::MapKey& key = iter.key();
+		qmidictlMidiControl::Command command = iter.value();
+		if (key.isChannelTrack())
+			iTrack  = int(iChannel);
+		else if (key.isParamTrack()) {
+			iTrack  = int(iParam);
+			iTrack -= int(key.param() & qmidictlMidiControl::TrackParamMask);
+		}
+	#ifdef CONFIG_DEBUG
+		qDebug("recvData: Command=\"%s\" Type=\"%s\" Track=%d Value=%d",
+			qmidictlMidiControl::textFromCommand(command).toUtf8().constData(),
+			qmidictlMidiControl::textFromType(ctype).toUtf8().constData(),
+			iTrack, iValue);
+	#endif
+		switch (command) {
+		case qmidictlMidiControl::RST:
+			// Nothing to do...
+			break;
+		case qmidictlMidiControl::REW:
+			m_ui.rewindButton->setChecked(true);
+			m_ui.forwardButton->setChecked(false);
+			break;
+		case qmidictlMidiControl::STOP:
+			m_ui.rewindButton->setChecked(false);
+			m_ui.playButton->setChecked(false);
+			m_ui.recordButton->setChecked(false);
+			m_ui.forwardButton->setChecked(false);
+			break;
+		case qmidictlMidiControl::PLAY:
+			m_ui.playButton->setChecked(iValue > 0);
+			break;
+		case qmidictlMidiControl::REC:
+			m_ui.recordButton->setChecked(iValue > 0);
+			break;
+		case qmidictlMidiControl::FFWD:
+			m_ui.rewindButton->setChecked(false);
+			m_ui.forwardButton->setChecked(true);
+			break;
+		case qmidictlMidiControl::JOG_WHEEL:
+			// Nothing to do...
+			break;
+		case qmidictlMidiControl::TRACK_SOLO:
+			if (iTrack >= 0 && iTrack < iTracks)
+				m_pStripStates[iTrack].solo = bool(iValue > 0);
+			break;
+		case qmidictlMidiControl::TRACK_MUTE:
+			if (iTrack >= 0 && iTrack < iTracks)
+				m_pStripStates[iTrack].mute = bool(iValue > 0);
+			break;
+		case qmidictlMidiControl::TRACK_REC:
+			if (iTrack >= 0 && iTrack < iTracks)
+				m_pStripStates[iTrack].record = bool(iValue > 0);
+			break;
+		case qmidictlMidiControl::TRACK_VOL:
+			if (iTrack >= 0 && iTrack < iTracks)
+				m_pStripStates[iTrack].slider = (100 * iValue) / 127;
+			break;
+		}
 	}
 
 	// Update corresponding strip state, when currently visible...

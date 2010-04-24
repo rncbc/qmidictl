@@ -126,6 +126,27 @@ bool qmidictlMidiControl::isChannelParamMapped (
 }
 
 
+// Lookup the command mapping...
+qmidictlMidiControl::ControlMap::ConstIterator qmidictlMidiControl::find (
+	ControlType ctype, unsigned short iChannel, unsigned short iParam ) const
+{
+	MapKey key(ctype, iChannel, iParam);
+
+	ControlMap::ConstIterator iter = m_controlMap.find(key);
+	if (iter == m_controlMap.constEnd()) {
+		key.setChannel(TrackParam);
+		iter = m_controlMap.find(key);
+		if (iter == m_controlMap.constEnd()) {
+			key.setChannel(iChannel); // Fallback to original channel.
+			key.setParam(iParam | TrackParam);
+			iter = m_controlMap.find(key);
+		}
+	}
+
+	return iter;
+}
+
+
 // Save into global settings.
 void qmidictlMidiControl::save ( QSettings& settings )
 {
