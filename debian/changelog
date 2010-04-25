@@ -1,3 +1,9 @@
+qmidictl (0.0.5-0) unstable; urgency=low
+
+  * MIDI controller assignment configuration introduced.
+
+ -- Rui Nuno Capela <rncbc@rncbc.org>  Sun, 25 Apr 2010 17:30:00 +0000
+
 qmidictl (0.0.1-2) unstable; urgency=low
 
   * Attempt to comply with maemo.org extras-testing promotion.
