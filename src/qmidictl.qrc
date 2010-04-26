@@ -1,8 +1,6 @@
 <RCC version="1.0">
 	<qresource>
 		<file>images/qmidictl.png</file>
-		<file>images/formAccept.png</file>
-		<file>images/formReject.png</file>
 		<file>images/formReset.png</file>
 		<file>images/formRewind.png</file>
 		<file>images/formForward.png</file>

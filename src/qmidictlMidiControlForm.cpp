@@ -40,17 +40,17 @@ qmidictlMidiControlForm::qmidictlMidiControlForm (
 	m_ui.setupUi(this);
 
 	// Populate command list.
-	m_ui.CommandComboBox->addItem(
+	m_ui.CommandComboBox->addItem(QIcon(":/images/formReset.png"),
 		qmidictlMidiControl::textFromCommand(qmidictlMidiControl::RST));
-	m_ui.CommandComboBox->addItem(
+	m_ui.CommandComboBox->addItem(QIcon(":/images/formRewind.png"),
 		qmidictlMidiControl::textFromCommand(qmidictlMidiControl::REW));
-	m_ui.CommandComboBox->addItem(
+	m_ui.CommandComboBox->addItem(QIcon(":/images/formStop.png"),
 		qmidictlMidiControl::textFromCommand(qmidictlMidiControl::STOP));
-	m_ui.CommandComboBox->addItem(
+	m_ui.CommandComboBox->addItem(QIcon(":/images/formPlay.png"),
 		qmidictlMidiControl::textFromCommand(qmidictlMidiControl::PLAY));
-	m_ui.CommandComboBox->addItem(
+	m_ui.CommandComboBox->addItem(QIcon(":/images/formRecord.png"),
 		qmidictlMidiControl::textFromCommand(qmidictlMidiControl::REC));
-	m_ui.CommandComboBox->addItem(
+	m_ui.CommandComboBox->addItem(QIcon(":/images/formForward.png"),
 		qmidictlMidiControl::textFromCommand(qmidictlMidiControl::FFWD));
 	m_ui.CommandComboBox->addItem(
 		qmidictlMidiControl::textFromCommand(qmidictlMidiControl::JOG_WHEEL));
