@@ -36,7 +36,7 @@ for Windows (http://nerds.de).
 %__make DESTDIR=%{buildroot} install
 
 %clean
-[ -d %{buildroot} -a "%{buildroot}" != "" ] && %__rm -rf  %{buildroot}
+[ -d %{buildroot} -a "%{buildroot}" != "" ] && %__rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
