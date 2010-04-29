@@ -93,9 +93,10 @@ const qmidictlMidiControl::ControlMap& qmidictlMidiControl::controlMap (void) co
 
 // Insert new controller mappings.
 void qmidictlMidiControl::mapCommand ( Command command,
-	ControlType ctype, unsigned short iChannel, unsigned short iParam )
+	ControlType ctype, unsigned short iChannel, unsigned short iParam,
+	bool bLogarithmic )
 {
-	MapKey key(ctype, iChannel, iParam);
+	MapKey key(ctype, iChannel, iParam, bLogarithmic);
 
 	m_commandMap.insert(command, key);
 	m_controlMap.insert(key, command);
@@ -132,7 +133,7 @@ qmidictlMidiControl::ControlMap::ConstIterator qmidictlMidiControl::find (
 {
 	MapKey key(ctype, iChannel, iParam);
 
-	ControlMap::ConstIterator iter = m_controlMap.find(key);
+	ControlMap::ConstIterator iter = m_controlMap.constFind(key);
 	if (iter == m_controlMap.constEnd()) {
 		key.setChannel(TrackParam);
 		iter = m_controlMap.find(key);
@@ -164,6 +165,7 @@ void qmidictlMidiControl::save ( QSettings& settings )
 		sValue += ',' + QString::number(iChannel);
 		sValue += ',' + QString::number(iParam);
 		sValue += ',' + QString::number(int(key.isParamTrack()));
+		sValue += ',' + QString::number(int(key.isLogarithmic()));
 		settings.setValue('/' + textFromCommand(command), sValue);
 	}
 
@@ -206,7 +208,8 @@ void qmidictlMidiControl::load ( QSettings& settings )
 		unsigned short iParam = sValue.section(',', 2, 2).toUInt();
 		if (sValue.section(',', 3, 3).toInt() > 0)
 			iParam |= TrackParam;
-		mapCommand(command, ctype, iChannel, iParam);
+		bool bLogarithmic = (sValue.section(',', 3, 3).toInt() > 0);
+		mapCommand(command, ctype, iChannel, iParam, bLogarithmic);
 	}
 
 	settings.endGroup();
@@ -378,6 +381,209 @@ QString qmidictlMidiControl::textFromCommand (
 	}
 
 	return sText;
+}
+
+
+//----------------------------------------------------------------------------
+// MIDI Note Names - Default note names hash map.
+
+static struct
+{
+	unsigned short note;
+	const char *name;
+
+} g_aNoteNames[] = {
+
+	// Diatonic note map...
+	{  0, QT_TR_NOOP("C")  },
+	{  1, QT_TR_NOOP("C#") },
+	{  2, QT_TR_NOOP("D")  },
+	{  3, QT_TR_NOOP("D#") },
+	{  4, QT_TR_NOOP("E")  },
+	{  5, QT_TR_NOOP("F")  },
+	{  6, QT_TR_NOOP("F#") },
+	{  7, QT_TR_NOOP("G")  },
+	{  8, QT_TR_NOOP("G#") },
+	{  9, QT_TR_NOOP("A")  },
+	{ 10, QT_TR_NOOP("A#") },
+	{ 11, QT_TR_NOOP("B")  },
+
+	// GM Drum note map...
+	{ 35, QT_TR_NOOP("Acoustic Bass Drum") },
+	{ 36, QT_TR_NOOP("Bass Drum 1") },
+	{ 37, QT_TR_NOOP("Side Stick") },
+	{ 38, QT_TR_NOOP("Acoustic Snare") },
+	{ 39, QT_TR_NOOP("Hand Clap") },
+	{ 40, QT_TR_NOOP("Electric Snare") },
+	{ 41, QT_TR_NOOP("Low Floor Tom") },
+	{ 42, QT_TR_NOOP("Closed Hi-Hat") },
+	{ 43, QT_TR_NOOP("High Floor Tom") },
+	{ 44, QT_TR_NOOP("Pedal Hi-Hat") },
+	{ 45, QT_TR_NOOP("Low Tom") },
+	{ 46, QT_TR_NOOP("Open Hi-Hat") },
+	{ 47, QT_TR_NOOP("Low-Mid Tom") },
+	{ 48, QT_TR_NOOP("Hi-Mid Tom") },
+	{ 49, QT_TR_NOOP("Crash Cymbal 1") },
+	{ 50, QT_TR_NOOP("High Tom") },
+	{ 51, QT_TR_NOOP("Ride Cymbal 1") },
+	{ 52, QT_TR_NOOP("Chinese Cymbal") },
+	{ 53, QT_TR_NOOP("Ride Bell") },
+	{ 54, QT_TR_NOOP("Tambourine") },
+	{ 55, QT_TR_NOOP("Splash Cymbal") },
+	{ 56, QT_TR_NOOP("Cowbell") },
+	{ 57, QT_TR_NOOP("Crash Cymbal 2") },
+	{ 58, QT_TR_NOOP("Vibraslap") },
+	{ 59, QT_TR_NOOP("Ride Cymbal 2") },
+	{ 60, QT_TR_NOOP("Hi Bongo") },
+	{ 61, QT_TR_NOOP("Low Bongo") },
+	{ 62, QT_TR_NOOP("Mute Hi Conga") },
+	{ 63, QT_TR_NOOP("Open Hi Conga") },
+	{ 64, QT_TR_NOOP("Low Conga") },
+	{ 65, QT_TR_NOOP("High Timbale") },
+	{ 66, QT_TR_NOOP("Low Timbale") },
+	{ 67, QT_TR_NOOP("High Agogo") },
+	{ 68, QT_TR_NOOP("Low Agogo") },
+	{ 69, QT_TR_NOOP("Cabasa") },
+	{ 70, QT_TR_NOOP("Maracas") },
+	{ 71, QT_TR_NOOP("Short Whistle") },
+	{ 72, QT_TR_NOOP("Long Whistle") },
+	{ 73, QT_TR_NOOP("Short Guiro") },
+	{ 74, QT_TR_NOOP("Long Guiro") },
+	{ 75, QT_TR_NOOP("Claves") },
+	{ 76, QT_TR_NOOP("Hi Wood Block") },
+	{ 77, QT_TR_NOOP("Low Wood Block") },
+	{ 78, QT_TR_NOOP("Mute Cuica") },
+	{ 79, QT_TR_NOOP("Open Cuica") },
+	{ 80, QT_TR_NOOP("Mute Triangle") },
+	{ 81, QT_TR_NOOP("Open Triangle") },
+
+	{  0, NULL }
+};
+
+static QHash<unsigned short, QString> g_noteNames;
+
+// Default note name map accessor.
+const QString qmidictlMidiControl::noteName (
+	unsigned short iParam, bool fDrums )
+{
+	if (fDrums) {
+		// Pre-load drum-names hash table...
+		if (g_noteNames.isEmpty()) {
+			for (int i = 12; g_aNoteNames[i].name; ++i) {
+				g_noteNames.insert(
+					g_aNoteNames[i].note,
+					QObject::tr(g_aNoteNames[i].name));
+			}
+		}
+		// Check whether the drum note exists...
+		QHash<unsigned short, QString>::ConstIterator iter
+			= g_noteNames.constFind(iParam);
+		if (iter != g_noteNames.constEnd())
+			return iter.value();
+	}
+
+	return QObject::tr(g_aNoteNames[iParam % 12].name)
+		+ QString::number((iParam / 12) - 2);
+}
+
+
+//----------------------------------------------------------------------------
+// MIDI Controller Names - Default controller names hash map.
+
+static struct
+{
+	unsigned short controller;
+	const char *name;
+
+} g_aControllerNames[] = {
+
+	{   0, QT_TR_NOOP("Bank Select (coarse)") },
+	{   1, QT_TR_NOOP("Modulation Wheel (coarse)") },
+	{   2, QT_TR_NOOP("Breath Controller (coarse)") },
+	{   4, QT_TR_NOOP("Foot Pedal (coarse)") },
+	{   5, QT_TR_NOOP("Portamento Time (coarse)") },
+	{   6, QT_TR_NOOP("Data Entry (coarse)") },
+	{   7, QT_TR_NOOP("Volume (coarse)") },
+	{   8, QT_TR_NOOP("Balance (coarse)") },
+	{  10, QT_TR_NOOP("Pan Position (coarse)") },
+	{  11, QT_TR_NOOP("Expression (coarse)") },
+	{  12, QT_TR_NOOP("Effect Control 1 (coarse)") },
+	{  13, QT_TR_NOOP("Effect Control 2 (coarse)") },
+	{  16, QT_TR_NOOP("General Purpose Slider 1") },
+	{  17, QT_TR_NOOP("General Purpose Slider 2") },
+	{  18, QT_TR_NOOP("General Purpose Slider 3") },
+	{  19, QT_TR_NOOP("General Purpose Slider 4") },
+	{  32, QT_TR_NOOP("Bank Select (fine)") },
+	{  33, QT_TR_NOOP("Modulation Wheel (fine)") },
+	{  34, QT_TR_NOOP("Breath Controller (fine)") },
+	{  36, QT_TR_NOOP("Foot Pedal (fine)") },
+	{  37, QT_TR_NOOP("Portamento Time (fine)") },
+	{  38, QT_TR_NOOP("Data Entry (fine)") },
+	{  39, QT_TR_NOOP("Volume (fine)") },
+	{  40, QT_TR_NOOP("Balance (fine)") },
+	{  42, QT_TR_NOOP("Pan Position (fine)") },
+	{  43, QT_TR_NOOP("Expression (fine)") },
+	{  44, QT_TR_NOOP("Effect Control 1 (fine)") },
+	{  45, QT_TR_NOOP("Effect Control 2 (fine)") },
+	{  64, QT_TR_NOOP("Hold Pedal (on/off)") },
+	{  65, QT_TR_NOOP("Portamento (on/off)") },
+	{  66, QT_TR_NOOP("Sustenuto Pedal (on/off)") },
+	{  67, QT_TR_NOOP("Soft Pedal (on/off)") },
+	{  68, QT_TR_NOOP("Legato Pedal (on/off)") },
+	{  69, QT_TR_NOOP("Hold 2 Pedal (on/off)") },
+	{  70, QT_TR_NOOP("Sound Variation") },
+	{  71, QT_TR_NOOP("Sound Timbre") },
+	{  72, QT_TR_NOOP("Sound Release Time") },
+	{  73, QT_TR_NOOP("Sound Attack Time") },
+	{  74, QT_TR_NOOP("Sound Brightness") },
+	{  75, QT_TR_NOOP("Sound Control 6") },
+	{  76, QT_TR_NOOP("Sound Control 7") },
+	{  77, QT_TR_NOOP("Sound Control 8") },
+	{  78, QT_TR_NOOP("Sound Control 9") },
+	{  79, QT_TR_NOOP("Sound Control 10") },
+	{  80, QT_TR_NOOP("General Purpose Button 1 (on/off)") },
+	{  81, QT_TR_NOOP("General Purpose Button 2 (on/off)") },
+	{  82, QT_TR_NOOP("General Purpose Button 3 (on/off)") },
+	{  83, QT_TR_NOOP("General Purpose Button 4 (on/off)") },
+	{  91, QT_TR_NOOP("Effects Level") },
+	{  92, QT_TR_NOOP("Tremulo Level") },
+	{  93, QT_TR_NOOP("Chorus Level") },
+	{  94, QT_TR_NOOP("Celeste Level") },
+	{  95, QT_TR_NOOP("Phaser Level") },
+	{  96, QT_TR_NOOP("Data Button Increment") },
+	{  97, QT_TR_NOOP("Data Button Decrement") },
+	{  98, QT_TR_NOOP("Non-Registered Parameter (fine)") },
+	{  99, QT_TR_NOOP("Non-Registered Parameter (coarse)") },
+	{ 100, QT_TR_NOOP("Registered Parameter (fine)") },
+	{ 101, QT_TR_NOOP("Registered Parameter (coarse)") },
+	{ 120, QT_TR_NOOP("All Sound Off") },
+	{ 121, QT_TR_NOOP("All Controllers Off") },
+	{ 122, QT_TR_NOOP("Local Keyboard (on/off)") },
+	{ 123, QT_TR_NOOP("All Notes Off") },
+	{ 124, QT_TR_NOOP("Omni Mode Off") },
+	{ 125, QT_TR_NOOP("Omni Mode On") },
+	{ 126, QT_TR_NOOP("Mono Operation") },
+	{ 127, QT_TR_NOOP("Poly Operation") },
+
+	{   0, NULL }
+};
+
+static QHash<unsigned short, QString> g_controllerNames;
+
+// Default controller name accessor.
+const QString& qmidictlMidiControl::controllerName (
+	unsigned short iParam )
+{
+	if (g_controllerNames.isEmpty()) {
+		// Pre-load controller-names hash table...
+		for (int i = 0; g_aControllerNames[i].name; ++i) {
+			g_controllerNames.insert(
+				g_aControllerNames[i].controller,
+				QObject::tr(g_aControllerNames[i].name));
+		}
+	}
+
+	return g_controllerNames[iParam];
 }
 
 

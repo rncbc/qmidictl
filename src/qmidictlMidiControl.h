@@ -74,9 +74,10 @@ public:
 	public:
 
 		// Constructor.
-		MapKey(ControlType ctype = MMC,
-			unsigned short iChannel = 0, unsigned short iParam = 0)
-			: m_ctype(ctype), m_iChannel(iChannel), m_iParam(iParam) {}
+		MapKey(ControlType ctype = MMC, unsigned short iChannel = 0,
+			unsigned short iParam = 0, bool bLogarithmic = false)
+			: m_ctype(ctype), m_iChannel(iChannel),
+				m_iParam(iParam), m_bLogarithmic(bLogarithmic) {}
 
 		// Type accessors.
 		void setType(ControlType ctype)
@@ -106,6 +107,12 @@ public:
 		bool isParamTrack() const
 			{ return (m_iParam & TrackParam); }
 
+		// Logarithmic payload accessors.
+		void setLogarithmic (bool bLogarithmic)
+			{ m_bLogarithmic = bLogarithmic; }
+		bool isLogarithmic() const
+			{ return m_bLogarithmic; }
+
 		// Generic key matcher.
 		bool match (ControlType ctype,
 			unsigned short iChannel, unsigned short iParam) const
@@ -129,6 +136,7 @@ public:
 		ControlType    m_ctype;
 		unsigned short m_iChannel;
 		unsigned short m_iParam;
+		bool           m_bLogarithmic;
 	};
 
 	// MIDI command/control map type.
@@ -152,7 +160,8 @@ public:
 
 	// Insert new controller mappings.
 	void mapCommand(Command command, ControlType ctype,
-		unsigned short iChannel, unsigned short iParam);
+		unsigned short iChannel, unsigned short iParam,
+		bool bLogarithmic = false);
 
 	// Remove existing controller mapping.
 	void unmapCommand(Command command);
@@ -181,6 +190,9 @@ public:
 
 	static Command commandFromText(const QString& sText);
 	static QString textFromCommand(Command command);
+
+	static const QString& controllerName(unsigned short iParam);
+	static const QString  noteName(unsigned short iParam, bool fDrums = false);
 
 private:
 

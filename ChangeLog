@@ -5,6 +5,10 @@ ChangeLog
 
 SVN TRUNK
 
+- MIDI note and controller names (GM) added.
+
+- Logarithmic scale configure option added.
+
 - Message box title confidence fix (whatever it be:)
 
 - MIDI controller assignment, any other than mostly MMC, is now

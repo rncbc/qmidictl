@@ -112,17 +112,24 @@
        </property>
       </widget>
      </item>
-     <item row="3" column="1">
+	 <item row="3" column="1" colspan="2">
       <widget class="QComboBox" name="ParamComboBox"/>
      </item>
-     <item row="3" column="2">
+	 <item row="4" column="1">
       <widget class="QCheckBox" name="ParamTrackCheckBox">
        <property name="text">
-        <string>&amp;Track </string>
+		<string>&amp;Track</string>
        </property>
       </widget>
      </item>
-    </layout>
+	 <item row="4" column="2">
+	  <widget class="QCheckBox" name="LogarithmicCheckBox">
+	   <property name="text">
+		<string>&amp;Logarithmic</string>
+	   </property>
+	  </widget>
+	 </item>
+	</layout>
    </item>
    <item>
     <widget class="QDialogButtonBox" name="DialogButtonBox">
@@ -143,6 +150,7 @@
   <tabstop>ChannelSpinBox</tabstop>
   <tabstop>ParamComboBox</tabstop>
   <tabstop>ParamTrackCheckBox</tabstop>
+  <tabstop>LogarithmicCheckBox</tabstop>
   <tabstop>DialogButtonBox</tabstop>
  </tabstops>
  <resources>

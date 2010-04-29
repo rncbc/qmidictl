@@ -35,6 +35,29 @@
 #include <QMessageBox>
 
 
+// Possible cubic-root optimization.
+// (borrowed from metamerist.com)
+#include <cmath>
+
+static inline float cbrtf2 ( float x )
+{
+#ifdef CONFIG_FLOAT32
+	// Avoid strict-aliasing optimization (gcc -O2).
+	union { float f; int i; } u;
+	u.f = x;
+	u.i = (u.i / 3) + 710235478;
+	return u.f;
+#else
+	return cbrtf(x);
+#endif
+}
+
+static inline float cubef2 ( float x )
+{
+	return x * x * x;
+}
+
+
 //----------------------------------------------------------------------------
 // qmidictlMainForm -- UI wrapper form.
 //
@@ -469,6 +492,9 @@ void qmidictlMainForm::sendCommand ( int iCommand, int iTrack, int iValue )
 		iParam += iTrack;
 	}
 
+	if (key.isLogarithmic())
+		iValue = int(127.0f * cbrtf2(float(iValue) / 127.0f));
+
 	bool bOn = (iValue > 0);
 	switch (key.type()) {
 	case qmidictlMidiControl::MMC:
@@ -818,6 +844,8 @@ void qmidictlMainForm::recvData ( unsigned char *data, unsigned short len )
 			iTrack  = int(iParam);
 			iTrack -= int(key.param() & qmidictlMidiControl::TrackParamMask);
 		}
+		if (key.isLogarithmic())
+			iValue = int(127.0f * cubef2(float(iValue) / 127.0f));
 	#ifdef CONFIG_DEBUG
 		qDebug("recvData: Command=\"%s\" Type=\"%s\" Track=%d Value=%d",
 			qmidictlMidiControl::textFromCommand(command).toUtf8().constData(),

@@ -107,6 +107,9 @@ qmidictlMidiControlForm::qmidictlMidiControlForm (
 	QObject::connect(m_ui.ParamTrackCheckBox,
 		SIGNAL(toggled(bool)),
 		SLOT(change()));
+	QObject::connect(m_ui.LogarithmicCheckBox,
+		SIGNAL(toggled(bool)),
+		SLOT(change()));
 	QObject::connect(m_ui.DialogButtonBox,
 		SIGNAL(clicked(QAbstractButton *)),
 		SLOT(click(QAbstractButton *)));
@@ -151,6 +154,7 @@ void qmidictlMidiControlForm::activateCommand (
 	m_ui.ParamTextLabel->setEnabled(bEnabled);
 	m_ui.ParamComboBox->setEnabled(bEnabled);
 	m_ui.ParamTrackCheckBox->setEnabled(bEnabled);
+	m_ui.LogarithmicCheckBox->setEnabled(bEnabled);
 
 	if (bEnabled) {
 		const qmidictlMidiControl::MapKey& key
@@ -174,11 +178,13 @@ void qmidictlMidiControlForm::activateCommand (
 		} else {
 			m_ui.ParamTrackCheckBox->setChecked(key.isParamTrack());
 		}
+		m_ui.LogarithmicCheckBox->setChecked(key.isLogarithmic());
 	} else {
 		m_ui.ControlTypeComboBox->setCurrentIndex(0);
 		m_ui.ChannelSpinBox->setValue(0);
 		m_ui.ParamComboBox->clear();
 		m_ui.ParamTrackCheckBox->setChecked(false);
+		m_ui.LogarithmicCheckBox->setChecked(false);
 	}
 
 	m_iDirtySetup--;
@@ -218,8 +224,24 @@ void qmidictlMidiControlForm::activateControlType (
 		m_ui.ChannelSpinBox->setEnabled(true);
 		m_ui.ParamTextLabel->setEnabled(true);
 		m_ui.ParamComboBox->setEnabled(true);
-		for (int i = 0; i < 128; ++i)
-			m_ui.ParamComboBox->addItem(QString::number(i));
+		for (unsigned short i = 0; i < 128; ++i) {
+			QString sText;
+			switch (ctype) {
+			case qmidictlMidiControl::NOTE_ON:
+			case qmidictlMidiControl::NOTE_OFF:
+				sText = QString("%1 (%2)")
+					.arg(qmidictlMidiControl::noteName(i)).arg(i);
+				break;
+			case qmidictlMidiControl::CONTROLLER:
+				sText = QString("%1 - %2")
+					.arg(i).arg(qmidictlMidiControl::controllerName(i));
+				break;
+			default:
+				sText = QString::number(i);
+				break;
+			}
+			m_ui.ParamComboBox->addItem(sText);
+		}
 		if (m_ui.ChannelSpinBox->value() == 0) {
 			m_ui.ParamTrackCheckBox->setEnabled(false);
 			m_ui.ParamTrackCheckBox->setChecked(false);
@@ -228,6 +250,11 @@ void qmidictlMidiControlForm::activateControlType (
 		}
 		break;
 	}
+
+	// This is enabled by as long there's a value.
+	m_ui.LogarithmicCheckBox->setEnabled(
+		ctype != qmidictlMidiControl::MMC &&
+		ctype != qmidictlMidiControl::PGM_CHANGE);
 
 	// Try make changes dirty.
 	change();
@@ -281,8 +308,12 @@ void qmidictlMidiControlForm::change (void)
 			iParam |= qmidictlMidiControl::TrackParam;
 	}
 
+	bool bLogarithmic = false;
+	if (m_ui.LogarithmicCheckBox->isEnabled())
+		bLogarithmic = m_ui.LogarithmicCheckBox->isChecked();
+
 	pMidiControl->unmapCommand(command);
-	pMidiControl->mapCommand(command, ctype, iChannel, iParam);
+	pMidiControl->mapCommand(command, ctype, iChannel, iParam, bLogarithmic);
 
 	m_iDirtyCount++;
 }
