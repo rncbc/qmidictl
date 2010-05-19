@@ -1,6 +1,6 @@
 %define name    @PACKAGE_TARNAME@
 %define version @PACKAGE_VERSION@
-%define release 3
+%define release 4
 
 %define _prefix	@ac_prefix@
 
@@ -41,6 +41,7 @@ for Windows (http://nerds.de).
 %files
 %defattr(-,root,root)
 %doc AUTHORS COPYING ChangeLog README TODO
+#dir %{_datadir}/applications
 %dir %{_datadir}/icons/hicolor
 %dir %{_datadir}/icons/hicolor/26x26
 %dir %{_datadir}/icons/hicolor/26x26/apps
