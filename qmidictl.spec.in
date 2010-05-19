@@ -41,7 +41,6 @@ for Windows (http://nerds.de).
 %files
 %defattr(-,root,root)
 %doc AUTHORS COPYING ChangeLog README TODO
-%dir %{_datadir}/applications/hildon
 %dir %{_datadir}/icons/hicolor
 %dir %{_datadir}/icons/hicolor/26x26
 %dir %{_datadir}/icons/hicolor/26x26/apps
@@ -52,7 +51,7 @@ for Windows (http://nerds.de).
 %dir %{_datadir}/icons/hicolor/64x64
 %dir %{_datadir}/icons/hicolor/64x64/apps
 %{_bindir}/%{name}
-%{_datadir}/applications/hildon/%{name}.desktop
+%{_datadir}/applications/%{name}.desktop
 %{_datadir}/icons/hicolor/26x26/apps/%{name}.png
 %{_datadir}/icons/hicolor/32x32/apps/%{name}.png
 %{_datadir}/icons/hicolor/48x48/apps/%{name}.png
