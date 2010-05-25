@@ -5,6 +5,8 @@ ChangeLog
 
 SVN TRUNK
 
+- Standard desktop icon fixing (Fremantle/Hildon).
+
 - MIDI note and controller names (GM) added.
 
 - Logarithmic scale configure option added.

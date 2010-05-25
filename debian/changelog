@@ -1,8 +1,8 @@
-qmidictl (0.1.0-3) unstable; urgency=low
+qmidictl (0.0.9-3) unstable; urgency=low
 
   * MIDI controller assignment configuration debut.
 
- -- Rui Nuno Capela <rncbc@rncbc.org>  Mon, 26 Apr 2010 10:00:00 +0000
+ -- Rui Nuno Capela <rncbc@rncbc.org>  Tue, 25 May 2010 18:00:00 +0000
 
 qmidictl (0.0.1-2) unstable; urgency=low
 

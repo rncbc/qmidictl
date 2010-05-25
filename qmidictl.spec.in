@@ -41,26 +41,26 @@ for Windows (http://nerds.de).
 %files
 %defattr(-,root,root)
 %doc AUTHORS COPYING ChangeLog README TODO
-#dir %{_datadir}/applications
+%dir %{_datadir}/applications/hildon
 %dir %{_datadir}/icons/hicolor
 %dir %{_datadir}/icons/hicolor/26x26
-%dir %{_datadir}/icons/hicolor/26x26/apps
+%dir %{_datadir}/icons/hicolor/26x26/hildon
 %dir %{_datadir}/icons/hicolor/32x32
-%dir %{_datadir}/icons/hicolor/32x32/apps
+%dir %{_datadir}/icons/hicolor/32x32/hildon
 %dir %{_datadir}/icons/hicolor/48x48
-%dir %{_datadir}/icons/hicolor/48x48/apps
+%dir %{_datadir}/icons/hicolor/48x48/hildon
 %dir %{_datadir}/icons/hicolor/64x64
-%dir %{_datadir}/icons/hicolor/64x64/apps
+%dir %{_datadir}/icons/hicolor/64x64/hildon
 %{_bindir}/%{name}
-%{_datadir}/applications/%{name}.desktop
-%{_datadir}/icons/hicolor/26x26/apps/%{name}.png
-%{_datadir}/icons/hicolor/32x32/apps/%{name}.png
-%{_datadir}/icons/hicolor/48x48/apps/%{name}.png
-%{_datadir}/icons/hicolor/64x64/apps/%{name}.png
+%{_datadir}/applications/hildon/%{name}.desktop
+%{_datadir}/icons/hicolor/26x26/hildon/%{name}.png
+%{_datadir}/icons/hicolor/32x32/hildon/%{name}.png
+%{_datadir}/icons/hicolor/48x48/hildon/%{name}.png
+%{_datadir}/icons/hicolor/64x64/hildon/%{name}.png
 
 %changelog
-* Mon May 17 2010 Rui Nuno Capela <rncbc@users.sourceforge.net>
-- Standard desktop icon fixing. 
+* Tue May 24 2010 Rui Nuno Capela <rncbc@users.sourceforge.net> 0.0.9-3
+- Standard desktop icon fixing (Fremantle/Hildon).
 * Mon Apr 26 2010 Rui Nuno Capela <rncbc@users.sourceforge.net>
 - MIDI controller assignment configuration debut.
 * Thu Mar 11 2010 Rui Nuno Capela <rncbc@users.sourceforge.net> 0.0.1-2

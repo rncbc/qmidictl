@@ -61,19 +61,19 @@ unix {
 
 	target.path = $$BINDIR
 
-	desktop.path = $$DATADIR/applications
+	desktop.path = $$DATADIR/applications/hildon
 	desktop.files += $${TARGET}.desktop
 
-	icon.path = $$DATADIR/icons/hicolor/32x32/apps
+	icon.path = $$DATADIR/icons/hicolor/32x32/hildon
 	icon.files += images/$${TARGET}.png
 
-	icon26.path = $$DATADIR/icons/hicolor/26x26/apps
+	icon26.path = $$DATADIR/icons/hicolor/26x26/hildon
 	icon26.files += data/26x26/$${TARGET}.png 
 
-	icon48.path = $$DATADIR/icons/hicolor/48x48/apps
+	icon48.path = $$DATADIR/icons/hicolor/48x48/hildon
 	icon48.files += data/48x48/$${TARGET}.png
 
-	icon64.path = $$DATADIR/icons/hicolor/64x64/apps
+	icon64.path = $$DATADIR/icons/hicolor/64x64/hildon
 	icon64.files += data/64x64/$${TARGET}.png
 }
 
