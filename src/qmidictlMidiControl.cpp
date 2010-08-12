@@ -136,11 +136,11 @@ qmidictlMidiControl::ControlMap::ConstIterator qmidictlMidiControl::find (
 	ControlMap::ConstIterator iter = m_controlMap.constFind(key);
 	if (iter == m_controlMap.constEnd()) {
 		key.setChannel(TrackParam);
-		iter = m_controlMap.find(key);
+		iter = m_controlMap.constFind(key);
 		if (iter == m_controlMap.constEnd()) {
 			key.setChannel(iChannel); // Fallback to original channel.
 			key.setParam(iParam | TrackParam);
-			iter = m_controlMap.find(key);
+			iter = m_controlMap.constFind(key);
 		}
 	}
 
