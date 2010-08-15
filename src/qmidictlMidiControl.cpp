@@ -131,8 +131,8 @@ bool qmidictlMidiControl::isChannelParamMapped (
 qmidictlMidiControl::ControlMap::ConstIterator qmidictlMidiControl::find (
 	ControlType ctype, unsigned short iChannel, unsigned short iParam ) const
 {
+#if 0
 	MapKey key(ctype, iChannel, iParam);
-
 	ControlMap::ConstIterator iter = m_controlMap.constFind(key);
 	if (iter == m_controlMap.constEnd()) {
 		key.setChannel(TrackParam);
@@ -143,8 +143,16 @@ qmidictlMidiControl::ControlMap::ConstIterator qmidictlMidiControl::find (
 			iter = m_controlMap.constFind(key);
 		}
 	}
-
 	return iter;
+#else
+	ControlMap::ConstIterator iter = m_controlMap.constBegin();
+	for ( ; iter != m_controlMap.constEnd(); ++iter) {
+		const MapKey& key = iter.key();
+		if (key.match(ctype, iChannel, iParam))
+			break;
+	}
+	return iter;
+#endif
 }
 
 
