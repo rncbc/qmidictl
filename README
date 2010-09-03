@@ -50,8 +50,8 @@ and optionally as root:
 This procedure will end installing the following couple of files:
 
     ${prefix}/bin/qmidictl
-    ${prefix}/share/pixmaps/qmidictl.png
-    ${prefix}/share/applications/qmidictl.desktop
+    ${prefix}/share/applications/hildon/qmidictl.desktop
+    ${prefix}/share/icons/hicolor/32x32/hildon/qmidictl.png
 
 Just launch ${prefix}/bin/qmidictl and you're off (hopefully).
 
