@@ -1,3 +1,9 @@
+qmidictl (0.1.0-4) unstable; urgency=low
+
+  * Second public release
+
+ -- Rui Nuno Capela <rncbc@rncbc.org>  Fri,  3 Sep 2010 20:00:00 +0000
+
 qmidictl (0.0.9-3) unstable; urgency=low
 
   * MIDI controller assignment configuration debut.
