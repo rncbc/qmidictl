@@ -3,7 +3,7 @@
  <author>rncbc aka Rui Nuno Capela</author>
  <comment>QmidiCtl - A MIDI remote controller via IP/UDP multicast.
 
-   Copyright (C) 2010, rncbc aka Rui Nuno Capela. All rights reserved.
+   Copyright (C) 2010-2011, rncbc aka Rui Nuno Capela. All rights reserved.
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
@@ -315,17 +315,17 @@
   </widget>
   <action name="optionsAction">
    <property name="text">
-    <string>&amp;Options...</string>
+    <string>&amp;Options</string>
    </property>
   </action>
   <action name="configureAction">
    <property name="text">
-    <string>&amp;Configure...</string>
+    <string>&amp;Configure</string>
    </property>
   </action>
   <action name="aboutAction">
    <property name="text">
-    <string>&amp;About...</string>
+    <string>&amp;About</string>
    </property>
   </action>
   <action name="exitAction">
