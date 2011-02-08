@@ -3,6 +3,11 @@ QmidiCtl - A MIDI Remote Controller via UDP/IP Multicast
 
 ChangeLog
 
+SVN TRUNK
+
+- Added translatable macro contextualizers.
+
+
 0.1.0  2010-09-03  Second public release.
 
 - Standard desktop icon fixing (Fremantle/Hildon).
