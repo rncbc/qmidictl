@@ -26,7 +26,7 @@
 
 // Translatable macro contextualizer.
 #undef  _TR
-#define _TR(x) QT_TRANSLATE_NOOP("qmidictlMidiControl", (x))
+#define _TR(x) QT_TR_NOOP(x)
 
 
 //----------------------------------------------------------------------
@@ -482,9 +482,8 @@ const QString qmidictlMidiControl::noteName (
 		// Pre-load drum-names hash table...
 		if (g_noteNames.isEmpty()) {
 			for (int i = 12; g_aNoteNames[i].name; ++i) {
-				g_noteNames.insert(
-					g_aNoteNames[i].note,
-					QObject::tr(g_aNoteNames[i].name));
+				g_noteNames.insert(g_aNoteNames[i].note,
+					QObject::tr(g_aNoteNames[i].name, "noteName"));
 			}
 		}
 		// Check whether the drum note exists...
@@ -494,7 +493,7 @@ const QString qmidictlMidiControl::noteName (
 			return iter.value();
 	}
 
-	return QObject::tr(g_aNoteNames[iParam % 12].name)
+	return QObject::tr(g_aNoteNames[iParam % 12].name, "noteName")
 		+ QString::number((iParam / 12) - 2);
 }
 
@@ -589,9 +588,8 @@ const QString& qmidictlMidiControl::controllerName (
 	if (g_controllerNames.isEmpty()) {
 		// Pre-load controller-names hash table...
 		for (int i = 0; g_aControllerNames[i].name; ++i) {
-			g_controllerNames.insert(
-				g_aControllerNames[i].controller,
-				QObject::tr(g_aControllerNames[i].name));
+			g_controllerNames.insert(g_aControllerNames[i].controller,
+				QObject::tr(g_aControllerNames[i].name, "controllerName"));
 		}
 	}
 
