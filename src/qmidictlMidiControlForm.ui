@@ -3,7 +3,7 @@
  <author>rncbc aka Rui Nuno Capela</author>
  <comment>QmidiCtl - A MIDI remote controller via IP/UDP multicast.
 
-   Copyright (C) 2010, rncbc aka Rui Nuno Capela. All rights reserved.
+   Copyright (C) 2010-2011, rncbc aka Rui Nuno Capela. All rights reserved.
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
@@ -26,8 +26,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>287</width>
-    <height>118</height>
+    <width>320</width>
+    <height>180</height>
    </rect>
   </property>
   <property name="windowTitle">

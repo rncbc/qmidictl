@@ -26,16 +26,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>524</width>
-    <height>334</height>
+    <width>520</width>
+    <height>320</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>QmidiCtl</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="qmidictl.qrc">
-    <normaloff>:/images/qmidictl.png</normaloff>:/images/qmidictl.png</iconset>
+   <iconset resource="qmidictl.qrc">:/images/qmidictl.png</iconset>
   </property>
   <widget class="QWidget" name="MainCentralWidget">
    <layout class="QVBoxLayout">
@@ -168,12 +167,6 @@
         </item>
         <item>
          <widget class="QDial" name="jogWheelDial">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
@@ -197,8 +190,7 @@
          <string>RS&amp;T</string>
         </property>
         <property name="icon">
-         <iconset resource="qmidictl.qrc">
-          <normaloff>:/images/formReset.png</normaloff>:/images/formReset.png</iconset>
+         <iconset resource="qmidictl.qrc">:/images/formReset.png</iconset>
         </property>
        </widget>
       </item>
@@ -208,8 +200,7 @@
          <string>RE&amp;W</string>
         </property>
         <property name="icon">
-         <iconset resource="qmidictl.qrc">
-          <normaloff>:/images/formRewind.png</normaloff>:/images/formRewind.png</iconset>
+         <iconset resource="qmidictl.qrc">:/images/formRewind.png</iconset>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -222,8 +213,7 @@
          <string>&amp;PLAY</string>
         </property>
         <property name="icon">
-         <iconset resource="qmidictl.qrc">
-          <normaloff>:/images/formPlay.png</normaloff>:/images/formPlay.png</iconset>
+         <iconset resource="qmidictl.qrc">:/images/formPlay.png</iconset>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -236,8 +226,7 @@
          <string>STO&amp;P</string>
         </property>
         <property name="icon">
-         <iconset resource="qmidictl.qrc">
-          <normaloff>:/images/formStop.png</normaloff>:/images/formStop.png</iconset>
+         <iconset resource="qmidictl.qrc">:/images/formStop.png</iconset>
         </property>
        </widget>
       </item>
@@ -247,8 +236,7 @@
          <string>&amp;REC</string>
         </property>
         <property name="icon">
-         <iconset resource="qmidictl.qrc">
-          <normaloff>:/images/formRecord.png</normaloff>:/images/formRecord.png</iconset>
+         <iconset resource="qmidictl.qrc">:/images/formRecord.png</iconset>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -261,8 +249,7 @@
          <string>&amp;FFWD</string>
         </property>
         <property name="icon">
-         <iconset resource="qmidictl.qrc">
-          <normaloff>:/images/formForward.png</normaloff>:/images/formForward.png</iconset>
+         <iconset resource="qmidictl.qrc">:/images/formForward.png</iconset>
         </property>
         <property name="checkable">
          <bool>true</bool>

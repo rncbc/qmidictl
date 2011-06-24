@@ -5,6 +5,8 @@ ChangeLog
 
 SVN TRUNK
 
+- Symbian^3 port (by Pedro Lopez-Cabanillas).
+
 - Added translatable macro contextualizers.
 
 
