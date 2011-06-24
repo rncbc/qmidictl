@@ -10,7 +10,7 @@ include(src.pri)
 
 #DEFINES += DEBUG
 
-HEADERS += config.h \
+HEADERS += \
 	qmidictlAbout.h \
 	qmidictlOptions.h \
 	qmidictlMidiControl.h \
@@ -79,4 +79,9 @@ unix {
 
 win32 {
 	LIBS += -lwsock32
+}
+
+symbian {
+        LIBS += -lcone -leikcore -lavkon
+        ICON += data/symbian/qmidictl.svg
 }

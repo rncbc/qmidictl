@@ -26,20 +26,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>120</width>
-    <height>360</height>
+    <width>125</width>
+    <height>206</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>80</width>
-    <height>240</height>
-   </size>
-  </property>
-  <property name="maximumSize">
-   <size>
-    <width>120</width>
-    <height>360</height>
+    <height>0</height>
    </size>
   </property>
   <layout class="QGridLayout">

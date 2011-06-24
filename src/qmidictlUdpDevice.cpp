@@ -24,6 +24,12 @@
 #include <stdlib.h>
 #include <string.h>
 
+#if defined(Q_OS_SYMBIAN)
+#include <sys/select.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+inline void closesocket(int s) { ::close(s); }
+#else
 #if defined(WIN32)
 static WSADATA g_wsaData;
 typedef int socklen_t;
@@ -31,6 +37,7 @@ typedef int socklen_t;
 #include <unistd.h>
 #include <sys/ioctl.h>
 inline void closesocket(int s) { ::close(s); }
+#endif
 #endif
 
 #include <QByteArray>
@@ -314,7 +321,7 @@ void qmidictlUdpDevice::recvData ( unsigned char *data, unsigned short len )
 bool qmidictlUdpDevice::get_address (
 	int sock, struct in_addr *inaddr, const char *ifname )
 {
-#if !defined(WIN32)
+#if !defined(WIN32) && !defined(Q_OS_SYMBIAN)
 
 	struct ifreq ifr;
 	::strncpy(ifr.ifr_name, ifname, sizeof(ifr.ifr_name));
@@ -344,7 +351,7 @@ bool qmidictlUdpDevice::get_address (
 
 	return false;
 
-#endif	// !WIN32
+#endif	// !WIN32 && !SYMBIAN
 }
 
 

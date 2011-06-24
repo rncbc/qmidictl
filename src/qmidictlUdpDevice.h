@@ -24,11 +24,16 @@
 
 #include <stdio.h>
 
+#if defined(__SYMBIAN32__)
+#include <sys/socket.h>
+#include <netinet/in.h>
+#else
 #if defined(WIN32)
 #include <winsock.h>
 #else
 #include <arpa/inet.h>
 #include <net/if.h>
+#endif
 #endif
 
 #include <QObject>

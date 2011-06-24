@@ -25,6 +25,13 @@
 
 #include <QApplication>
 
+#if defined(Q_OS_SYMBIAN)
+// to lock orientation in Symbian
+#include <eikenv.h>
+#include <eikappui.h>
+#include <aknenv.h>
+#include <aknappui.h>
+#endif
 
 int main ( int argc, char *argv[] )
 {
@@ -43,8 +50,19 @@ int main ( int argc, char *argv[] )
 
 	qmidictlMainForm w;
 
+#if defined(Q_OS_SYMBIAN)
+        // Lock orientation to portrait in Symbian
+        CAknAppUi* appUi = dynamic_cast<CAknAppUi*> (CEikonEnv::Static()->AppUi());
+        TRAP_IGNORE(
+            if(appUi) {
+                appUi->SetOrientationL(CAknAppUi::EAppUiOrientationLandscape);
+            }
+        );
+        w.showMaximized();
+#else
 	w.show();
-	w.setup();
+#endif
+        w.setup();
 
 	return app.exec();
 }
