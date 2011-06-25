@@ -82,6 +82,8 @@ win32 {
 }
 
 symbian {
+        VERSION = 0.1.0
         LIBS += -lcone -leikcore -lavkon
         ICON += data/symbian/qmidictl.svg
+        TARGET.CAPABILITY += NetworkServices LocalServices
 }

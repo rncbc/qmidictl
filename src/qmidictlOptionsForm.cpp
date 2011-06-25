@@ -56,6 +56,10 @@ qmidictlOptionsForm::qmidictlOptionsForm (
 		m_ui.MmcDeviceSpinBox->setValue(pOptions->iMmcDevice);
 	}
 
+#if defined(Q_OS_SYMBIAN) || defined(Q_OS_WINDOWS)
+        m_ui.InterfaceComboBox->setEnabled(false);
+#endif
+
 	// Start clean.
 	m_iDirtyCount = 0;
 

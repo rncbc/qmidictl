@@ -122,8 +122,10 @@ void qmidictlOptions::print_usage ( const QString& arg0 )
 	out << QMIDICTL_TITLE " - " << QObject::tr(QMIDICTL_SUBTITLE) + sEol;
 	out << QObject::tr("Usage: %1 [options]").arg(arg0) + sEol;
 	out << QObject::tr("Options:") + sEol;
-	out << "  -i, --interface=[interface]" + sEot +
+#if !defined(Q_OS_SYMBIAN) && !defined(Q_OS_WINDOWS)
+        out << "  -i, --interface=[interface]" + sEot +
 		QObject::tr("Use specific network interface (default=all)") + sEol;
+#endif
 	out << "  -p, --port=[port]" + sEot +
 			QObject::tr("Use specific network port (default=21928)") + sEol;
 	out << "  -m, --mmc-device=[mmc-device]" + sEot +
@@ -155,12 +157,14 @@ bool qmidictlOptions::parse_args ( const QStringList& args )
 		else if (i < argc - 1)
 			sVal = args.at(i + 1);
 
+#if !defined(Q_OS_SYMBIAN) && !defined(Q_OS_WINDOWS)
 		if (sArg == "-i" || sArg == "--interface") {
 			sInterface = sVal; // Maybe empty!
 			if (iEqual < 0)
 				i++;
 		}
 		else
+#endif
 		if (sArg == "-p" || sArg == "--port") {
 			if (sVal.isEmpty()) {
 				out << QObject::tr("Option -p requires an argument (port).") + sEol;
