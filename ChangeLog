@@ -5,6 +5,9 @@ ChangeLog
 
 SVN TRUNK
 
+- Fixed Makefile.in handling of installation directories to
+  the configure script eg. --bindir, --datadir.
+
 - Symbian^3 port (by Pedro Lopez-Cabanillas).
 
 - Added translatable macro contextualizers.
