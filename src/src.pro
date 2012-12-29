@@ -87,3 +87,7 @@ symbian {
 	ICON += data/symbian/qmidictl.svg
 	TARGET.CAPABILITY += NetworkServices LocalServices
 }
+
+# QT5 support
+QT += widgets
+

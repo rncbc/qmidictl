@@ -31,7 +31,7 @@ The software requirements for build and runtime are listed as follows:
 
   [1] Qt4 (core, gui), C++ class library and tools for
         crossplatform development and internationalization
-        http://qt.nokia.com/products/
+        http://qt-project.org/
 
 
 Installation
@@ -90,7 +90,7 @@ References
 
 [1] Qt4 (core, gui), C++ class library and tools
      for crossplatform development and internationalization
-     http://qt.nokia.com/products/
+     http://qt-project.org/
 
 [2] GNU General Public License
      http://www.gnu.org/copyleft/gpl.html
