@@ -10,7 +10,7 @@ include(src.pri)
 
 #DEFINES += DEBUG
 
-HEADERS += \
+HEADERS += config.h \
 	qmidictlAbout.h \
 	qmidictlOptions.h \
 	qmidictlMidiControl.h \
@@ -88,6 +88,8 @@ symbian {
 	TARGET.CAPABILITY += NetworkServices LocalServices
 }
 
-# QT5 support
-QT += widgets
 
+# QT5 support
+!lessThan(QT_MAJOR_VERSION, 5) {
+	QT += widgets
+}
