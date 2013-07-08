@@ -1,5 +1,5 @@
 # Process this file with autoconf to produce a configure script.
-AC_INIT(QmidiCtl, 0.1.0.9, rncbc@rncbc.org, qmidictl)
+AC_INIT(QmidiCtl, 0.1.0.10, rncbc@rncbc.org, qmidictl)
 
 AC_CONFIG_SRCDIR(src/qmidictl.cpp)
 AC_CONFIG_HEADERS(src/config.h)
@@ -63,9 +63,9 @@ for X in $ac_with_paths; do
   if test -d $X/bin; then
     ac_path="$X/bin:$ac_path"
   fi
-  if test -x $X/qmake; then
-    ac_path="$X:$ac_path"
-  fi
+# if test -x $X/qmake; then
+#   ac_path="$X:$ac_path"
+# fi
   if test -d $X/include; then
     for Y in qt qt4; do
       if test -d $X/include/$Y; then
