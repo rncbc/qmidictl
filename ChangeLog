@@ -4,6 +4,8 @@ QmidiCtl - A MIDI Remote Controller via UDP/IP Multicast
 ChangeLog
 
 SVN TRUNK
+ 
+- More preparations for Qt5 configure build.
 
 - Preparations for Qt5 migration. (TESTING)
 
