@@ -3,6 +3,11 @@ QmidiCtl - A MIDI Remote Controller via UDP/IP Multicast
 
 ChangeLog
 
+SVN TRUNK
+
+- Allow the build system to include an user specified LDFLAGS.
+
+
 0.1.1  2013-12-31  A fifth of a Jubilee.
 
 - More preparations for Qt5 configure build.

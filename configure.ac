@@ -1,5 +1,5 @@
 # Process this file with autoconf to produce a configure script.
-AC_INIT(QmidiCtl, 0.1.1.1, rncbc@rncbc.org, qmidictl)
+AC_INIT(QmidiCtl, 0.1.1.2, rncbc@rncbc.org, qmidictl)
 
 AC_CONFIG_SRCDIR(src/qmidictl.cpp)
 AC_CONFIG_HEADERS(src/config.h)
@@ -55,6 +55,12 @@ ac_with_paths="/usr /usr/local"
 AC_ARG_WITH(qt,
   AC_HELP_STRING([--with-qt=PATH], [use alternate Qt install path]),
   [ac_with_paths="$ac_with_paths $withval"])
+
+
+# Honor user specified flags.
+ac_cflags=$CFLAGS
+ac_ldflags=$LDFLAGS
+
 
 # Checks for programs.
 AC_PROG_CC
@@ -184,6 +190,8 @@ AC_CHECK_HEADERS(fcntl.h sys/ioctl.h sys/stat.h unistd.h signal.h)
 
 # Check for specific headers.
 AC_SUBST(ac_incpath)
+AC_SUBST(ac_cflags)
+AC_SUBST(ac_ldflags)
 
 
 # Checks for typedefs, structures, and compiler characteristics.
