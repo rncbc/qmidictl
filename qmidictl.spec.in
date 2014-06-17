@@ -52,12 +52,15 @@ for Windows (http://nerds.de).
 %dir %{_datadir}/icons/hicolor/48x48/hildon
 %dir %{_datadir}/icons/hicolor/64x64
 %dir %{_datadir}/icons/hicolor/64x64/hildon
+#dir %{_datadir}/man
+#dir %{_datadir}/man/man1
 %{_bindir}/%{name}
 %{_datadir}/applications/hildon/%{name}.desktop
 %{_datadir}/icons/hicolor/26x26/hildon/%{name}.png
 %{_datadir}/icons/hicolor/32x32/hildon/%{name}.png
 %{_datadir}/icons/hicolor/48x48/hildon/%{name}.png
 %{_datadir}/icons/hicolor/64x64/hildon/%{name}.png
+%{_datadir}/man/man1/%{name}.1.gz
 
 %changelog
 * Tue Dec 31 2013 Rui Nuno Capela <rncbc@rncbc.org> 0.1.1
