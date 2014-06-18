@@ -123,13 +123,16 @@ void qmidictlOptions::print_usage ( const QString& arg0 )
 	out << QObject::tr("Usage: %1 [options]").arg(arg0) + sEol;
 	out << QObject::tr("Options:") + sEol;
 #if !defined(Q_OS_SYMBIAN) && !defined(Q_OS_WINDOWS)
-        out << "  -i, --interface=[interface]" + sEot +
-		QObject::tr("Use specific network interface (default=all)") + sEol;
+    out << "  -i, --interface=[interface]" + sEot +
+		QObject::tr("Use specific network interface (default = %1)")
+			.arg(sInterface.isEmpty() ? "all" : sInterface) + sEol;
 #endif
 	out << "  -p, --port=[port]" + sEot +
-			QObject::tr("Use specific network port (default=21928)") + sEol;
+		QObject::tr("Use specific network port (default = %1)")
+			.arg(iUdpPort) + sEol;
 	out << "  -m, --mmc-device=[mmc-device]" + sEot +
-			QObject::tr("Use specific MMC device number (default=127)") + sEol;
+		QObject::tr("Use specific MMC device number (default = %1)")
+			.arg(iMmcDevice) + sEol;
 	out << "  -h, --help" + sEot +
 		QObject::tr("Show help about command line options") + sEol;
 	out << "  -v, --version" + sEot +
@@ -160,14 +163,14 @@ bool qmidictlOptions::parse_args ( const QStringList& args )
 				sVal.clear();
 		}
 
-#if !defined(Q_OS_SYMBIAN) && !defined(Q_OS_WINDOWS)
+	#if !defined(Q_OS_SYMBIAN) && !defined(Q_OS_WINDOWS)
 		if (sArg == "-i" || sArg == "--interface") {
 			sInterface = sVal; // Maybe empty!
 			if (iEqual < 0)
 				i++;
 		}
 		else
-#endif
+	#endif
 		if (sArg == "-p" || sArg == "--port") {
 			if (sVal.isEmpty()) {
 				out << QObject::tr("Option -p requires an argument (port).") + sEol;
