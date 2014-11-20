@@ -3,7 +3,7 @@ QmidiCtl - A MIDI Remote Controller via UDP/IP Multicast
 
 ChangeLog
 
-SVN TRUNK
+GIT HEAD
 
 - A man page has beed added.
 
