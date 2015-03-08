@@ -1,7 +1,7 @@
 // qmidictlUdpDevice.cpp
 //
 /****************************************************************************
-   Copyright (C) 2010, rncbc aka Rui Nuno Capela. All rights reserved.
+   Copyright (C) 2010-2015, rncbc aka Rui Nuno Capela. All rights reserved.
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
@@ -167,7 +167,8 @@ qmidictlUdpDevice::~qmidictlUdpDevice (void)
 
 
 // Device initialization method.
-bool qmidictlUdpDevice::open ( const QString& sInterface, int iUdpPort )
+bool qmidictlUdpDevice::open (
+	const QString& sInterface, const QString& sUdpAddr, int iUdpPort )
 {
 	// Close if already open.
 	close();
@@ -179,6 +180,17 @@ bool qmidictlUdpDevice::open ( const QString& sInterface, int iUdpPort )
 	if (proto)
 		protonum = proto->p_proto;
 #endif
+
+	// Stable interface name...
+	const char *ifname = NULL;
+	const QByteArray aInterface = sInterface.toLocal8Bit();
+	if (!aInterface.isEmpty())
+		ifname = aInterface.constData();
+
+	const char *udp_addr = NULL;
+	const QByteArray aUdpAddr = sUdpAddr.toLocal8Bit();
+	if (!aUdpAddr.isEmpty())
+		udp_addr = aUdpAddr.constData();
 
 	// Input socket stuff...
 	//
@@ -203,9 +215,7 @@ bool qmidictlUdpDevice::open ( const QString& sInterface, int iUdpPort )
 	// INADDR_ANY will bind to default interface,
 	// specify alternate interface nameon which to bind...
 	struct in_addr if_addr_in;
-	if (!sInterface.isEmpty()) {
-		const QByteArray aInterface = sInterface.toLocal8Bit();
-		const char *ifname = aInterface.constData();
+	if (ifname) {
 		if (!get_address(m_sockin, &if_addr_in, ifname)) {
 			fprintf(stderr, "socket(in): could not find interface address for %s\n", ifname);
 			return false;
@@ -220,7 +230,7 @@ bool qmidictlUdpDevice::open ( const QString& sInterface, int iUdpPort )
 	}
 
 	struct ip_mreq mreq;
-	mreq.imr_multiaddr.s_addr = ::inet_addr("225.0.0.37");
+	mreq.imr_multiaddr.s_addr = ::inet_addr(udp_addr);
 	mreq.imr_interface.s_addr = if_addr_in.s_addr;
 	if(::setsockopt (m_sockin, IPPROTO_IP, IP_ADD_MEMBERSHIP,
 			(char *) &mreq, sizeof(mreq)) < 0) {
@@ -255,7 +265,7 @@ bool qmidictlUdpDevice::open ( const QString& sInterface, int iUdpPort )
 
 	::memset(&m_addrout, 0, sizeof(m_addrout));
 	m_addrout.sin_family = AF_INET;
-	m_addrout.sin_addr.s_addr = ::inet_addr("225.0.0.37");
+	m_addrout.sin_addr.s_addr = ::inet_addr(udp_addr);
 	m_addrout.sin_port = htons(iUdpPort);
 
 	// Turn off loopback...

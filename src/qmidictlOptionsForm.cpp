@@ -1,7 +1,7 @@
 // qmidictlOptionsForm.cpp
 //
 /****************************************************************************
-   Copyright (C) 2010, rncbc aka Rui Nuno Capela. All rights reserved.
+   Copyright (C) 2010-2015, rncbc aka Rui Nuno Capela. All rights reserved.
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
@@ -45,6 +45,11 @@ qmidictlOptionsForm::qmidictlOptionsForm (
 	m_ui.InterfaceComboBox->addItem("wlan0");
 	m_ui.InterfaceComboBox->addItem("eth0");
 
+	m_ui.UdpAddrComboBox->clear();
+	m_ui.UdpAddrComboBox->addItem(QMIDICTL_UDP_ADDR);
+
+	m_ui.UdpPortSpinBox->setValue(QMIDICTL_UDP_PORT);
+
 	// Populate dialog widgets with current settings...
 	qmidictlOptions *pOptions = qmidictlOptions::getInstance();
 	if (pOptions) {
@@ -52,6 +57,10 @@ qmidictlOptionsForm::qmidictlOptionsForm (
 			m_ui.InterfaceComboBox->setCurrentIndex(0);
 		else
 			m_ui.InterfaceComboBox->setEditText(pOptions->sInterface);
+		if (pOptions->sUdpAddr.isEmpty())
+			m_ui.UdpAddrComboBox->setCurrentIndex(0);
+		else
+			m_ui.UdpAddrComboBox->setEditText(pOptions->sUdpAddr);
 		m_ui.UdpPortSpinBox->setValue(pOptions->iUdpPort);
 		m_ui.MmcDeviceSpinBox->setValue(pOptions->iMmcDevice);
 	}
@@ -68,6 +77,9 @@ qmidictlOptionsForm::qmidictlOptionsForm (
 
 	// UI signal/slot connections...
 	QObject::connect(m_ui.InterfaceComboBox,
+		SIGNAL(editTextChanged(const QString&)),
+		SLOT(change()));
+	QObject::connect(m_ui.UdpAddrComboBox,
 		SIGNAL(editTextChanged(const QString&)),
 		SLOT(change()));
 	QObject::connect(m_ui.UdpPortSpinBox,
@@ -101,6 +113,7 @@ void qmidictlOptionsForm::accept (void)
 		if (pOptions) {
 			// Display options...
 			pOptions->sInterface = m_ui.InterfaceComboBox->currentText();
+			pOptions->sUdpAddr   = m_ui.UdpAddrComboBox->currentText();
 			pOptions->iUdpPort   = m_ui.UdpPortSpinBox->value();
 			pOptions->iMmcDevice = m_ui.MmcDeviceSpinBox->value();
 			// Take care of some translatable adjustments...

@@ -1,7 +1,7 @@
 // qmidictlOptions.cpp
 //
 /****************************************************************************
-   Copyright (C) 2010-2014, rncbc aka Rui Nuno Capela. All rights reserved.
+   Copyright (C) 2010-2015, rncbc aka Rui Nuno Capela. All rights reserved.
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
@@ -69,7 +69,8 @@ void qmidictlOptions::loadOptions (void)
 	// Network specific options...
 	m_settings.beginGroup("/Network");
 	sInterface = m_settings.value("/Interface").toString();
-	iUdpPort = m_settings.value("/UdpPort", 21928).toInt();
+	sUdpAddr = m_settings.value("/UdpAddr", QMIDICTL_UDP_ADDR).toString();
+	iUdpPort = m_settings.value("/UdpPort", QMIDICTL_UDP_PORT).toInt();
 	m_settings.endGroup();
 
 	// MIDI specific options...
@@ -90,6 +91,7 @@ void qmidictlOptions::saveOptions (void)
 	// Network specific options...
 	m_settings.beginGroup("/Network");
 	m_settings.setValue("/Interface", sInterface);
+	m_settings.setValue("/UdpAddr", sUdpAddr);
 	m_settings.setValue("/UdpPort", iUdpPort);
 	m_settings.endGroup();
 

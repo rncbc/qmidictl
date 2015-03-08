@@ -3,7 +3,11 @@ QmidiCtl - A MIDI Remote Controller via UDP/IP Multicast
 
 ChangeLog
 
+
 GIT HEAD
+
+- Previously hard-coded UDP/IP multicast address (225.0.0.37) is
+  now an user configurable option.
 
 - A man page has beed added.
 

@@ -1,7 +1,7 @@
 // qmidictlMainForm.cpp
 //
 /****************************************************************************
-   Copyright (C) 2010-2011, rncbc aka Rui Nuno Capela. All rights reserved.
+   Copyright (C) 2010-2015, rncbc aka Rui Nuno Capela. All rights reserved.
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
@@ -205,7 +205,10 @@ void qmidictlMainForm::setup (void)
 	if (pOptions == NULL)
 		return;
 
-	if (!m_pUdpDevice->open(pOptions->sInterface, pOptions->iUdpPort)) {
+	if (!m_pUdpDevice->open(
+			pOptions->sInterface,
+			pOptions->sUdpAddr,
+			pOptions->iUdpPort)) {
 		QMessageBox::critical(this,
 			tr("Network Inferface Error - %1").arg(QMIDICTL_TITLE),
 			tr("The network interface could not be established.\n\n"
