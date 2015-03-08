@@ -129,7 +129,10 @@ void qmidictlOptions::print_usage ( const QString& arg0 )
 		QObject::tr("Use specific network interface (default = %1)")
 			.arg(sInterface.isEmpty() ? "all" : sInterface) + sEol;
 #endif
-	out << "  -p, --port=[port]" + sEot +
+	out << "  -u, --address, --udp-addr=[address]" + sEot +
+		QObject::tr("Use specific network address (default = %1)")
+			.arg(sUdpAddr) + sEol;
+	out << "  -p, --port, --udp-port=[port]" + sEot +
 		QObject::tr("Use specific network port (default = %1)")
 			.arg(iUdpPort) + sEol;
 	out << "  -m, --mmc-device=[mmc-device]" + sEot +
@@ -173,14 +176,22 @@ bool qmidictlOptions::parse_args ( const QStringList& args )
 		}
 		else
 	#endif
-		if (sArg == "-p" || sArg == "--port") {
+		if (sArg == "-u" || sArg == "--address" || sArg == "--udp-addr") {
+			if (sVal.isEmpty()) {
+				out << QObject::tr("Option -d requires an argument (address).") + sEol;
+				return false;
+			}
+			sUdpAddr = sVal;
+			if (iEqual < 0) ++i;
+		}
+		else
+		if (sArg == "-p" || sArg == "--port" || sArg == "--udp-port") {
 			if (sVal.isEmpty()) {
 				out << QObject::tr("Option -p requires an argument (port).") + sEol;
 				return false;
 			}
 			iUdpPort = sVal.toInt();
-			if (iEqual < 0)
-				i++;
+			if (iEqual < 0) ++i;
 		}
 		else
 		if (sArg == "-m" || sArg == "--mmc-device") {
