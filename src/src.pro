@@ -57,7 +57,7 @@ unix {
 	DEFINES += DATADIR=\"$$DATADIR\" PKGDATADIR=\"$$PKGDATADIR\"
 
 	# make install
-	INSTALLS += target desktop icon icon26 icon48 icon64
+	INSTALLS += target desktop icon icon26 icon48 icon64 appdata
 
 	target.path = $$BINDIR
 
@@ -75,6 +75,9 @@ unix {
 
 	icon64.path = $$DATADIR/icons/hicolor/64x64/hildon
 	icon64.files += data/64x64/$${TARGET}.png
+
+	appdata.path = $${DATADIR}/appdata
+	appdata.files += appdata/$${TARGET}.appdata.xml
 }
 
 win32 {
