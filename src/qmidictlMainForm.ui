@@ -229,7 +229,7 @@
       <item>
        <widget class="QPushButton" name="stopButton">
         <property name="text">
-         <string>STO&amp;P</string>
+         <string>&amp;STOP</string>
         </property>
         <property name="icon">
          <iconset resource="qmidictl.qrc">:/images/formStop.png</iconset>
