@@ -4,7 +4,7 @@ QmidiCtl - A MIDI Remote Controller via UDP/IP Multicast
 ChangeLog
 
 
-GIT HEAD
+0.2.0  2015-03-23  Pre-LAC2015 pre-season release.
 
 - Reset (to network defaults) button added to options dialog,
   which also gets some layout reform.
