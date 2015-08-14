@@ -1,7 +1,5 @@
 prefix  = @ac_prefix@
 
-QMAKE   = @ac_qmake@
-
 name    = qmidictl
 
 target  = src/$(name)
@@ -39,6 +37,9 @@ resources = \
 
 
 export mandir = @mandir@
+
+
+export QMAKE = @ac_qmake@
 
 
 all:	$(target)
