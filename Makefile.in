@@ -36,10 +36,14 @@ resources = \
 	src/qmidictl.qrc
 
 
+export datarootdir = @datarootdir@
+export datadir = @datadir@
 export mandir = @mandir@
 
 
 export QMAKE = @ac_qmake@
+export LUPDATE = @ac_lupdate@
+export LRELEASE = @ac_lrelease@
 
 
 all:	$(target)
