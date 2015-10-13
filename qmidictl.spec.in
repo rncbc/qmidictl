@@ -78,11 +78,11 @@ for Windows (http://nerds.de).
 - A fifth of a Jubilee release.
 * Fri Sep  3 2010 Rui Nuno Capela <rncbc@rncbc.org> 0.1.0
 - Second public release.
-* Tue May 24 2010 Rui Nuno Capela <rncbc@rncbc.org>
+* Mon May 24 2010 Rui Nuno Capela <rncbc@rncbc.org>
 - Standard desktop icon fixing (Fremantle/Hildon).
 * Mon Apr 26 2010 Rui Nuno Capela <rncbc@rncbc.org> 0.0.9
 - MIDI controller assignment configuration debut.
 * Thu Mar 11 2010 Rui Nuno Capela <rncbc@rncbc.org> 0.0.1
 - Attempt to comply with maemo.org extras-testing promotion.
-* Fri Mar  7 2010 Rui Nuno Capela <rncbc@rncbc.org> 0.0.1
+* Sun Mar  7 2010 Rui Nuno Capela <rncbc@rncbc.org> 0.0.1
 - Created initial qmidictl.spec
