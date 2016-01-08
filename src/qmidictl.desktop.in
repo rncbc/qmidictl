@@ -6,6 +6,7 @@ Version=1.0
 Exec=@ac_prefix@/bin/qmidictl
 Icon=qmidictl
 Categories=Audio;AudioVideo;Midi;X-Alsa;Qt;
+Keywords=MIDI;Multicast;Network;UDP;IP;Qt;
 StartupWMClass=qmidictl
 X-Window-Icon=qmidictl
 X-HildonDesk-ShowInToolbar=true
