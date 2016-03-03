@@ -35,7 +35,7 @@ for Windows (http://nerds.de).
 
 %build
 %configure
-%__make
+%__make %{?_smp_mflags}
 
 %install
 %__make DESTDIR=%{buildroot} install
