@@ -4,7 +4,7 @@ QmidiCtl - A MIDI Remote Controller via UDP/IP Multicast
 ChangeLog
 
 
-0.4.0  2016-05-04  Spring'16 release frenzy.
+0.4.0  2016-04-05  Spring'16 release frenzy.
 
 - Added application keywords to freedesktop.org's AppData.
 
