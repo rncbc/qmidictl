@@ -1,5 +1,5 @@
 # Process this file with autoconf to produce a configure script.
-AC_INIT(QmidiCtl, 0.4.0.2, rncbc@rncbc.org, qmidictl)
+AC_INIT(QmidiCtl, 0.4.0.3, rncbc@rncbc.org, qmidictl)
 
 AC_CONFIG_SRCDIR(src/qmidictl.cpp)
 AC_CONFIG_HEADERS(src/config.h)
@@ -37,7 +37,7 @@ AC_ARG_ENABLE(qt4,
 
 
 # Standard installation base dirs.
-ac_with_paths="/usr /usr/local"
+ac_with_paths=""
 
 # Set for alternate Qt4/5 installation dir.
 AC_ARG_WITH(qt4,
