@@ -51,29 +51,35 @@ unix {
 		PREFIX = /usr/local
 	}
 
-	BINDIR = $$PREFIX/bin
-	DATADIR = $$PREFIX/share
+	isEmpty(BINDIR) {
+		BINDIR = $${PREFIX}/bin
+	}
 
-	DEFINES += DATADIR=\"$$DATADIR\" PKGDATADIR=\"$$PKGDATADIR\"
+	isEmpty(DATADIR) {
+		DATADIR = $${PREFIX}/share
+	}
+
+	#DEFINES += DATADIR=\"$${DATADIR}\"
+	DEFINES += PKGDATADIR=\"$${PKGDATADIR}\"
 
 	# make install
 	INSTALLS += target desktop icon icon26 icon48 icon64 appdata
 
-	target.path = $$BINDIR
+	target.path = $${BINDIR}
 
-	desktop.path = $$DATADIR/applications/hildon
+	desktop.path = $${DATADIR}/applications/hildon
 	desktop.files += $${TARGET}.desktop
 
-	icon.path = $$DATADIR/icons/hicolor/32x32/hildon
+	icon.path = $${DATADIR}/icons/hicolor/32x32/hildon
 	icon.files += images/$${TARGET}.png
 
-	icon26.path = $$DATADIR/icons/hicolor/26x26/hildon
+	icon26.path = $${DATADIR}/icons/hicolor/26x26/hildon
 	icon26.files += data/26x26/$${TARGET}.png 
 
-	icon48.path = $$DATADIR/icons/hicolor/48x48/hildon
+	icon48.path = $${DATADIR}/icons/hicolor/48x48/hildon
 	icon48.files += data/48x48/$${TARGET}.png
 
-	icon64.path = $$DATADIR/icons/hicolor/64x64/hildon
+	icon64.path = $${DATADIR}/icons/hicolor/64x64/hildon
 	icon64.files += data/64x64/$${TARGET}.png
 
 	appdata.path = $${DATADIR}/appdata
