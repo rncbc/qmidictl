@@ -1,5 +1,5 @@
 # Process this file with autoconf to produce a configure script.
-AC_INIT(QmidiCtl, 0.4.1.2, rncbc@rncbc.org, qmidictl)
+AC_INIT(QmidiCtl, 0.4.1.3, rncbc@rncbc.org, qmidictl)
 
 AC_CONFIG_SRCDIR(src/qmidictl.cpp)
 AC_CONFIG_HEADERS(src/config.h)
@@ -98,6 +98,8 @@ AC_PROG_CXXCPP
 # Checks for languages.
 AC_LANG_CPLUSPLUS
 
+# Check for pkg-config.
+PKG_PROG_PKG_CONFIG
 
 # Check for proper flags.
 ac_arch=`uname -m`
@@ -249,7 +251,6 @@ AC_CHECK_LIB(X11, main)
 AC_CHECK_LIB(Xext, main)
 
 # Check for specific libraries.
-AC_SUBST(ac_libs)
 
 
 # Checks for header files.
@@ -258,9 +259,12 @@ AC_HEADER_SYS_WAIT
 AC_CHECK_HEADERS(fcntl.h sys/ioctl.h sys/stat.h unistd.h signal.h)
 
 # Check for specific headers.
-AC_SUBST(ac_incpath)
+
+
 AC_SUBST(ac_cflags)
 AC_SUBST(ac_ldflags)
+AC_SUBST(ac_incpath)
+AC_SUBST(ac_libs)
 
 
 # Checks for typedefs, structures, and compiler characteristics.
