@@ -1,5 +1,5 @@
 # Process this file with autoconf to produce a configure script.
-AC_INIT(QmidiCtl, 0.4.1.4, rncbc@rncbc.org, qmidictl)
+AC_INIT(QmidiCtl, 0.4.1.5, rncbc@rncbc.org, qmidictl)
 
 AC_CONFIG_SRCDIR(src/qmidictl.cpp)
 AC_CONFIG_HEADERS(src/config.h)
