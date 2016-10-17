@@ -28,7 +28,7 @@
 #define QMIDICTL_VERSION      PACKAGE_VERSION
 #else
 #define QMIDICTL_TITLE        "QmidiCtl"
-#define QMIDICTL_VERSION      "0.3.0"
+#define QMIDICTL_VERSION      "0.4.1"
 #endif
 
 #define QMIDICTL_SUBTITLE     "A MIDI Remote Controller via UDP/IP Multicast"

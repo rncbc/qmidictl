@@ -1,7 +1,7 @@
 // qmidictlMainForm.cpp
 //
 /****************************************************************************
-   Copyright (C) 2010-2015, rncbc aka Rui Nuno Capela. All rights reserved.
+   Copyright (C) 2010-2016, rncbc aka Rui Nuno Capela. All rights reserved.
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
@@ -957,7 +957,7 @@ void qmidictlMainForm::aboutSlot (void)
 	sText += "<b>" QMIDICTL_TITLE " - " + tr(QMIDICTL_SUBTITLE) + "</b><br />\n";
 	sText += "<br />\n";
 	sText += tr("Version") + ": <b>" QMIDICTL_VERSION "</b><br />\n";
-	sText += "<small>" + tr("Build") + ": " __DATE__ " " __TIME__ "</small><br />\n";
+	sText += "<small>" + tr("Build") + ": " CONFIG_BUILD_DATE "</small><br />\n";
 	sText += "<br />\n";
 	sText += tr("Website") + ": <a href=\"" QMIDICTL_WEBSITE "\">" QMIDICTL_WEBSITE "</a><br />\n";
 	sText += "<br />\n";

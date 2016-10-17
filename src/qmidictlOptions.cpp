@@ -1,7 +1,7 @@
 // qmidictlOptions.cpp
 //
 /****************************************************************************
-   Copyright (C) 2010-2015, rncbc aka Rui Nuno Capela. All rights reserved.
+   Copyright (C) 2010-2016, rncbc aka Rui Nuno Capela. All rights reserved.
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
@@ -209,8 +209,12 @@ bool qmidictlOptions::parse_args ( const QStringList& args )
 			return false;
 		}
 		else if (sArg == "-v" || sArg == "--version") {
-			out << QObject::tr("Qt: %1\n").arg(qVersion());
-			out << QObject::tr(QMIDICTL_TITLE ": %1\n").arg(QMIDICTL_VERSION);
+			out << QObject::tr("Qt: %1\n")
+				.arg(qVersion());
+			out << QObject::tr("%1: %2  (%3)\n")
+				.arg(QMIDICTL_TITLE)
+				.arg(QMIDICTL_VERSION)
+				.arg(CONFIG_BUILD_DATE);
 			return false;
 		}
 	}
