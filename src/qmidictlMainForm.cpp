@@ -956,7 +956,7 @@ void qmidictlMainForm::aboutSlot (void)
 	QString sText = "<p>\n";
 	sText += "<b>" QMIDICTL_TITLE " - " + tr(QMIDICTL_SUBTITLE) + "</b><br />\n";
 	sText += "<br />\n";
-	sText += tr("Version") + ": <b>" QMIDICTL_VERSION "</b><br />\n";
+	sText += tr("Version") + ": <b>" CONFIG_BUILD_VERSION "</b><br />\n";
 	sText += "<small>" + tr("Build") + ": " CONFIG_BUILD_DATE "</small><br />\n";
 	sText += "<br />\n";
 	sText += tr("Website") + ": <a href=\"" QMIDICTL_WEBSITE "\">" QMIDICTL_WEBSITE "</a><br />\n";

@@ -213,7 +213,7 @@ bool qmidictlOptions::parse_args ( const QStringList& args )
 				.arg(qVersion());
 			out << QObject::tr("%1: %2  (%3)\n")
 				.arg(QMIDICTL_TITLE)
-				.arg(QMIDICTL_VERSION)
+				.arg(CONFIG_BUILD_VERSION)
 				.arg(CONFIG_BUILD_DATE);
 			return false;
 		}

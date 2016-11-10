@@ -25,10 +25,8 @@
 #if !defined(__SYMBIAN32__) && !defined(WIN32)
 #include "config.h"
 #define QMIDICTL_TITLE        PACKAGE_NAME
-#define QMIDICTL_VERSION      PACKAGE_VERSION
 #else
 #define QMIDICTL_TITLE        "QmidiCtl"
-#define QMIDICTL_VERSION      "0.4.1"
 #endif
 
 #define QMIDICTL_SUBTITLE     "A MIDI Remote Controller via UDP/IP Multicast"
