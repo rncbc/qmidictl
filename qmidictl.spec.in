@@ -37,7 +37,7 @@ for Windows (http://nerds.de).
 
 %prep
 %setup
-[ -f Makefile.git ] && %__make -f Makefile.git
+[ -x ./autogen.sh ] && ./autogen.sh
 
 %build
 %configure
