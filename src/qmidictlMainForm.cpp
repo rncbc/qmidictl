@@ -959,7 +959,6 @@ void qmidictlMainForm::aboutSlot (void)
 	sText += tr("Version") + ": <b>" CONFIG_BUILD_VERSION "</b><br />\n";
 //	sText += "<small>" + tr("Build") + ": " CONFIG_BUILD_DATE "</small><br />\n";
 #ifdef CONFIG_DEBUG
-	sText += "<br />\n";
 	sText += "<small><font color=\"red\">";
 	sText += tr("Debugging option enabled.");
 	sText += "</font></small><br />\n";
