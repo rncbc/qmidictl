@@ -1,7 +1,7 @@
 // qmidictl.cpp
 //
 /****************************************************************************
-   Copyright (C) 2010-2011, rncbc aka Rui Nuno Capela. All rights reserved.
+   Copyright (C) 2010-2017, rncbc aka Rui Nuno Capela. All rights reserved.
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
@@ -33,6 +33,7 @@
 #include <aknappui.h>
 #endif
 
+
 int main ( int argc, char *argv[] )
 {
 	Q_INIT_RESOURCE(qmidictl);
@@ -51,14 +52,14 @@ int main ( int argc, char *argv[] )
 	qmidictlMainForm w;
 
 #if defined(Q_OS_SYMBIAN)
-        // Lock orientation to portrait in Symbian
-        CAknAppUi* appUi = dynamic_cast<CAknAppUi*> (CEikonEnv::Static()->AppUi());
-        TRAP_IGNORE(
-            if(appUi) {
-                appUi->SetOrientationL(CAknAppUi::EAppUiOrientationLandscape);
-            }
-        );
-        w.showMaximized();
+	// Lock orientation to portrait in Symbian
+	CAknAppUi* appUi = dynamic_cast<CAknAppUi*> (CEikonEnv::Static()->AppUi());
+	TRAP_IGNORE(
+		if(appUi) {
+			appUi->SetOrientationL(CAknAppUi::EAppUiOrientationLandscape);
+		}
+	);
+	w.showMaximized();
 #else
 	w.show();
 #endif
@@ -68,3 +69,4 @@ int main ( int argc, char *argv[] )
 }
 
 // end of qmidictl.cpp
+
