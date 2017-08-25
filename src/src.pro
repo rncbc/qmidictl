@@ -82,7 +82,7 @@ unix {
 	icon64.path = $${DATADIR}/icons/hicolor/64x64/hildon
 	icon64.files += data/64x64/$${TARGET}.png
 
-	appdata.path = $${DATADIR}/appdata
+	appdata.path = $${DATADIR}/metainfo
 	appdata.files += appdata/$${TARGET}.appdata.xml
 }
 

@@ -3,7 +3,7 @@ AC_INIT(QmidiCtl, 0.4.4, rncbc@rncbc.org, qmidictl)
 
 AC_CONFIG_SRCDIR(src/qmidictl.cpp)
 AC_CONFIG_HEADERS(src/config.h)
-AC_CONFIG_FILES(Makefile qmidictl.spec src/src.pri src/qmidictl.desktop)
+AC_CONFIG_FILES(Makefile qmidictl.spec src/src.pri)
 
 # Build version string.
 AC_CACHE_VAL([ac_cv_build_version], [
