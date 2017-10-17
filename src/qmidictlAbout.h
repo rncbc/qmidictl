@@ -22,7 +22,7 @@
 #ifndef __qmidictlAbout_h
 #define __qmidictlAbout_h
 
-#if !defined(__SYMBIAN32__) && !defined(WIN32)
+#if !defined(__SYMBIAN32__) && !defined(_WIN32)
 #include "config.h"
 #define QMIDICTL_TITLE        PACKAGE_NAME
 #else

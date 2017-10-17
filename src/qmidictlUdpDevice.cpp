@@ -1,7 +1,7 @@
 // qmidictlUdpDevice.cpp
 //
 /****************************************************************************
-   Copyright (C) 2010-2015, rncbc aka Rui Nuno Capela. All rights reserved.
+   Copyright (C) 2010-2017, rncbc aka Rui Nuno Capela. All rights reserved.
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
@@ -30,7 +30,7 @@
 #include <unistd.h>
 inline void closesocket(int s) { ::close(s); }
 #else
-#if defined(WIN32)
+#if defined(_WIN32)
 static WSADATA g_wsaData;
 typedef int socklen_t;
 #else
@@ -150,7 +150,7 @@ void qmidictlUdpDeviceThread::run (void)
 qmidictlUdpDevice::qmidictlUdpDevice ( QObject *pParent )
 	: QObject(pParent), m_sockin(-1), m_sockout(-1), m_pRecvThread(NULL)
 {
-#if defined(WIN32)
+#if defined(_WIN32)
 	WSAStartup(MAKEWORD(1, 1), &g_wsaData);
 #endif
 }
@@ -160,7 +160,7 @@ qmidictlUdpDevice::~qmidictlUdpDevice (void)
 {
 	close();
 
-#if defined(WIN32)
+#if defined(_WIN32)
 	WSACleanup();
 #endif
 }
@@ -331,7 +331,7 @@ void qmidictlUdpDevice::recvData ( unsigned char *data, unsigned short len )
 bool qmidictlUdpDevice::get_address (
 	int sock, struct in_addr *inaddr, const char *ifname )
 {
-#if !defined(WIN32) && !defined(Q_OS_SYMBIAN)
+#if !defined(_WIN32) && !defined(Q_OS_SYMBIAN)
 
 	struct ifreq ifr;
 	::strncpy(ifr.ifr_name, ifname, sizeof(ifr.ifr_name));
@@ -361,7 +361,7 @@ bool qmidictlUdpDevice::get_address (
 
 	return false;
 
-#endif	// !WIN32 && !SYMBIAN
+#endif	// !_WIN32 && !Q_OS_SYMBIAN
 }
 
 
