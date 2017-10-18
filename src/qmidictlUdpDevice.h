@@ -28,7 +28,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #else
-#if defined(_WIN32)
+#if defined(__WIN32__) || defined(_WIN32) || defined(WIN32)
 #include <winsock.h>
 #else
 #include <arpa/inet.h>

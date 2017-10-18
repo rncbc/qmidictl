@@ -30,7 +30,7 @@
 #include <unistd.h>
 inline void closesocket(int s) { ::close(s); }
 #else
-#if defined(_WIN32)
+#if defined(__WIN32__) || defined(_WIN32) || defined(WIN32)
 static WSADATA g_wsaData;
 typedef int socklen_t;
 #else
@@ -150,7 +150,7 @@ void qmidictlUdpDeviceThread::run (void)
 qmidictlUdpDevice::qmidictlUdpDevice ( QObject *pParent )
 	: QObject(pParent), m_sockin(-1), m_sockout(-1), m_pRecvThread(NULL)
 {
-#if defined(_WIN32)
+#if defined(__WIN32__) || defined(_WIN32) || defined(WIN32)
 	WSAStartup(MAKEWORD(1, 1), &g_wsaData);
 #endif
 }
@@ -160,7 +160,7 @@ qmidictlUdpDevice::~qmidictlUdpDevice (void)
 {
 	close();
 
-#if defined(_WIN32)
+#if defined(__WIN32__) || defined(_WIN32) || defined(WIN32)
 	WSACleanup();
 #endif
 }
@@ -331,7 +331,7 @@ void qmidictlUdpDevice::recvData ( unsigned char *data, unsigned short len )
 bool qmidictlUdpDevice::get_address (
 	int sock, struct in_addr *inaddr, const char *ifname )
 {
-#if !defined(_WIN32) && !defined(Q_OS_SYMBIAN)
+#if !defined(__WIN32__) && !defined(_WIN32) && !defined(WIN32) && !defined(Q_OS_SYMBIAN)
 
 	struct ifreq ifr;
 	::strncpy(ifr.ifr_name, ifname, sizeof(ifr.ifr_name));
@@ -361,7 +361,7 @@ bool qmidictlUdpDevice::get_address (
 
 	return false;
 
-#endif	// !_WIN32 && !Q_OS_SYMBIAN
+#endif	// !WIN32 && !SYMBIAN
 }
 
 
