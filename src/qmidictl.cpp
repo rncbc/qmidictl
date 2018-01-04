@@ -1,7 +1,7 @@
 // qmidictl.cpp
 //
 /****************************************************************************
-   Copyright (C) 2010-2017, rncbc aka Rui Nuno Capela. All rights reserved.
+   Copyright (C) 2010-2018, rncbc aka Rui Nuno Capela. All rights reserved.
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
@@ -18,6 +18,8 @@
    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 *****************************************************************************/
+
+#include "qmidictlAbout.h"
 
 #include "qmidictlOptions.h"
 #include "qmidictlMidiControl.h"
@@ -39,6 +41,9 @@ int main ( int argc, char *argv[] )
 	Q_INIT_RESOURCE(qmidictl);
 
 	QApplication app(argc, argv);
+    app.setApplicationName(QMIDICTL_TITLE);
+    app.setApplicationDisplayName(
+		QMIDICTL_TITLE " - " + QObject::tr(QMIDICTL_SUBTITLE));
 
 	qmidictlOptions opt;
 	if (!opt.parse_args(app.arguments())) {

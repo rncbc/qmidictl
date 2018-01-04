@@ -1,7 +1,7 @@
 // qmidictlMainForm.cpp
 //
 /****************************************************************************
-   Copyright (C) 2010-2016, rncbc aka Rui Nuno Capela. All rights reserved.
+   Copyright (C) 2010-2018, rncbc aka Rui Nuno Capela. All rights reserved.
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
@@ -29,6 +29,8 @@
 #include "qmidictlMidiControl.h"
 #include "qmidictlUdpDevice.h"
 #include "qmidictlDialStyle.h"
+
+#include "qmidictlActionBar.h"
 
 #include <QTimer>
 
@@ -95,6 +97,14 @@ qmidictlMainForm::qmidictlMainForm (
 	m_pDialStyle = new qmidictlDialStyle();
 	m_ui.jogWheelDial->setStyle(m_pDialStyle);
 
+	// Special action-bar for the android stuff.
+	m_pActionBar = new qmidictlActionBar();
+	m_pActionBar->addButton(m_ui.optionsAction);
+	m_pActionBar->addButton(m_ui.configureAction);
+	m_pActionBar->addButton(m_ui.aboutAction);
+	m_pActionBar->addButton(m_ui.exitAction);
+	m_ui.MainCentralLayout->insertWidget(0, m_pActionBar);
+
 	// Pseudo-singleton reference setup.
 	g_pMainForm = this;
 
@@ -156,6 +166,9 @@ qmidictlMainForm::qmidictlMainForm (
 // Destructor.
 qmidictlMainForm::~qmidictlMainForm (void)
 {
+	// No need for special android stuff anymore.
+	delete m_pActionBar;
+
 	// No need for fancy styling no more.
 	delete m_pDialStyle;
 

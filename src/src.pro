@@ -6,7 +6,9 @@ TEMPLATE = app
 DEPENDPATH += .
 INCLUDEPATH += .
 
+!android {
 include(src.pri)
+}
 
 #DEFINES += DEBUG
 
@@ -19,6 +21,8 @@ HEADERS += config.h \
 	qmidictlUdpDevice.h \
 	qmidictlMixerStrip.h \
 	qmidictlDialStyle.h \
+	qmidictlMenuStyle.h \
+	qmidictlActionBar.h \
 	qmidictlMainForm.h
 
 SOURCES += \
@@ -30,6 +34,8 @@ SOURCES += \
 	qmidictlUdpDevice.cpp \
 	qmidictlMixerStrip.cpp \
 	qmidictlDialStyle.cpp \
+	qmidictlMenuStyle.cpp \
+	qmidictlActionBar.cpp \
 	qmidictlMainForm.cpp
 
 FORMS += \
@@ -101,4 +107,10 @@ symbian {
 # QT5 support
 !lessThan(QT_MAJOR_VERSION, 5) {
 	QT += widgets
+}
+
+# Android support
+android {
+	DISTFILES += android/AndroidManifest.xml
+	ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
 }

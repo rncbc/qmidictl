@@ -1,7 +1,7 @@
 // qmidictlMainForm.h
 //
 /****************************************************************************
-   Copyright (C) 2010-2016, rncbc aka Rui Nuno Capela. All rights reserved.
+   Copyright (C) 2010-2018, rncbc aka Rui Nuno Capela. All rights reserved.
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
@@ -29,6 +29,7 @@
 class qmidictlUdpDevice;
 class qmidictlMixerStrip;
 class qmidictlDialStyle;
+class qmidictlActionBar;
 
 
 //----------------------------------------------------------------------------
@@ -222,6 +223,9 @@ private:
 
 	// Special style for the jog wheel dial.
 	qmidictlDialStyle *m_pDialStyle;
+
+	// Special action-bar for the android stuff.
+	qmidictlActionBar *m_pActionBar;
 
 	// Kind-of singleton reference.
 	static qmidictlMainForm *g_pMainForm;
