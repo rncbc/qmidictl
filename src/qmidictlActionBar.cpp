@@ -41,84 +41,70 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
  */
 
-#include "qmidictlActionBar.h"
-#include "qmidictlMenuStyle.h"
+#if QT_VERSION < 0x050100
+#include "qmidictlAbout.h"
+#include <QDesktopWidget>
+#endif
 
-#include <QIcon>
+#include "qmidictlActionBar.h"
+
+#include <QAction>
+#include <QHBoxLayout>
+#include <QToolButton>
+#include <QLabel>
+#include <QMenu>
 #include <QFont>
+
 #include <QApplication>
-#include <QScreen>
-#include <QStyleFactory>
 #include <QStyleOption>
 #include <QPainter>
+#include <QScreen>
+
+#include <QResizeEvent>
+
 
 qmidictlActionBar::qmidictlActionBar ( QWidget *parent ) : QWidget(parent)
 {
-	const int paddingPixels = qmidictlMenuStyle::dpToPixels(16);
-	const int minWidth = qmidictlMenuStyle::dpToPixels(48);
-	styleSheetTemplate = QString(
-	//	"* {background:lightGray}"
-		"QToolButton {height: %3px; min-width: %2px}"
-		"QToolButton QMenu::item {padding: %1px %1px %1px %1px; border: 1px solid transparent}"
-		"QToolButton QMenu::indicator {image: none}"
-		"QToolButton QMenu::item::selected {border-color: black}"
-		"QToolButton#viewControl {font:bold}"
-		"QToolButton::menu-indicator {image: none}").arg(paddingPixels).arg(minWidth);
-	QStyle *style = QStyleFactory::create("Android");
-	setStyle(new qmidictlMenuStyle(style));
-	QScreen *screen = qApp->primaryScreen();
-	QSizeF physicalSize = screen->physicalSize();
-	if (qMax(physicalSize.width(), physicalSize.height()) > 145) {
-        // Over 6.5" screen, this is a tablet
-        setStyleSheet(styleSheetTemplate.arg(qmidictlMenuStyle::dpToPixels(56)));
-    } else {
-		// Phone, height changes when the screen is rotated
-		screenGeometryChanged(screen->geometry());
-		connect(screen, &QScreen::geometryChanged, this, &qmidictlActionBar::screenGeometryChanged);
-	}
-
 	// Create layout
-	layout = new QHBoxLayout(this);
-	layout->setSpacing(0);
-	layout->setMargin(0);
-	layout->setContentsMargins(0,0,0,0);
-	layout->setSizeConstraint(QLayout::SetNoConstraint);
+	m_layout = new QHBoxLayout(this);
+	m_layout->setSpacing(0);
+	m_layout->setMargin(2);
+	m_layout->setContentsMargins(0, 0, 0, 0);
+	m_layout->setSizeConstraint(QLayout::SetNoConstraint);
 
-	// App Icon, Up, and Navigation Button
-	appIcon=new QToolButton();
-	appIcon->setIcon(QIcon(":/images/qmidictl.png"));
-	appIcon->setAutoRaise(true);
-	appIcon->setFocusPolicy(Qt::NoFocus);
-	appIcon->setPopupMode(QToolButton::InstantPopup);
-	navigationMenu = new QMenu(appIcon);
-	connect(navigationMenu, &QMenu::aboutToHide, this, &qmidictlActionBar::aboutToHideNavigationMenu);
-	connect(navigationMenu, &QMenu::aboutToShow, this, &qmidictlActionBar::aboutToShowNavigationMenu);
-	layout->addWidget(appIcon);
+	// App Navigation/Menu Icon
+	m_appIcon = QIcon(":/images/actionMenu.png");
+
+	// App Navigation/Menu Button
+	m_appButton = new QToolButton();
+	m_appButton->setAutoRaise(true);
+	m_appButton->setFocusPolicy(Qt::NoFocus);
+	m_appButton->setPopupMode(QToolButton::InstantPopup);
+	m_appMenu = new QMenu(m_appButton);
+	QObject::connect(m_appMenu, SIGNAL(aboutToHide()), SLOT(aboutToHideAppMenu()));
+	QObject::connect(m_appMenu, SIGNAL(aboutToShow()), SLOT(aboutToShowAppMenu()));
+	m_layout->addWidget(m_appButton);
 
 	// View Control Button
-	viewControl=new QToolButton();
-	viewControl->setObjectName("viewControl");
-	viewControl->setText(QApplication::applicationDisplayName());
-	viewControl->setAutoRaise(true);
-	viewControl->setFocusPolicy(Qt::NoFocus);
-	viewControl->setPopupMode(QToolButton::InstantPopup);
-	viewMenu=new QMenu(viewControl);
-	viewControl->setMenu(viewMenu);
-	layout->addWidget(viewControl);
+	m_appTitle = new QLabel();
+	const QFont& font = QWidget::font();
+	m_appTitle->setFont(QFont(font.family(), font.pointSize(), 75));
+	m_layout->addWidget(m_appTitle);
 
 	// Spacer
-	layout->addStretch(1);
+	m_layout->addStretch(1);
 
 	// Action Overflow Button
-	overflowButton=new QToolButton();
-	overflowButton->setIcon(QIcon(":/images/actionOverflow.png"));
-	overflowButton->setToolTip(tr("more"));
-	overflowButton->setAutoRaise(true);
-	overflowButton->setFocusPolicy(Qt::NoFocus);
-	overflowButton->setPopupMode(QToolButton::InstantPopup);
-	overflowMenu=new QMenu(overflowButton);
-	overflowButton->setMenu(overflowMenu);
-	layout->addWidget(overflowButton);
+	m_overflowButton = new QToolButton();
+	m_overflowButton->setIcon(QIcon(":/images/actionOverflow.png"));
+	m_overflowButton->setToolTip(tr("more"));
+	m_overflowButton->setAutoRaise(true);
+	m_overflowButton->setFocusPolicy(Qt::NoFocus);
+	m_overflowButton->setPopupMode(QToolButton::InstantPopup);
+
+	m_overflowMenu = new QMenu(m_overflowButton);
+	m_overflowButton->setMenu(m_overflowMenu);
+	m_layout->addWidget(m_overflowButton);
 }
 
 
@@ -127,14 +113,13 @@ qmidictlActionBar::~qmidictlActionBar (void)
 }
 
 
-void qmidictlActionBar::resizeEvent ( QResizeEvent* event )
+void qmidictlActionBar::resizeEvent ( QResizeEvent *event )
 {
-	int oldWidth=event->oldSize().width();
-	int newWidth=event->size().width();
-	qDebug("resize from %i to %i",oldWidth,newWidth);
-	if (oldWidth!=newWidth) {
+	const int oldWidth = event->oldSize().width();
+	const int newWidth = event->size().width();
+
+	if (oldWidth != newWidth)
 		adjustContent();
-	}
 }
 
 
@@ -142,73 +127,66 @@ void qmidictlActionBar::paintEvent ( QPaintEvent * )
 {
 	QStyleOption opt;
 	opt.init(this);
-	QPainter p(this);
-	style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+
+	QPainter painter(this);
+	style()->drawPrimitive(QStyle::PE_Widget, &opt, &painter, this);
 }
 
 
-void qmidictlActionBar::screenGeometryChanged ( const QRect& geometry )
+void qmidictlActionBar::setIcon ( const QIcon& icon )
 {
-	if (geometry.height() > geometry.width()) {
-		setStyleSheet(styleSheetTemplate.arg(qmidictlMenuStyle::dpToPixels(48)));
-	} else {
-		setStyleSheet(styleSheetTemplate.arg(qmidictlMenuStyle::dpToPixels(40)));
-	}
+	m_appIcon = icon;
 }
 
-void qmidictlActionBar::setTitle ( const QString& title, bool showUpButton )
-{
-	viewControl->setText(title);
 
-	if (!navigationMenu->isEmpty()) {
-		appIcon->setIcon(QIcon(":/images/actionMenu.png"));
-		disconnect(appIcon, &QToolButton::clicked, this, &qmidictlActionBar::appIconClicked);
-		appIcon->setMenu(navigationMenu);
-	} else if (showUpButton) {
-		appIcon->setIcon(QIcon(":/images/qmidictl.png"));
-		appIcon->setToolTip(tr("up"));
-		connect(appIcon, &QToolButton::clicked, this, &qmidictlActionBar::appIconClicked);
-		appIcon->setMenu(0);
+const QIcon& qmidictlActionBar::icon (void) const
+{
+	return m_appIcon;
+}
+
+
+void qmidictlActionBar::setTitle ( const QString& title )
+{
+	m_appTitle->setText(title);
+
+	if (!m_appMenu->isEmpty()) {
+		m_appButton->setIcon(QIcon(":/images/actionMenu.png"));
+		m_appButton->setMenu(m_appMenu);
 	} else {
-		appIcon->setIcon(QIcon(":/images/qmidictl.png"));
-		appIcon->setToolTip("");
-		disconnect(appIcon, &QToolButton::clicked, this, &qmidictlActionBar::appIconClicked);
-		appIcon->setMenu(0);
+		m_appButton->setIcon(m_appIcon);
+		m_appButton->setToolTip(QString());
+		m_appButton->setMenu(NULL);
 	}
 
 	adjustContent();
 }
 
 
-QString qmidictlActionBar::getTitle (void)
+QString qmidictlActionBar::title (void) const
 {
-	return viewControl->text();
-}
-
-
-void qmidictlActionBar::appIconClicked (void)
-{
-	emit up();
+	return m_appTitle->text();
 }
 
 
 void qmidictlActionBar::adjustContent (void)
 {
-	int screenWidth = qApp->primaryScreen()->availableSize().width();
+#if QT_VERSION >= 0x050100
+	const int screenWidth = QApplication::primaryScreen()->availableSize().width();
+#else
+	const int screenWidth = QApplication::desktop()->screen()->width();
+#endif
 
-	if (!navigationMenu->isEmpty()) {
-		appIcon->setIcon(QIcon(":/images/actionMenu.png"));
-		disconnect(appIcon, &QToolButton::clicked, this, &qmidictlActionBar::appIconClicked);
-		appIcon->setMenu(navigationMenu);
+	if (!m_appMenu->isEmpty()) {
+		m_appButton->setIcon(QIcon(":/images/actionMenu.png"));
+		m_appButton->setMenu(m_appMenu);
 	}
 
-	viewMenu->repaint();
-	overflowButton->hide();
+	m_overflowButton->hide();
 
 	// Check if all action buttons fit into the available space.
-	for (int i = 0; i < buttonActions.size(); i++) {
-		QAction *action = buttonActions.at(i);
-		QToolButton *button = actionButtons.at(i);
+	for (int i = 0; i < m_buttonActions.size(); ++i) {
+		QAction *action = m_buttonActions.at(i);
+		QToolButton *button = m_actionButtons.at(i);
 		if (action->isVisible()) {
 			button->show();
 		}
@@ -216,17 +194,17 @@ void qmidictlActionBar::adjustContent (void)
 
 	if (sizeHint().width() > screenWidth) {
 		// The buttons don't fit, we need an overflow menu.
-		overflowButton->show();
-		overflowMenu->clear();
+		m_overflowButton->show();
+		m_overflowMenu->clear();
 	} else {
-		overflowButton->hide();
+		m_overflowButton->hide();
 	}
 
 	// Show/Hide action buttons and overflow menu entries
 	QAction *lastAction = 0;
-	for (int i = buttonActions.size() - 1; i >= 0; i--) {
-		QAction *action = buttonActions.at(i);
-		QToolButton *button = actionButtons.at(i);
+	for (int i = m_buttonActions.size() - 1; i >= 0; --i) {
+		QAction *action = m_buttonActions.at(i);
+		QToolButton *button = m_actionButtons.at(i);
 		if (action->isVisible()) {
 			if (sizeHint().width() <= screenWidth) {
 				// show as button
@@ -234,7 +212,7 @@ void qmidictlActionBar::adjustContent (void)
 			} else {
 				// show as overflow menu entry
 				button->hide();
-				overflowMenu->insertAction(lastAction, action);
+				m_overflowMenu->insertAction(lastAction, action);
 				lastAction = action;
 			}
 		}
@@ -245,131 +223,97 @@ void qmidictlActionBar::adjustContent (void)
 void qmidictlActionBar::addMenuItem ( QAction *action )
 {
 	QWidget::addAction(action);
-	navigationMenu->addAction(action);
-	if (!navigationMenu->isEmpty()) {
-		appIcon->setMenu(navigationMenu);
-	}
+	m_appMenu->addAction(action);
+	if (!m_appMenu->isEmpty())
+		m_appButton->setMenu(m_appMenu);
 }
 
 
 void qmidictlActionBar::addMenuItems ( QList<QAction*> actions )
 {
-	QWidget::addActions(actions);
-	for (int i = 0; i < actions.size(); i++) {
-		addAction(actions.at(i));
-	}
+	for (int i = 0; i < actions.size(); ++i)
+		addMenuItem(actions.at(i));
 }
 
 
 void qmidictlActionBar::removeMenuItem ( QAction *action )
 {
 	QWidget::removeAction(action);
-	navigationMenu->removeAction(action);
-	if (navigationMenu->isEmpty()) {
-		appIcon->setMenu(0);
-	}
+	m_appMenu->removeAction(action);
+	if (m_appMenu->isEmpty())
+		m_appButton->setMenu(NULL);
 }
 
 
-void qmidictlActionBar::addView ( QAction *action )
+void qmidictlActionBar::addButton ( QAction *action, int position )
 {
-	QWidget::addAction(action);
-	viewMenu->addAction(action);
-	if (!viewMenu->isEmpty()) {
-		viewControl->setMenu(viewMenu);
-	}
-}
+	if (position == -1)
+		position = m_buttonActions.size();
 
-
-void qmidictlActionBar::addViews ( QList<QAction*> actions )
-{
-    QWidget::addActions(actions);
-    for (int i=0; i<actions.size(); i++) {
-        addAction(actions.at(i));
-    }
-}
-
-
-void qmidictlActionBar::removeView ( QAction *action )
-{
-	QWidget::removeAction(action);
-	viewMenu->removeAction(action);
-	if (viewMenu->isEmpty()) {
-		viewControl->setMenu(NULL);
-	}
-}
-
-
-void qmidictlActionBar::addButton ( QAction* action, int position )
-{
-	if (position==-1) {
-		position=buttonActions.size();
-	}
-
-	buttonActions.insert(position,action);
-	QToolButton* button=new QToolButton();
+	m_buttonActions.insert(position, action);
+	QToolButton *button = new QToolButton();
 	button->setText(action->text());
 	button->setToolTip(action->text());
-	QIcon icon = action->icon();
+	const QIcon& icon = action->icon();
 	if (!icon.isNull()) {
-		button->setIcon(action->icon());
+		button->setIcon(icon);
 		button->setToolButtonStyle(Qt::ToolButtonIconOnly);
 	}
 
 	button->setEnabled(action->isEnabled());
 	button->setFocusPolicy(Qt::NoFocus);
 	button->setAutoRaise(true);
-	connect(button, &QToolButton::clicked, action, &QAction::trigger);
-	connect(action, &QAction::changed, this, &qmidictlActionBar::actionChanged);
-	actionButtons.insert(position, button);
-	layout->insertWidget(position + 3, button);
+	QObject::connect(button, SIGNAL(clicked(bool)), action, SLOT(trigger()));
+	QObject::connect(action, SIGNAL(changed()), SLOT(actionChanged()));
+	m_actionButtons.insert(position, button);
+	m_layout->insertWidget(position + 3, button);
 }
 
 
 void qmidictlActionBar::removeButton ( QAction* action )
 {
-	QToolButton* button=NULL;
-	for (int i=0; i<buttonActions.size(); i++) {
-		if (buttonActions.at(i)==action) {
-			button=actionButtons.at(i);
+	QToolButton *button = NULL;
+	for (int i = 0; i < m_buttonActions.size(); ++i) {
+		if (m_buttonActions.at(i) == action) {
+			button = m_actionButtons.at(i);
 			break;
 		}
 	}
+
 	if (button) {
-		layout->removeWidget(button);
-		actionButtons.removeOne(button);
+		m_layout->removeWidget(button);
+		m_actionButtons.removeOne(button);
 		delete button;
-		buttonActions.removeOne(action);
+		m_buttonActions.removeOne(action);
 	}
 }
 
 
 void qmidictlActionBar::openOverflowMenu (void)
 {
-    if (overflowButton->isVisible()) {
-        overflowButton->click();
-    }
+    if (m_overflowButton->isVisible())
+        m_overflowButton->click();
 }
 
 
 void qmidictlActionBar::actionChanged (void)
 {
-	QAction *action = qobject_cast<QAction *>(sender());
-	int index = buttonActions.indexOf(action);
-	actionButtons[index]->setEnabled(action->isEnabled());
-	actionButtons[index]->setIcon(action->icon());
+	QAction *action = qobject_cast<QAction *> (sender());
+	const int index = m_buttonActions.indexOf(action);
+	m_actionButtons[index]->setEnabled(action->isEnabled());
+	m_actionButtons[index]->setIcon(action->icon());
 }
 
 
-void qmidictlActionBar::aboutToHideNavigationMenu (void)
+void qmidictlActionBar::aboutToHideAppMenu (void)
 {
-	appIcon->setIcon(QIcon(":/images/actionMenu.png"));
+	m_appButton->setIcon(QIcon(":/images/actionMenu.png"));
 }
 
 
-void qmidictlActionBar::aboutToShowNavigationMenu (void)
+void qmidictlActionBar::aboutToShowAppMenu (void)
 {
-	appIcon->setIcon(QIcon(":/images/qmidictl.png"));
+	m_appButton->setIcon(m_appIcon);
 }
 
 

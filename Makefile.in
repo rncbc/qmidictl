@@ -13,7 +13,6 @@ headers = src/config.h \
 	src/qmidictlUdpDevice.h \
 	src/qmidictlMixerStrip.h \
 	src/qmidictlDialStyle.h \
-	src/qmidictlMenuStyle.h \
 	src/qmidictlActionBar.h \
 	src/qmidictlMainForm.h
 
@@ -26,7 +25,6 @@ sources = \
 	src/qmidictlUdpDevice.cpp \
 	src/qmidictlMixerStrip.cpp \
 	src/qmidictlDialStyle.cpp \
-	src/qmidictlMenuStyle.cpp \
 	src/qmidictlActionBar.cpp \
 	src/qmidictlMainForm.cpp
 

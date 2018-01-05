@@ -97,13 +97,30 @@ qmidictlMainForm::qmidictlMainForm (
 	m_pDialStyle = new qmidictlDialStyle();
 	m_ui.jogWheelDial->setStyle(m_pDialStyle);
 
+#if defined(Q_OS_ANDROID)
+	// Special stuff for the android platform.
+	m_ui.optionsAction->setIcon(QIcon(":/images/actionOptions.png"));
+	m_ui.configureAction->setIcon(QIcon(":/images/actionConfigure.png"));
+	m_ui.aboutAction->setIcon(QIcon(":/images/actionAbout.png"));
+	m_ui.exitAction->setIcon(QIcon(":/images/actionExit.png"));
+
 	// Special action-bar for the android stuff.
 	m_pActionBar = new qmidictlActionBar();
+	m_pActionBar->setIcon(QIcon(":/images/qmidictl.png"));
+#if QT_VERSION >= 0x050100
+	m_pActionBar->setTitle(QApplication::applicationDisplayName());
+#else
+	m_pActionBar->setTitle(QMIDICTL_TITLE " - " + tr(QMIDICTL_SUBTITLE));
+#endif
+	m_pActionBar->addMenuItems(m_ui.MainMenuBar->actions());
 	m_pActionBar->addButton(m_ui.optionsAction);
 	m_pActionBar->addButton(m_ui.configureAction);
 	m_pActionBar->addButton(m_ui.aboutAction);
 	m_pActionBar->addButton(m_ui.exitAction);
 	m_ui.MainCentralLayout->insertWidget(0, m_pActionBar);
+#else
+	m_pActionBar = NULL;
+#endif
 
 	// Pseudo-singleton reference setup.
 	g_pMainForm = this;
@@ -166,8 +183,10 @@ qmidictlMainForm::qmidictlMainForm (
 // Destructor.
 qmidictlMainForm::~qmidictlMainForm (void)
 {
+#if defined(Q_OS_ANDROID)
 	// No need for special android stuff anymore.
 	delete m_pActionBar;
+#endif
 
 	// No need for fancy styling no more.
 	delete m_pDialStyle;

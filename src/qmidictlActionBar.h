@@ -45,15 +45,15 @@
  */
 
 #include <QWidget>
-#include <QList>
-#include <QAction>
-#include <QMenu>
-#include <QHBoxLayout>
-#include <QPaintEvent>
-#include <QResizeEvent>
-#include <QToolButton>
-#include <QProxyStyle>
-#include <QStyleOption>
+#include <QIcon>
+
+
+// Forward decls.
+class QHBoxLayout;
+class QToolButton;
+class QLabel;
+class QMenu;
+
 
 /**
  * Toolbar similar to Android's Action Bar, can also be used on Desktop OS.
@@ -68,15 +68,15 @@
  * To be used within a vertical box layout this way:
  * <pre><code>
  * MainWindow::MainWindow(QWidget *parent) : QWidget(parent) {
- *     QVBoxLayout* layout=new QVBoxLayout(this);
+ *     QVBoxLayout *layout = new QVBoxLayout(this);
  *     layout->setMargin(0);
  *     layout->setSizeConstraint(QLayout::SetNoConstraint);
  *
  *     // Action bar
- *     ActionBar* actionBar=new ActionBar(this);
+ *     ActionBar *actionBar=new ActionBar(this);
  *     actionBar->setTitle("My App",false);
- *     actionBar->addView(new QAction("News",this));
- *     actionBar->addView(new QAction("Weather",this));
+ *     actionBar->addMenuItem(new QAction("News",this));
+ *     actionBar->addMenuItem(new QAction("Weather",this));
  *     actionBar->addButton(new QAction(QIcon(":icons/search"),"Search",this));
  *     actionBar->addButton(new QAction(QIcon(":icons/call"),"Call",this));
  *     actionBar->addButton(new QAction(QIcon(":icons/settings"),"Settings",this));
@@ -120,72 +120,58 @@ public:
 	 * Adds an item to the navigation menu of the action bar.
 	 * @param action The action, containing at least a text and optionally an icon. The action emits signal triggered() when clicked.
 	 */
-	void addMenuItem(QAction* action);
+	void addMenuItem(QAction *action);
 
 	/**
 	 * Adds many items to the navigation menu of the action bar.
 	 * @param actions List of actions.
 	 * @see addAction()
 	 */
-	void addMenuItems(QList<QAction*> actions);
+	void addMenuItems(QList<QAction *> actions);
 
 	/**
 	 * Removes an item from the navigation menu of the action bar.
 	 * @param action The action that had been added before.
 	 */
-	void removeMenuItem(QAction* action);
+	void removeMenuItem(QAction *action);
+
+	/**
+	 * Set icon of the action bar.
+	 * @param icon Either the icon of the application or the current view within the application.
+	 */
+	void setIcon(const QIcon& icon);
+
+	/** Get the current icon of the action bar. */
+	const QIcon& icon() const;
 
 	/**
 	 * Set title of the action bar.
 	 * @param title Either the name of the application or title of the current view within the application.
 	 * @param showUpButton Enables "up" navigation. Then the action bar emits signal up() on click on the icon.
 	 */
-	void setTitle(const QString& title, bool showUpButton);
+	void setTitle(const QString& title);
 
 	/** Get the current title of the action bar. */
-	QString getTitle();
-
-	/**
-	 * Adds a view navigation link to the title of the action bar.
-	 * @param action The action, containing at least a text and optionally an icon. The action emits signal triggered() when clicked.
-	 */
-	void addView(QAction* action);
-
-	/**
-	 * Adds many view navigation links to the title of the action bar.
-	 * @param actions List of actions.
-	 * @see addAction()
-	 */
-	void addViews(QList<QAction*> actions);
-
-	/**
-	 * Removes a view navigation link from the title of the action bar.
-	 * @param action The action that had been added before.
-	 */
-	void removeView(QAction* action);
+	QString title() const;
 
 	/**
 	 * Adds an action button (or overflow menu item) to the action bar.
 	 * @param action The action, containing at least a text and optinally an icon. The action emits signal triggered() when clicked.
 	 * @param position Insert before this position. 0=before first button, 1=second button. Default is -1=append to the end.
 	 */
-	void addButton(QAction* action, int position=-1);
+	void addButton(QAction *action, int position = -1);
 
 	/**
 	 * Removes an action button (or overflow menu item) from the action bar.
 	 * @param action The action that had been added before.
 	 */
-	void removeButton(QAction* action);
+	void removeButton(QAction *action);
 
 	/**
 	 * Adjust the number of buttons in the action bar. Buttons that don't fit go into the overflow menu.
 	 * You need to call this method after adding, removing or changing the visibility of an action.
 	 */
 	void adjustContent();
-
-	signals:
-	/** Emitted when the user clicks on the app icon (for "up" navigation) */
-	void up();
 
 public slots:
 	/** Can be used to open the overflow menu */
@@ -202,52 +188,43 @@ protected:
 	 */
 	void resizeEvent(QResizeEvent* event);
 
-private:
-	/** Horizontal layout of the navigation bar */
-	QHBoxLayout *layout;
-
-	/** The Button that contains the applications icon, used for "up" navigation. */
-	QToolButton *appIcon;
-
-	/** The menu that appears when the user clicks on the navigation menu button */
-	QMenu *navigationMenu;
-
-	/** The button that contains the title, used for view navigation. */
-	QToolButton *viewControl;
-
-	/** The menu that appears when the user clicks on the title. */
-	QMenu *viewMenu;
-
-	/** List of actions for the action buttons and overflow menu. */
-	QList<QAction *> buttonActions;
-
-	/** List of action buttons, same order as buttonActions. */
-	QList<QToolButton *> actionButtons;
-
-	/** Overflow button, is only visible when there are more buttons than available space. */
-	QToolButton *overflowButton;
-
-	/** The menu that appears when the user clicks on the overflow button. */
-	QMenu *overflowMenu;
-
-	/** Style sheet template for this widget, taking its height in pixels as a parameter */
-	QString styleSheetTemplate;
-
-private slots:
+protected slots:
 	/** Listener for changes in action enabled/disabled status */
 	void actionChanged();
 
-	/** Internally used to forward events from the appIcon button. */
-	void appIconClicked();
-
 	/** Listener for navigation menu open signals */
-	void aboutToShowNavigationMenu();
+	void aboutToShowAppMenu();
 
 	/** Listener for navigation menu close signals */
-	void aboutToHideNavigationMenu();
+	void aboutToHideAppMenu();
 
-	/** Listener for screen rotation events */
-	void screenGeometryChanged(const QRect &geometry);
+private:
+	/** Horizontal layout of the navigation bar */
+	QHBoxLayout *m_layout;
+
+	/** The application or current view icon. */
+	QIcon m_appIcon;
+
+	/** The Button that contains the applications icon, used for "up" navigation. */
+	QToolButton *m_appButton;
+
+	/** The menu that appears when the user clicks on the navigation menu button */
+	QMenu *m_appMenu;
+
+	/** The label that contains the title. */
+	QLabel *m_appTitle;
+
+	/** List of actions for the action buttons and overflow menu. */
+	QList<QAction *> m_buttonActions;
+
+	/** List of action buttons, same order as buttonActions. */
+	QList<QToolButton *> m_actionButtons;
+
+	/** Overflow button, is only visible when there are more buttons than available space. */
+	QToolButton *m_overflowButton;
+
+	/** The menu that appears when the user clicks on the overflow button. */
+	QMenu *m_overflowMenu;
 };
 
 

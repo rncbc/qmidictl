@@ -6,9 +6,7 @@ TEMPLATE = app
 DEPENDPATH += .
 INCLUDEPATH += .
 
-!android {
 include(src.pri)
-}
 
 #DEFINES += DEBUG
 
@@ -21,7 +19,6 @@ HEADERS += config.h \
 	qmidictlUdpDevice.h \
 	qmidictlMixerStrip.h \
 	qmidictlDialStyle.h \
-	qmidictlMenuStyle.h \
 	qmidictlActionBar.h \
 	qmidictlMainForm.h
 
@@ -34,7 +31,6 @@ SOURCES += \
 	qmidictlUdpDevice.cpp \
 	qmidictlMixerStrip.cpp \
 	qmidictlDialStyle.cpp \
-	qmidictlMenuStyle.cpp \
 	qmidictlActionBar.cpp \
 	qmidictlMainForm.cpp
 
@@ -97,20 +93,19 @@ win32 {
 }
 
 symbian {
-	VERSION = 0.1.0
+	VERSION = 0.5.0
 	LIBS += -lcone -leikcore -lavkon
 	ICON += data/symbian/qmidictl.svg
 	TARGET.CAPABILITY += NetworkServices LocalServices
 }
 
+android {
+	DISTFILES += android/AndroidManifest.xml
+	ANDROID_PACKAGE_SOURCE_DIR = $${PWD}/android
+}
 
 # QT5 support
 !lessThan(QT_MAJOR_VERSION, 5) {
 	QT += widgets
 }
 
-# Android support
-android {
-	DISTFILES += android/AndroidManifest.xml
-	ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
-}

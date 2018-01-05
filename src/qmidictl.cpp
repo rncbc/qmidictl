@@ -41,9 +41,14 @@ int main ( int argc, char *argv[] )
 	Q_INIT_RESOURCE(qmidictl);
 
 	QApplication app(argc, argv);
+#if QT_VERSION >= 0x050100
     app.setApplicationName(QMIDICTL_TITLE);
     app.setApplicationDisplayName(
 		QMIDICTL_TITLE " - " + QObject::tr(QMIDICTL_SUBTITLE));
+#endif
+
+	const QFont& font = app.font();
+	app.setFont(QFont(font.family(), font.pointSize() - 1));
 
 	qmidictlOptions opt;
 	if (!opt.parse_args(app.arguments())) {
