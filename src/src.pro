@@ -20,6 +20,7 @@ HEADERS += config.h \
 	qmidictlMixerStrip.h \
 	qmidictlDialStyle.h \
 	qmidictlActionBar.h \
+	qmidictlActionBarStyle.h \
 	qmidictlMainForm.h
 
 SOURCES += \
@@ -32,6 +33,7 @@ SOURCES += \
 	qmidictlMixerStrip.cpp \
 	qmidictlDialStyle.cpp \
 	qmidictlActionBar.cpp \
+	qmidictlActionBarStyle.cpp \
 	qmidictlMainForm.cpp
 
 FORMS += \

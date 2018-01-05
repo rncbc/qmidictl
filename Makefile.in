@@ -14,6 +14,7 @@ headers = src/config.h \
 	src/qmidictlMixerStrip.h \
 	src/qmidictlDialStyle.h \
 	src/qmidictlActionBar.h \
+	src/qmidictlActionBarStyle.h \
 	src/qmidictlMainForm.h
 
 sources = \
@@ -26,6 +27,7 @@ sources = \
 	src/qmidictlMixerStrip.cpp \
 	src/qmidictlDialStyle.cpp \
 	src/qmidictlActionBar.cpp \
+	src/qmidictlActionBarStyle.cpp \
 	src/qmidictlMainForm.cpp
 
 forms = \

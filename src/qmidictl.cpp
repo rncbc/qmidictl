@@ -27,6 +27,11 @@
 
 #include <QApplication>
 
+#if defined(Q_OS_ANDROID)
+#include "qmidictlActionBarStyle.h"
+#include <QStyleFactory>
+#endif
+
 #if defined(Q_OS_SYMBIAN)
 // to lock orientation in Symbian
 #include <eikenv.h>
@@ -46,15 +51,18 @@ int main ( int argc, char *argv[] )
     app.setApplicationDisplayName(
 		QMIDICTL_TITLE " - " + QObject::tr(QMIDICTL_SUBTITLE));
 #endif
-#if defined(Q_OS_ANDROID)
-	const QFont& font = app.font();
-	app.setFont(QFont(font.family(), font.pointSize() - 1));
-#endif
 	qmidictlOptions opt;
 	if (!opt.parse_args(app.arguments())) {
 		app.quit();
 		return 1;
 	}
+
+#if defined(Q_OS_ANDROID)
+    QStyle *pAndroidStyle = QStyleFactory::create("Android");
+    app.setStyle(new qmidictlActionBarStyle(pAndroidStyle));
+	const QFont& font = app.font();
+	app.setFont(QFont(font.family(), font.pointSize() - 1));
+#endif
 
 	qmidictlMidiControl ctl;
 	ctl.load(opt.settings());

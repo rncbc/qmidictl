@@ -19,7 +19,7 @@
 
 *****************************************************************************/
 
-/* This code is borrowed/adapted from actionbar.cpp
+/* This code is borrowed, stirred and adapted from actionbar.cpp
  *
  * https://github.com/mbnoimi/QtActionBar.git
  *

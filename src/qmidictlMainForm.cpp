@@ -30,12 +30,15 @@
 #include "qmidictlUdpDevice.h"
 #include "qmidictlDialStyle.h"
 
-#include "qmidictlActionBar.h"
-
 #include <QTimer>
 
 #include <QMessageBox>
 
+#if defined(Q_OS_ANDROID)
+#include "qmidictlActionBar.h"
+#include <QApplication>
+#include <QStyleFactory>
+#endif
 
 // Possible cubic-root optimization.
 // (borrowed from metamerist.com)
@@ -98,6 +101,7 @@ qmidictlMainForm::qmidictlMainForm (
 	m_ui.jogWheelDial->setStyle(m_pDialStyle);
 
 #if defined(Q_OS_ANDROID)
+
 	// Special stuff for the android platform.
 	m_ui.optionsAction->setIcon(QIcon(":/images/actionOptions.png"));
 	m_ui.configureAction->setIcon(QIcon(":/images/actionConfigure.png"));
@@ -118,8 +122,12 @@ qmidictlMainForm::qmidictlMainForm (
 	m_pActionBar->addButton(m_ui.aboutAction);
 	m_pActionBar->addButton(m_ui.exitAction);
 	m_ui.MainCentralLayout->insertWidget(0, m_pActionBar);
+
 #else
+
+	// No stuff for non-android platforms...
 	m_pActionBar = NULL;
+
 #endif
 
 	// Pseudo-singleton reference setup.

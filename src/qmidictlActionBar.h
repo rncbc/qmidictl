@@ -22,7 +22,7 @@
 #ifndef __qmidictlActionBar_h
 #define __qmidictlActionBar_h
 
-/* This code is borrowed/adapted from actionbar.h
+/* This code is borrowed, stirred and adapted from actionbar.h
  *
  * https://github.com/mbnoimi/QtActionBar.git
  *
@@ -54,6 +54,7 @@ class QToolButton;
 class QLabel;
 class QMenu;
 
+class QStyleOption;
 
 /**
  * Toolbar similar to Android's Action Bar, can also be used on Desktop OS.
