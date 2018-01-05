@@ -67,9 +67,9 @@ qmidictlActionBar::qmidictlActionBar ( QWidget *parent ) : QWidget(parent)
 {
 	// Create layout
 	m_layout = new QHBoxLayout(this);
-	m_layout->setSpacing(0);
-	m_layout->setMargin(2);
-	m_layout->setContentsMargins(0, 0, 0, 0);
+	m_layout->setSpacing(8);
+	m_layout->setMargin(8);
+//	m_layout->setContentsMargins(0, 0, 0, 0);
 	m_layout->setSizeConstraint(QLayout::SetNoConstraint);
 
 	// App Navigation/Menu Icon
@@ -88,7 +88,7 @@ qmidictlActionBar::qmidictlActionBar ( QWidget *parent ) : QWidget(parent)
 	// View Control Button
 	m_appTitle = new QLabel();
 	const QFont& font = QWidget::font();
-	m_appTitle->setFont(QFont(font.family(), font.pointSize(), 75));
+	m_appTitle->setFont(QFont(font.family(), font.pointSize() + 1, 75));
 	m_layout->addWidget(m_appTitle);
 
 	// Spacer
@@ -154,7 +154,6 @@ void qmidictlActionBar::setTitle ( const QString& title )
 		m_appButton->setMenu(m_appMenu);
 	} else {
 		m_appButton->setIcon(m_appIcon);
-		m_appButton->setToolTip(QString());
 		m_appButton->setMenu(NULL);
 	}
 

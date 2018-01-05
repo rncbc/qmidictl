@@ -46,10 +46,10 @@ int main ( int argc, char *argv[] )
     app.setApplicationDisplayName(
 		QMIDICTL_TITLE " - " + QObject::tr(QMIDICTL_SUBTITLE));
 #endif
-
+#if defined(Q_OS_ANDROID)
 	const QFont& font = app.font();
 	app.setFont(QFont(font.family(), font.pointSize() - 1));
-
+#endif
 	qmidictlOptions opt;
 	if (!opt.parse_args(app.arguments())) {
 		app.quit();
