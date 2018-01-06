@@ -9,6 +9,7 @@ for Windows (http://nerds.de).
 Website:
 
   http://qmidictl.sourceforge.net
+  https://qmidictl.sourceforge.io
 
 Project page:
 
@@ -75,7 +76,7 @@ qmidictl is run.
 Bugs
 ----
 
-Plenty still, after all this is alpha software ;)
+Probably plenty still, QjackCtl maybe considered on beta stage already.
 
 
 Support
