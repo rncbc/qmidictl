@@ -1,7 +1,7 @@
 // qmidictlMixerStrip.cpp
 //
 /****************************************************************************
-   Copyright (C) 2010, rncbc aka Rui Nuno Capela. All rights reserved.
+   Copyright (C) 2010-2018, rncbc aka Rui Nuno Capela. All rights reserved.
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
@@ -37,6 +37,18 @@ qmidictlMixerStrip::qmidictlMixerStrip (
 	// Strip number.
 	m_iStrip = 0;
 	m_iBusy  = 0;
+
+#if defined(Q_OS_ANDROID)
+	// Specific R/M/S color overlays...
+	QPalette pal = QWidget::palette();
+	pal.setColor(QPalette::HighlightedText, Qt::black);
+	pal.setColor(QPalette::Highlight, Qt::red);
+	m_ui.recordButton->setPalette(pal);
+	pal.setColor(QPalette::Highlight, Qt::yellow);
+	m_ui.muteButton->setPalette(pal);
+	pal.setColor(QPalette::Highlight, Qt::cyan);
+	m_ui.soloButton->setPalette(pal);
+#endif
 
 	// UI widgets signal/slot connections...
 	QObject::connect(m_ui.recordButton,

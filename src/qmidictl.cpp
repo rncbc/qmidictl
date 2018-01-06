@@ -46,11 +46,13 @@ int main ( int argc, char *argv[] )
 	Q_INIT_RESOURCE(qmidictl);
 
 	QApplication app(argc, argv);
+
 #if QT_VERSION >= 0x050100
     app.setApplicationName(QMIDICTL_TITLE);
     app.setApplicationDisplayName(
 		QMIDICTL_TITLE " - " + QObject::tr(QMIDICTL_SUBTITLE));
 #endif
+
 	qmidictlOptions opt;
 	if (!opt.parse_args(app.arguments())) {
 		app.quit();
@@ -81,7 +83,7 @@ int main ( int argc, char *argv[] )
 #else
 	w.show();
 #endif
-        w.setup();
+	w.setup();
 
 	return app.exec();
 }

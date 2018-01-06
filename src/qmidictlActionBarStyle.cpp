@@ -47,7 +47,7 @@
 
 #include <QApplication>
 #include <QScreen>
-
+#include <QPainter>
 
 qmidictlActionBarStyle::qmidictlActionBarStyle ( QStyle *style )
 	: QProxyStyle(style)
@@ -71,17 +71,30 @@ void qmidictlActionBarStyle::drawComplexControl (
 {
 	if (control == CC_ToolButton) {
 		const QStyleOptionToolButton *opt
-			= reinterpret_cast<const QStyleOptionToolButton *> (option);
+			= qstyleoption_cast<const QStyleOptionToolButton *> (option);
 		if (opt) {
 			QStyleOptionToolButton newOption(*opt);
-			newOption.state = State_AutoRaise;
-			if (opt->state & State_Enabled)
-				newOption.state |= State_Enabled;
+		//	newOption.state = State_AutoRaise;
+		//	if (opt->state & State_Enabled)
+		//		newOption.state |= State_Enabled;
+			if (opt->state | State_DownArrow)
+				newOption.state &= ~State_DownArrow;
 			if (opt->state & (State_Sunken | State_On)) {
+				newOption.palette.setBrush(
+					QPalette::ButtonText, newOption.palette.highlightedText());
 				newOption.palette.setBrush(
 					QPalette::Button, newOption.palette.highlight());
 			}
 			QProxyStyle::drawComplexControl(control, &newOption, painter, widget);
+		#if defined(Q_OS_ANDROID)
+			if (opt->state & (State_Sunken | State_On)) {
+				QColor over = newOption.palette.color(QPalette::Highlight);
+				over.setAlpha(120);
+				painter->save();
+				painter->fillRect(newOption.rect.adjusted(+8, +8, -8, -8), over);
+				painter->restore();
+			}
+		#endif
 			return;
 		}
 	}
@@ -90,26 +103,39 @@ void qmidictlActionBarStyle::drawComplexControl (
 }
 
 
-void qmidictlActionBarStyle::drawControl ( ControlElement element,
+void qmidictlActionBarStyle::drawControl ( ControlElement control,
 	const QStyleOption *option, QPainter *painter, const QWidget *widget ) const
 {
-	if (element == CE_PushButton) {
+	if (control == CE_PushButton) {
 		const QStyleOptionButton *opt
 			= qstyleoption_cast<const QStyleOptionButton *> (option);
 		if (opt) {
 			QStyleOptionButton newOption(*opt);
 			if (opt->state | State_HasFocus)
 				newOption.state &= ~State_HasFocus;
+			if (opt->state | State_DownArrow)
+				newOption.state &= ~State_DownArrow;
 			if (opt->state & (State_Sunken | State_On)) {
+				newOption.palette.setBrush(
+					QPalette::ButtonText, newOption.palette.highlightedText());
 				newOption.palette.setBrush(
 					QPalette::Button, newOption.palette.highlight());
 			}
-			QProxyStyle::drawControl(element, &newOption, painter, widget);
+			QProxyStyle::drawControl(control, &newOption, painter, widget);
+		#if defined(Q_OS_ANDROID)
+			if (opt->state & (State_Sunken | State_On)) {
+				QColor over = newOption.palette.color(QPalette::Highlight);
+				over.setAlpha(120);
+				painter->save();
+				painter->fillRect(newOption.rect.adjusted(+8, +8, -8, -8), over);
+				painter->restore();
+			}
+		#endif
 			return;
 		}
 	}
 
-	QProxyStyle::drawControl(element, option, painter, widget);
+	QProxyStyle::drawControl(control, option, painter, widget);
 }
 
 
