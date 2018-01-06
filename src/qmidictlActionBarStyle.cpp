@@ -49,6 +49,7 @@
 #include <QScreen>
 #include <QPainter>
 
+
 qmidictlActionBarStyle::qmidictlActionBarStyle ( QStyle *style )
 	: QProxyStyle(style)
 {
