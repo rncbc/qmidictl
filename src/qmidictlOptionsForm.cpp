@@ -25,6 +25,7 @@
 #include "qmidictlOptions.h"
 
 #include <QMessageBox>
+#include <QLineEdit>
 
 
 //----------------------------------------------------------------------------
@@ -44,9 +45,17 @@ qmidictlOptionsForm::qmidictlOptionsForm (
 	m_ui.InterfaceComboBox->addItem(m_sDefInterface);
 	m_ui.InterfaceComboBox->addItem("wlan0");
 	m_ui.InterfaceComboBox->addItem("eth0");
+#if defined (Q_OS_ANDROID)
+	m_ui.InterfaceComboBox->setMinimumWidth(192);
+	m_ui.InterfaceComboBox->lineEdit()->setMinimumHeight(48);
+#endif
 
 	m_ui.UdpAddrComboBox->clear();
 	m_ui.UdpAddrComboBox->addItem(QMIDICTL_UDP_ADDR);
+#if defined (Q_OS_ANDROID)
+	m_ui.UdpAddrComboBox->setMinimumWidth(192);
+	m_ui.UdpAddrComboBox->lineEdit()->setMinimumHeight(48);
+#endif
 
 	m_ui.UdpPortSpinBox->setValue(QMIDICTL_UDP_PORT);
 
