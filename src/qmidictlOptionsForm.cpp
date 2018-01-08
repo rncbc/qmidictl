@@ -1,7 +1,7 @@
 // qmidictlOptionsForm.cpp
 //
 /****************************************************************************
-   Copyright (C) 2010-2015, rncbc aka Rui Nuno Capela. All rights reserved.
+   Copyright (C) 2010-2018, rncbc aka Rui Nuno Capela. All rights reserved.
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
@@ -73,7 +73,11 @@ qmidictlOptionsForm::qmidictlOptionsForm (
 	m_iDirtyCount = 0;
 
 	// Try to fix window geometry.
+#if defined(Q_OS_ANDROID) || defined(Q_OS_SYMBIAN)
+	showMaximized();
+#else
 	adjustSize();
+#endif
 
 	// UI signal/slot connections...
 	QObject::connect(m_ui.InterfaceComboBox,

@@ -3,7 +3,7 @@
  <author>rncbc aka Rui Nuno Capela</author>
  <comment>QmidiCtl - A MIDI remote controller via IP/UDP multicast.
 
-   Copyright (C) 2010-2011, rncbc aka Rui Nuno Capela. All rights reserved.
+   Copyright (C) 2010-2018, rncbc aka Rui Nuno Capela. All rights reserved.
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
@@ -27,7 +27,7 @@
     <x>0</x>
     <y>0</y>
     <width>320</width>
-    <height>180</height>
+    <height>240</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -112,24 +112,37 @@
        </property>
       </widget>
      </item>
-	 <item row="3" column="1" colspan="2">
+     <item row="3" column="1" colspan="2">
       <widget class="QComboBox" name="ParamComboBox"/>
      </item>
-	 <item row="4" column="1">
+     <item row="4" column="1">
       <widget class="QCheckBox" name="ParamTrackCheckBox">
        <property name="text">
-		<string>&amp;Track</string>
+        <string>&amp;Track</string>
        </property>
       </widget>
      </item>
-	 <item row="4" column="2">
-	  <widget class="QCheckBox" name="LogarithmicCheckBox">
-	   <property name="text">
-		<string>&amp;Logarithmic</string>
-	   </property>
-	  </widget>
-	 </item>
-	</layout>
+     <item row="4" column="2">
+      <widget class="QCheckBox" name="LogarithmicCheckBox">
+       <property name="text">
+       <string>&amp;Logarithmic</string>
+       </property>
+      </widget>
+     </item>
+   </layout>
+   </item>
+   <item>
+    <spacer>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>8</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
    </item>
    <item>
     <widget class="QDialogButtonBox" name="DialogButtonBox">
@@ -137,13 +150,13 @@
       <enum>Qt::Vertical</enum>
      </property>
      <property name="standardButtons">
-	  <set>QDialogButtonBox::Reset|QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+      <set>QDialogButtonBox::Reset|QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
      </property>
     </widget>
    </item>
   </layout>
  </widget>
- <layoutdefault spacing="4" margin="4"/>
+ <layoutdefault spacing="4" margin="8"/>
  <tabstops>
   <tabstop>CommandComboBox</tabstop>
   <tabstop>ControlTypeComboBox</tabstop>

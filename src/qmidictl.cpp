@@ -48,8 +48,8 @@ int main ( int argc, char *argv[] )
 	QApplication app(argc, argv);
 
 #if QT_VERSION >= 0x050100
-    app.setApplicationName(QMIDICTL_TITLE);
-    app.setApplicationDisplayName(
+	app.setApplicationName(QMIDICTL_TITLE);
+	app.setApplicationDisplayName(
 		QMIDICTL_TITLE " - " + QObject::tr(QMIDICTL_SUBTITLE));
 #endif
 
@@ -60,8 +60,8 @@ int main ( int argc, char *argv[] )
 	}
 
 #if defined(Q_OS_ANDROID)
-    QStyle *pAndroidStyle = QStyleFactory::create("Android");
-    app.setStyle(new qmidictlActionBarStyle(pAndroidStyle));
+	QStyle *pAndroidStyle = QStyleFactory::create("Android");
+	app.setStyle(new qmidictlActionBarStyle(pAndroidStyle));
 	const QFont& font = app.font();
 	app.setFont(QFont(font.family(), font.pointSize() - 1));
 #endif
@@ -79,6 +79,8 @@ int main ( int argc, char *argv[] )
 			appUi->SetOrientationL(CAknAppUi::EAppUiOrientationLandscape);
 		}
 	);
+#endif
+#if defined(Q_OS_ANDROID) || defined(Q_OS_SYMBIAN)
 	w.showMaximized();
 #else
 	w.show();

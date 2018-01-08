@@ -36,8 +36,6 @@
 
 #if defined(Q_OS_ANDROID)
 #include "qmidictlActionBar.h"
-#include <QApplication>
-#include <QStyleFactory>
 #endif
 
 // Possible cubic-root optimization.
@@ -106,7 +104,7 @@ qmidictlMainForm::qmidictlMainForm (
 	m_ui.optionsAction->setIcon(QIcon(":/images/actionOptions.png"));
 	m_ui.configureAction->setIcon(QIcon(":/images/actionConfigure.png"));
 	m_ui.aboutAction->setIcon(QIcon(":/images/actionAbout.png"));
-	m_ui.exitAction->setIcon(QIcon(":/images/actionExit.png"));
+//	m_ui.exitAction->setIcon(QIcon(":/images/actionExit.png"));
 
 	// Special action-bar for the android stuff.
 	m_pActionBar = new qmidictlActionBar();
@@ -116,11 +114,17 @@ qmidictlMainForm::qmidictlMainForm (
 #else
 	m_pActionBar->setTitle(QMIDICTL_TITLE " - " + tr(QMIDICTL_SUBTITLE));
 #endif
-	m_pActionBar->addMenuItems(m_ui.MainMenuBar->actions());
+	// Action-bar left-drop-down menu items...
+	m_pActionBar->addMenuItem(m_ui.optionsAction);
+	m_pActionBar->addMenuItem(m_ui.configureAction);
+	m_pActionBar->addMenuItem(m_ui.aboutAction);
+//	m_pActionBar->addMenuItem(m_ui.exitAction);
+	// Action-bar right-ellipsis button items...
 	m_pActionBar->addButton(m_ui.optionsAction);
 	m_pActionBar->addButton(m_ui.configureAction);
 	m_pActionBar->addButton(m_ui.aboutAction);
-	m_pActionBar->addButton(m_ui.exitAction);
+//	m_pActionBar->addButton(m_ui.exitAction);
+	// Make it at the top...
 	m_ui.MainCentralLayout->insertWidget(0, m_pActionBar);
 
 #else
