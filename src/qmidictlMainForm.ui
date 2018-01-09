@@ -39,33 +39,27 @@
   <widget class="QWidget" name="MainCentralWidget">
    <layout class="QVBoxLayout" name="MainCentralLayout">
     <property name="spacing">
-     <number>2</number>
+     <number>8</number>
     </property>
-    <property name="leftMargin">
-     <number>2</number>
-    </property>
-    <property name="topMargin">
-     <number>2</number>
-    </property>
-    <property name="rightMargin">
-     <number>2</number>
-    </property>
-    <property name="bottomMargin">
-     <number>2</number>
+    <property name="margin">
+     <number>0</number>
     </property>
     <item>
      <layout class="QHBoxLayout">
       <item>
        <layout class="QVBoxLayout">
+        <property name="spacing">
+         <number>8</number>
+        </property>
+        <property name="margin">
+         <number>8</number>
+        </property>
         <item>
          <layout class="QHBoxLayout">
           <property name="spacing">
            <number>8</number>
           </property>
-          <property name="leftMargin">
-           <number>8</number>
-          </property>
-          <property name="rightMargin">
+          <property name="margin">
            <number>8</number>
           </property>
           <item>
@@ -86,7 +80,7 @@
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
-            <property name="sizeHint" stdset="0">
+            <property name="sizeHint">
              <size>
               <width>40</width>
               <height>20</height>
@@ -136,7 +130,7 @@
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
-            <property name="sizeHint" stdset="0">
+            <property name="sizeHint">
              <size>
               <width>40</width>
               <height>20</height>
@@ -281,7 +275,7 @@
      <x>0</x>
      <y>0</y>
      <width>640</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
    <addaction name="optionsAction"/>

@@ -67,7 +67,7 @@ qmidictlActionBar::qmidictlActionBar ( QWidget *parent ) : QWidget(parent)
 {
 	// Create layout
 	m_layout = new QHBoxLayout(this);
-	m_layout->setSpacing(8);
+	m_layout->setSpacing(16);
 	m_layout->setMargin(8);
 //	m_layout->setContentsMargins(0, 0, 0, 0);
 	m_layout->setSizeConstraint(QLayout::SetNoConstraint);
