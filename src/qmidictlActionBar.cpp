@@ -67,7 +67,7 @@ qmidictlActionBar::qmidictlActionBar ( QWidget *parent ) : QWidget(parent)
 {
 	// Create layout
 	m_layout = new QHBoxLayout(this);
-	m_layout->setSpacing(16);
+	m_layout->setSpacing(24);
 	m_layout->setMargin(8);
 //	m_layout->setContentsMargins(0, 0, 0, 0);
 	m_layout->setSizeConstraint(QLayout::SetNoConstraint);
@@ -230,7 +230,7 @@ void qmidictlActionBar::adjustContent (void)
 
 void qmidictlActionBar::addMenuItem ( QAction *action )
 {
-	QWidget::addAction(action);
+//	QWidget::addAction(action);
 	m_appMenu->addAction(action);
 
 	adjustMenu();
@@ -246,7 +246,7 @@ void qmidictlActionBar::addMenuItems ( QList<QAction*> actions )
 
 void qmidictlActionBar::removeMenuItem ( QAction *action )
 {
-	QWidget::removeAction(action);
+//	QWidget::removeAction(action);
 	m_appMenu->removeAction(action);
 
 	adjustMenu();

@@ -68,8 +68,8 @@ qmidictlOptionsForm::qmidictlOptionsForm (
 	m_pActionBar->addButton(m_pCancelAction);
 	// Make the action-bar colors...
 	QPalette pal(m_pActionBar->palette());
-	pal.setColor(QPalette::Foreground, QColor( 75,  75,  75));
-	pal.setColor(QPalette::Background, QColor(205, 225, 255));
+	pal.setColor(QPalette::Foreground, QColor( 85,  85,  85));
+	pal.setColor(QPalette::Background, QColor(220, 240, 255));
 	m_pActionBar->setPalette(pal);
 	// Make it at the top...
 	m_ui.MainCentralLayout->insertWidget(0, m_pActionBar);

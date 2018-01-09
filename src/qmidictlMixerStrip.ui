@@ -30,19 +30,34 @@
     <height>180</height>
    </rect>
   </property>
-  <property name="maximumSize">
-   <size>
-    <width>120</width>
-    <height>800</height>
-   </size>
-  </property>
   <property name="minimumSize">
    <size>
     <width>40</width>
     <height>160</height>
    </size>
   </property>
+  <property name="maximumSize">
+   <size>
+    <width>120</width>
+    <height>800</height>
+   </size>
+  </property>
   <layout class="QGridLayout">
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>8</number>
+   </property>
+   <property name="rightMargin">
+    <number>8</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <property name="spacing">
+    <number>8</number>
+   </property>
    <item row="0" column="0" rowspan="5">
     <widget class="QSlider" name="stripSlider">
      <property name="maximum">
@@ -65,7 +80,7 @@
       <string>1</string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignCenter</set>
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
      </property>
     </widget>
    </item>
