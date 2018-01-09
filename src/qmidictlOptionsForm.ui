@@ -46,14 +46,14 @@
    </property>
    <item>
     <layout class="QHBoxLayout">
+     <property name="spacing">
+      <number>8</number>
+     </property>
+     <property name="margin">
+      <number>8</number>
+     </property>
      <item>
       <layout class="QVBoxLayout">
-       <property name="spacing">
-        <number>8</number>
-       </property>
-       <property name="margin">
-        <number>8</number>
-       </property>
        <item>
         <widget class="QGroupBox" name="MidiGroupBox">
          <property name="font">
