@@ -27,6 +27,11 @@
 
 #include <QMessageBox>
 
+#if defined(Q_OS_ANDROID)
+#include "qmidictlActionBar.h"
+#include <QAction>
+#endif
+
 
 //----------------------------------------------------------------------------
 // qmidictlMidiControlForm -- UI wrapper form.
@@ -38,6 +43,36 @@ qmidictlMidiControlForm::qmidictlMidiControlForm (
 {
 	// Setup UI struct...
 	m_ui.setupUi(this);
+
+#if defined(Q_OS_ANDROID)
+
+	// Special actions for the android stuff.
+	m_pBackAction = new QAction(QIcon(":/images/actionBack.png"), tr("Back"),  this);
+	m_pResetAction = new QAction(QIcon(":/images/actionReset.png"), tr("Reset"),  this);
+	m_pAcceptAction = new QAction(QIcon(":/images/actionAccept.png"), tr("Done"),  this);
+	m_pCancelAction = new QAction(QIcon(":/images/actionCancel.png"), tr("Cancel"), this);
+
+	QObject::connect(m_pBackAction, SIGNAL(triggered(bool)), this, SLOT(reject()));
+	QObject::connect(m_pResetAction, SIGNAL(triggered(bool)), this, SLOT(reset()));
+	QObject::connect(m_pAcceptAction, SIGNAL(triggered(bool)), this, SLOT(accept()));
+	QObject::connect(m_pCancelAction, SIGNAL(triggered(bool)), this, SLOT(reject()));
+
+	// Special action-bar for the android stuff.
+	m_pActionBar = new qmidictlActionBar();
+	m_pActionBar->setIcon(QDialog::windowIcon());
+	m_pActionBar->setTitle(QDialog::windowTitle());
+	// Action-bar back-button...
+	m_pActionBar->addMenuItem(m_pBackAction);
+	// Action-bar right-overflow button items...
+	m_pActionBar->addButton(m_pResetAction);
+	m_pActionBar->addButton(m_pAcceptAction);
+	m_pActionBar->addButton(m_pCancelAction);
+	// Make it at the top...
+	m_ui.MainCentralLayout->insertWidget(0, m_pActionBar);
+
+	m_ui.DialogButtonBox->hide();
+
+#endif
 
 	// Populate command list.
 	m_ui.CommandComboBox->addItem(QIcon(":/images/formReset.png"),
@@ -116,13 +151,27 @@ qmidictlMidiControlForm::qmidictlMidiControlForm (
 		SLOT(change()));
 	QObject::connect(m_ui.DialogButtonBox,
 		SIGNAL(clicked(QAbstractButton *)),
-		SLOT(click(QAbstractButton *)));
+		SLOT(buttonClick(QAbstractButton *)));
 	QObject::connect(m_ui.DialogButtonBox,
 		SIGNAL(accepted()),
 		SLOT(accept()));
 	QObject::connect(m_ui.DialogButtonBox,
 		SIGNAL(rejected()),
 		SLOT(reject()));
+}
+
+
+// Destructor.
+qmidictlMidiControlForm::~qmidictlMidiControlForm (void)
+{
+#if defined(Q_OS_ANDROID)
+	// No need for special android stuff anymore.
+	delete m_pCancelAction;
+	delete m_pAcceptAction;
+	delete m_pResetAction;
+	delete m_pBackAction;
+	delete m_pActionBar;
+#endif
 }
 
 
@@ -324,7 +373,7 @@ void qmidictlMidiControlForm::change (void)
 
 
 // Reset settings (action button slot).
-void qmidictlMidiControlForm::click ( QAbstractButton *pButton )
+void qmidictlMidiControlForm::buttonClick ( QAbstractButton *pButton )
 {
 #ifdef CONFIG_DEBUG
 	qDebug("qmidictlMidiControlForm::buttonClick(%p)", pButton);

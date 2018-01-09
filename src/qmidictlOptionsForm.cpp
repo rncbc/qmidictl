@@ -27,6 +27,10 @@
 #include <QMessageBox>
 #include <QLineEdit>
 
+#if defined(Q_OS_ANDROID)
+#include "qmidictlActionBar.h"
+#endif
+
 
 //----------------------------------------------------------------------------
 // qmidictlOptionsForm -- UI wrapper form.
@@ -38,6 +42,36 @@ qmidictlOptionsForm::qmidictlOptionsForm (
 {
 	// Setup UI struct...
 	m_ui.setupUi(this);
+
+#if defined(Q_OS_ANDROID)
+
+	// Special actions for the android stuff.
+	m_pBackAction = new QAction(QIcon(":/images/actionBack.png"), tr("Back"),  this);
+	m_pResetAction = new QAction(QIcon(":/images/actionReset.png"), tr("Reset"),  this);
+	m_pAcceptAction = new QAction(QIcon(":/images/actionAccept.png"), tr("Done"),  this);
+	m_pCancelAction = new QAction(QIcon(":/images/actionCancel.png"), tr("Cancel"), this);
+
+	QObject::connect(m_pBackAction, SIGNAL(triggered(bool)), this, SLOT(reject()));
+	QObject::connect(m_pResetAction, SIGNAL(triggered(bool)), this, SLOT(reset()));
+	QObject::connect(m_pAcceptAction, SIGNAL(triggered(bool)), this, SLOT(accept()));
+	QObject::connect(m_pCancelAction, SIGNAL(triggered(bool)), this, SLOT(reject()));
+
+	// Special action-bar for the android stuff.
+	m_pActionBar = new qmidictlActionBar();
+	m_pActionBar->setIcon(QDialog::windowIcon());
+	m_pActionBar->setTitle(QDialog::windowTitle());
+	// Action-bar back-button...
+	m_pActionBar->addMenuItem(m_pBackAction);
+	// Action-bar right-overflow button items...
+	m_pActionBar->addButton(m_pResetAction);
+	m_pActionBar->addButton(m_pAcceptAction);
+	m_pActionBar->addButton(m_pCancelAction);
+	// Make it at the top...
+	m_ui.MainCentralLayout->insertWidget(0, m_pActionBar);
+
+	m_ui.DialogButtonBox->hide();
+
+#endif
 
 	// Initialize the dialog widgets with deafult settings...
 	m_sDefInterface = tr("(Any)");
@@ -113,6 +147,20 @@ qmidictlOptionsForm::qmidictlOptionsForm (
 }
 
 
+// Destructor.
+qmidictlOptionsForm::~qmidictlOptionsForm (void)
+{
+#if defined(Q_OS_ANDROID)
+	// No need for special android stuff anymore.
+	delete m_pCancelAction;
+	delete m_pAcceptAction;
+	delete m_pResetAction;
+	delete m_pBackAction;
+	delete m_pActionBar;
+#endif
+}
+
+
 // Change settings (anything else slot).
 void qmidictlOptionsForm::change (void)
 {
@@ -173,18 +221,42 @@ void qmidictlOptionsForm::reject (void)
 }
 
 
-// Reset options (generic button slot).
+
+// Reset settings (action button slot).
 void qmidictlOptionsForm::buttonClick ( QAbstractButton *pButton )
 {
-	const QDialogButtonBox::ButtonRole buttonRole
+#ifdef CONFIG_DEBUG
+	qDebug("qmidictlOptionsForm::buttonClick(%p)", pButton);
+#endif
+
+	QDialogButtonBox::ButtonRole role
 		= m_ui.DialogButtonBox->buttonRole(pButton);
-	if (buttonRole == QDialogButtonBox::ResetRole) {
-		m_ui.InterfaceComboBox->setCurrentIndex(0);
-		m_ui.UdpAddrComboBox->setCurrentIndex(0);
-		m_ui.UdpPortSpinBox->setValue(QMIDICTL_UDP_PORT);
-	}
+	if ((role & QDialogButtonBox::ResetRole) == QDialogButtonBox::ResetRole)
+		reset();
+}
+
+
+// Reset options (generic button slot).
+void qmidictlOptionsForm::reset (void)
+{
+#ifdef CONFIG_DEBUG
+	qDebug("qmidictlOptionsForm::reset()");
+#endif
+
+	if (QMessageBox::warning(this,
+		QDialog::windowTitle(),
+		tr("All settings will be reset to the original default.\n\n"
+		"Are you sure to apply the changes?"),
+		QMessageBox::Reset |
+		QMessageBox::Cancel) == QMessageBox::Cancel)
+		return;
+
+	m_ui.MmcDeviceSpinBox->setValue(QMIDICTL_MMC_DEVICE);
+
+	m_ui.InterfaceComboBox->setCurrentIndex(0);
+	m_ui.UdpAddrComboBox->setCurrentIndex(0);
+	m_ui.UdpPortSpinBox->setValue(QMIDICTL_UDP_PORT);
 }
 
 
 // end of qmidictlOptionsForm.cpp
-

@@ -6,7 +6,10 @@
 		<file>images/actionOptions.png</file>
 		<file>images/actionConfigure.png</file>
 		<file>images/actionAbout.png</file>
-		<file>images/actionExit.png</file>
+		<file>images/actionBack.png</file>
+		<file>images/actionReset.png</file>
+		<file>images/actionAccept.png</file>
+		<file>images/actionCancel.png</file>
 		<file>images/formReset.png</file>
 		<file>images/formRewind.png</file>
 		<file>images/formForward.png</file>

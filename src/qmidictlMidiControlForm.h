@@ -25,6 +25,13 @@
 #include "ui_qmidictlMidiControlForm.h"
 
 
+// Forward declarations.
+#if defined(Q_OS_ANDROID)
+class qmidictlActionBar;
+class QAction;
+#endif
+
+
 //----------------------------------------------------------------------------
 // qmidictlMidiControlForm -- UI wrapper form.
 
@@ -37,13 +44,16 @@ public:
 	// Constructor.
 	qmidictlMidiControlForm(QWidget *pParent = 0, Qt::WindowFlags wflags = 0);
 
+	// Destructor.
+	~qmidictlMidiControlForm();
+
 protected slots:
 
 	void activateCommand(const QString&);
 	void activateControlType(const QString&);
 	void change();
 
-	void click(QAbstractButton *);
+	void buttonClick(QAbstractButton *);
 
 	void accept();
 	void reject();
@@ -57,6 +67,16 @@ private:
 	// Instance variables.
 	int m_iDirtyCount;
 	int m_iDirtySetup;
+
+#if defined(Q_OS_ANDROID)
+	// Special action-bar for the android stuff.
+	qmidictlActionBar *m_pActionBar;
+
+	QAction *m_pBackAction;
+	QAction *m_pResetAction;
+	QAction *m_pAcceptAction;
+	QAction *m_pCancelAction;
+#endif
 };
 
 

@@ -29,7 +29,9 @@
 class qmidictlUdpDevice;
 class qmidictlMixerStrip;
 class qmidictlDialStyle;
+#if defined(Q_OS_ANDROID)
 class qmidictlActionBar;
+#endif
 
 
 //----------------------------------------------------------------------------
@@ -224,8 +226,10 @@ private:
 	// Special style for the jog wheel dial.
 	qmidictlDialStyle *m_pDialStyle;
 
+#if defined(Q_OS_ANDROID)
 	// Special action-bar for the android stuff.
 	qmidictlActionBar *m_pActionBar;
+#endif
 
 	// Kind-of singleton reference.
 	static qmidictlMainForm *g_pMainForm;

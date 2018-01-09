@@ -168,17 +168,24 @@ public:
 	 */
 	void removeButton(QAction *action);
 
-	/**
-	 * Adjust the number of buttons in the action bar. Buttons that don't fit go into the overflow menu.
-	 * You need to call this method after adding, removing or changing the visibility of an action.
-	 */
-	void adjustContent();
-
 public slots:
 	/** Can be used to open the overflow menu */
 	void openOverflowMenu();
 
 protected:
+	/**
+	 * Adjust the menu icon in the action bar. A menu with just
+	 * one single item will show its action icon.
+	 */
+	void adjustMenu();
+
+	/**
+	 * Adjust the number of buttons in the action bar. Buttons that don't
+	 * fit go into the overflow menu. You need to call this method after
+	 * adding, removing or changing the visibility of an action.
+	 */
+	void adjustContent();
+
 	/**
 	 * Overrides the paintEvent method to draw background color properly.
 	 */

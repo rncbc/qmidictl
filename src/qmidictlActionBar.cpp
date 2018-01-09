@@ -72,9 +72,6 @@ qmidictlActionBar::qmidictlActionBar ( QWidget *parent ) : QWidget(parent)
 //	m_layout->setContentsMargins(0, 0, 0, 0);
 	m_layout->setSizeConstraint(QLayout::SetNoConstraint);
 
-	// App Navigation/Menu Icon
-	m_appIcon = QIcon(":/images/actionMenu.png");
-
 	// App Navigation/Menu Button
 	m_appButton = new QToolButton();
 	m_appButton->setAutoRaise(true);
@@ -148,22 +145,37 @@ const QIcon& qmidictlActionBar::icon (void) const
 void qmidictlActionBar::setTitle ( const QString& title )
 {
 	m_appTitle->setText(title);
-
-	if (!m_appMenu->isEmpty()) {
-		m_appButton->setIcon(QIcon(":/images/actionMenu.png"));
-		m_appButton->setMenu(m_appMenu);
-	} else {
-		m_appButton->setIcon(m_appIcon);
-		m_appButton->setMenu(NULL);
-	}
-
-	adjustContent();
 }
 
 
 QString qmidictlActionBar::title (void) const
 {
 	return m_appTitle->text();
+}
+
+
+void qmidictlActionBar::adjustMenu (void)
+{
+	QObject::disconnect(m_appButton, SIGNAL(clicked(bool)), NULL, NULL);
+
+	if (!m_appMenu->isEmpty()) {
+		const QList<QAction *>& actions
+			= m_appMenu->actions();
+		if (actions.count() > 1) {
+			m_appButton->setIcon(QIcon(":/images/actionMenu.png"));
+			m_appButton->setMenu(m_appMenu);
+		} else {
+			QAction *action = actions.first();
+			m_appButton->setIcon(action->icon());
+			m_appButton->setMenu(NULL);
+			QObject::connect(m_appButton,
+				SIGNAL(clicked(bool)),
+				action, SLOT(trigger()));
+		}
+	} else {
+		m_appButton->setIcon(m_appIcon);
+		m_appButton->setMenu(NULL);
+	}
 }
 
 
@@ -175,10 +187,7 @@ void qmidictlActionBar::adjustContent (void)
 	const int screenWidth = QApplication::desktop()->screen()->width();
 #endif
 
-	if (!m_appMenu->isEmpty()) {
-		m_appButton->setIcon(QIcon(":/images/actionMenu.png"));
-		m_appButton->setMenu(m_appMenu);
-	}
+	adjustMenu();
 
 	m_overflowButton->hide();
 
@@ -223,8 +232,8 @@ void qmidictlActionBar::addMenuItem ( QAction *action )
 {
 	QWidget::addAction(action);
 	m_appMenu->addAction(action);
-	if (!m_appMenu->isEmpty())
-		m_appButton->setMenu(m_appMenu);
+
+	adjustMenu();
 }
 
 
@@ -239,8 +248,8 @@ void qmidictlActionBar::removeMenuItem ( QAction *action )
 {
 	QWidget::removeAction(action);
 	m_appMenu->removeAction(action);
-	if (m_appMenu->isEmpty())
-		m_appButton->setMenu(NULL);
+
+	adjustMenu();
 }
 
 

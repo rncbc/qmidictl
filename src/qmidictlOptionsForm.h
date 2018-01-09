@@ -24,6 +24,12 @@
 
 #include "ui_qmidictlOptionsForm.h"
 
+// Forward declarations.
+#if defined(Q_OS_ANDROID)
+class qmidictlActionBar;
+class QAction;
+#endif
+
 
 //----------------------------------------------------------------------------
 // qmidictlOptionsForm -- UI wrapper form.
@@ -37,14 +43,18 @@ public:
 	// Constructor.
 	qmidictlOptionsForm(QWidget *pParent = 0, Qt::WindowFlags wflags = 0);
 
+	// Destructor.
+	~qmidictlOptionsForm();
+
 protected slots:
 
 	void change();
 
+	void buttonClick(QAbstractButton *);
+
 	void accept();
 	void reject();
-
-	void buttonClick(QAbstractButton *);
+	void reset();
 
 private:
 
@@ -56,6 +66,16 @@ private:
 
 	// Default (translatable) interface name.
 	QString m_sDefInterface;
+
+#if defined(Q_OS_ANDROID)
+	// Special action-bar for the android stuff.
+	qmidictlActionBar *m_pActionBar;
+
+	QAction *m_pBackAction;
+	QAction *m_pResetAction;
+	QAction *m_pAcceptAction;
+	QAction *m_pCancelAction;
+#endif
 };
 
 
