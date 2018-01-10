@@ -65,6 +65,14 @@
 
 qmidictlActionBar::qmidictlActionBar ( QWidget *parent ) : QWidget(parent)
 {
+#if defined(Q_OS_ANDROID)
+	// Make up the action-bar colors...
+	QPalette pal(QWidget::palette());
+	pal.setColor(QPalette::Foreground, pal.highlightedText().color());
+	pal.setColor(QPalette::Background, pal.highlight().color());
+	QWidget::setPalette(pal);
+#endif
+
 	// Create layout
 	m_layout = new QHBoxLayout(this);
 	m_layout->setSpacing(24);

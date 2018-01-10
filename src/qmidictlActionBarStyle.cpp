@@ -89,7 +89,7 @@ void qmidictlActionBarStyle::drawComplexControl (
 			QProxyStyle::drawComplexControl(control, &newOption, painter, widget);
 		#if defined(Q_OS_ANDROID)
 			if (opt->state & (State_Sunken | State_On)) {
-				QColor over = newOption.palette.color(QPalette::Highlight);
+				QColor over = newOption.palette.highlight().color();
 				over.setAlpha(120);
 				painter->save();
 				painter->fillRect(newOption.rect.adjusted(+8, +8, -8, -8), over);

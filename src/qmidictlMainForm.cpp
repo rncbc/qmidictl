@@ -124,11 +124,6 @@ qmidictlMainForm::qmidictlMainForm (
 	m_pActionBar->addButton(m_ui.configureAction);
 	m_pActionBar->addButton(m_ui.aboutAction);
 //	m_pActionBar->addButton(m_ui.exitAction);
-	// Make up the action-bar colors...
-	QPalette pal(m_pActionBar->palette());
-	pal.setColor(QPalette::Foreground, QColor( 85,  85,  85));
-	pal.setColor(QPalette::Background, QColor(220, 240, 255));
-	m_pActionBar->setPalette(pal);
 	// Make it at the top...
 	m_ui.MainCentralLayout->insertWidget(0, m_pActionBar);
 
