@@ -153,9 +153,6 @@ if test "x$ac_arch" = "xx86_64"; then
    ac_libdirs="$ac_libdirs lib64"
 fi
 
-CFLAGS="-fPIC $CFLAGS"
-CPPFLAGS="-fPIC $CPPFLAGS"
-
 # Prepend alternate dependencies paths.
 for X in $ac_with_paths; do
   if test -d $X/bin; then

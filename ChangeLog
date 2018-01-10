@@ -6,6 +6,7 @@ ChangeLog
 
 GIT HEAD
 
+- A little hardening on the configure (autoconf) macro side.
 - A rather naive attempt to port to the Android-Qt platform;
   also introducing an (Android) Action Bar menu look-a-like.
 
