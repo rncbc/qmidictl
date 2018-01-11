@@ -46,6 +46,10 @@ qmidictlMidiControlForm::qmidictlMidiControlForm (
 
 #if defined(Q_OS_ANDROID)
 
+	// Custom dialog font size...
+	const QFont& font = QDialog::font();
+	QDialog::setFont(QFont(font.family(), font.pointSize() + 1));
+
 	// Special actions for the android stuff.
 	m_pBackAction = new QAction(QIcon(":/images/actionBack.png"), tr("Back"),  this);
 	m_pResetAction = new QAction(QIcon(":/images/actionReset.png"), tr("Reset"),  this);
