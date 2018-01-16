@@ -2,9 +2,14 @@ QmidiCtl - A MIDI Remote Controller via UDP/IP Multicast
 --------------------------------------------------------
 
 QmidiCtl is a MIDI remote controller application that sends MIDI data
-over the network, using UDP/IP multicast. Inspired by multimidicast
-(http://llg.cubic.org/tools) and designed to be compatible with ipMIDI
-for Windows (http://nerds.de).
+over the network, using UDP/IP multicast. Inspired by multimidicast [3]
+and designed to be compatible with ipMIDI for Windows [4].
+
+QmidiCt [1] has been primarily designed for the Maemo [5] enabled
+handheld devices, namely the Nokia N900 [6] and also being promoted
+to the Maemo Package [7] repositories. Nevertheless, QmidiCtl [1]
+may still be found effective as a regular desktop and, ultimately,
+as an Android application as well [8][9].
 
 Website:
 
@@ -94,12 +99,33 @@ web site (http://www.rncbc.org).
 References
 ----------
 
-[1] Qt framework, C++ class library and tools for
+ [1] Qt framework, C++ class library and tools for
      cross-platform application and UI development
      http://qt.io/
 
-[2] GNU General Public License
+ [2] GNU General Public License
      http://www.gnu.org/copyleft/gpl.html
+
+ [3] multimidicast - sends and receives MIDI from ALSA sequencers over network
+     http://llg.cubic.org/tools/multimidicast
+
+ [4] ipMIDI - MIDI over Ethernet ports - send MIDI over your LAN
+     http://nerds.de
+
+ [5] Maemo.org - Home of the Maemo community
+     http://www.maemo.org
+
+ [6] Maemo.org Wiki - Nokia N900
+     http://wiki.maemo.org/Nokia_N900
+
+ [7] Maemo.org - Downloads: QmidiCtl
+     http://maemo.org/downloads/product/Maemo5/qmidictl
+
+ [8] Get it on Google Play Store
+     https://play.google.com/store/apps/details?id=org.rncbc.qmidictl
+
+ [9] Get it on Aptoide App Store
+     https://qmidictl.en.aptoide.com/
 
 
 Enjoy.
