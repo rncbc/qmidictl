@@ -6,6 +6,8 @@ ChangeLog
 
 GIT HEAD
 
+- Fixed all mixer strips for a larger width on main layout.
+
 - Fixed for some g++ >= 8.1.1 warnings and quietness.
 
 - Yes, Android GA is now official.

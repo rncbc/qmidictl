@@ -29,6 +29,7 @@
 
 #if defined(Q_OS_ANDROID)
 #include "qmidictlActionBar.h"
+#include <QAction>
 #endif
 
 

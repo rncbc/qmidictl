@@ -49,6 +49,7 @@
 
 
 // Forward decls.
+class QAction;
 class QHBoxLayout;
 class QToolButton;
 class QLabel;

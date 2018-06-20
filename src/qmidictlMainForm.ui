@@ -60,7 +60,7 @@
            <widget class="QPushButton" name="prevStripPageButton">
             <property name="maximumSize">
              <size>
-              <width>48</width>
+              <width>64</width>
               <height>32</height>
              </size>
             </property>
@@ -86,7 +86,7 @@
            <widget class="QPushButton" name="nextStripPageButton">
             <property name="maximumSize">
              <size>
-              <width>48</width>
+              <width>72</width>
               <height>32</height>
              </size>
             </property>
@@ -120,7 +120,7 @@
         <item>
          <layout class="QHBoxLayout">
           <property name="spacing">
-           <number>4</number>
+           <number>8</number>
           </property>
           <property name="margin">
            <number>0</number>
