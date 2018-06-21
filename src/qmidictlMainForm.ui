@@ -38,244 +38,227 @@
   </property>
   <widget class="QWidget" name="MainCentralWidget">
    <layout class="QVBoxLayout" name="MainCentralLayout">
-    <property name="spacing">
-     <number>8</number>
-    </property>
-    <property name="margin">
-     <number>0</number>
-    </property>
     <item>
-     <layout class="QHBoxLayout">
-      <property name="spacing">
-       <number>8</number>
-      </property>
-      <property name="margin">
-       <number>8</number>
-      </property>
-      <item>
-       <layout class="QVBoxLayout">
+     <layout class="QGridLayout">
+      <item row="0" column="1">
+       <layout class="QHBoxLayout">
+        <property name="spacing">
+         <number>8</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
         <item>
-         <layout class="QHBoxLayout">
-          <item>
-           <widget class="QPushButton" name="prevStripPageButton">
-            <property name="maximumSize">
-             <size>
-              <width>64</width>
-              <height>32</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>&lt;</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <spacer>
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QPushButton" name="nextStripPageButton">
-            <property name="maximumSize">
-             <size>
-              <width>72</width>
-              <height>32</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>&gt;</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
+         <spacer>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
         </item>
         <item>
-         <layout class="QHBoxLayout">
-          <item>
-           <widget class="qmidictlMixerStrip" name="strip1" native="true"/>
-          </item>
-          <item>
-           <widget class="qmidictlMixerStrip" name="strip2" native="true"/>
-          </item>
-          <item>
-           <widget class="qmidictlMixerStrip" name="strip3" native="true"/>
-          </item>
-          <item>
-           <widget class="qmidictlMixerStrip" name="strip4" native="true"/>
-          </item>
-         </layout>
+         <widget class="QLabel" name="midiInTextLabel">
+          <property name="text">
+           <string>MIDI In</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="midiInLedLabel">
+          <property name="pixmap">
+           <pixmap resource="qmidictl.qrc">:/images/ledOff.png</pixmap>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="midiOutTextLabel">
+          <property name="text">
+           <string>Out</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="midiOutLedLabel">
+          <property name="pixmap">
+           <pixmap resource="qmidictl.qrc">:/images/ledOff.png</pixmap>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>
-      <item>
-       <layout class="QVBoxLayout">
+      <item row="1" column="0">
+       <layout class="QHBoxLayout">
         <item>
-         <layout class="QHBoxLayout">
-          <property name="spacing">
-           <number>8</number>
-          </property>
-          <property name="margin">
-           <number>0</number>
-          </property>
-          <item>
-           <spacer>
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QLabel" name="midiInTextLabel">
-            <property name="text">
-             <string>MIDI In</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="midiInLedLabel">
-            <property name="pixmap">
-             <pixmap resource="qmidictl.qrc">:/images/ledOff.png</pixmap>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="midiOutTextLabel">
-            <property name="text">
-             <string>Out</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="midiOutLedLabel">
-            <property name="pixmap">
-             <pixmap resource="qmidictl.qrc">:/images/ledOff.png</pixmap>
-            </property>
-           </widget>
-          </item>
-         </layout>
+         <widget class="qmidictlMixerStrip" name="strip1" native="true"/>
         </item>
         <item>
-         <widget class="QDial" name="jogWheelDial">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
+         <widget class="qmidictlMixerStrip" name="strip2" native="true"/>
+        </item>
+        <item>
+         <widget class="qmidictlMixerStrip" name="strip3" native="true"/>
+        </item>
+        <item>
+         <widget class="qmidictlMixerStrip" name="strip4" native="true"/>
+        </item>
+       </layout>
+      </item>
+      <item row="1" column="1">
+       <widget class="QDial" name="jogWheelDial">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="maximum">
+         <number>100</number>
+        </property>
+        <property name="wrapping">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="2">
+       <layout class="QHBoxLayout">
+        <item>
+         <widget class="QPushButton" name="resetButton">
+          <property name="text">
+           <string>RS&amp;T</string>
           </property>
-          <property name="focusPolicy">
-           <enum>Qt::NoFocus</enum>
+          <property name="icon">
+           <iconset resource="qmidictl.qrc">:/images/formReset.png</iconset>
           </property>
-          <property name="maximum">
-           <number>100</number>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="rewindButton">
+          <property name="text">
+           <string>RE&amp;W</string>
           </property>
-          <property name="wrapping">
+          <property name="icon">
+           <iconset resource="qmidictl.qrc">:/images/formRewind.png</iconset>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="playButton">
+          <property name="text">
+           <string>&amp;PLAY</string>
+          </property>
+          <property name="icon">
+           <iconset resource="qmidictl.qrc">:/images/formPlay.png</iconset>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="stopButton">
+          <property name="text">
+           <string>&amp;STOP</string>
+          </property>
+          <property name="icon">
+           <iconset resource="qmidictl.qrc">:/images/formStop.png</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="recordButton">
+          <property name="text">
+           <string>&amp;REC</string>
+          </property>
+          <property name="icon">
+           <iconset resource="qmidictl.qrc">:/images/formRecord.png</iconset>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="forwardButton">
+          <property name="text">
+           <string>&amp;FFWD</string>
+          </property>
+          <property name="icon">
+           <iconset resource="qmidictl.qrc">:/images/formForward.png</iconset>
+          </property>
+          <property name="checkable">
            <bool>true</bool>
           </property>
          </widget>
         </item>
        </layout>
       </item>
-     </layout>
-    </item>
-    <item>
-     <layout class="QHBoxLayout">
-      <property name="spacing">
-       <number>8</number>
-      </property>
-      <property name="margin">
-       <number>8</number>
-      </property>
-      <item>
-       <widget class="QPushButton" name="resetButton">
-        <property name="text">
-         <string>RS&amp;T</string>
-        </property>
-        <property name="icon">
-         <iconset resource="qmidictl.qrc">:/images/formReset.png</iconset>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="rewindButton">
-        <property name="text">
-         <string>RE&amp;W</string>
-        </property>
-        <property name="icon">
-         <iconset resource="qmidictl.qrc">:/images/formRewind.png</iconset>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="playButton">
-        <property name="text">
-         <string>&amp;PLAY</string>
-        </property>
-        <property name="icon">
-         <iconset resource="qmidictl.qrc">:/images/formPlay.png</iconset>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="stopButton">
-        <property name="text">
-         <string>&amp;STOP</string>
-        </property>
-        <property name="icon">
-         <iconset resource="qmidictl.qrc">:/images/formStop.png</iconset>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="recordButton">
-        <property name="text">
-         <string>&amp;REC</string>
-        </property>
-        <property name="icon">
-         <iconset resource="qmidictl.qrc">:/images/formRecord.png</iconset>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="forwardButton">
-        <property name="text">
-         <string>&amp;FFWD</string>
-        </property>
-        <property name="icon">
-         <iconset resource="qmidictl.qrc">:/images/formForward.png</iconset>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-       </widget>
+      <item row="0" column="0">
+       <layout class="QHBoxLayout">
+        <item>
+         <widget class="QPushButton" name="prevStripPageButton">
+          <property name="maximumSize">
+           <size>
+            <width>64</width>
+            <height>32</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>&lt;</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="nextStripPageButton">
+          <property name="maximumSize">
+           <size>
+            <width>72</width>
+            <height>32</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>&gt;</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </item>
@@ -286,7 +269,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>640</width>
+     <width>720</width>
      <height>20</height>
     </rect>
    </property>

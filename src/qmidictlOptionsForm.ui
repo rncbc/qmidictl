@@ -56,12 +56,6 @@
       <layout class="QVBoxLayout">
        <item>
         <widget class="QGroupBox" name="MidiGroupBox">
-         <property name="font">
-          <font>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
          <property name="title">
           <string>MIDI</string>
          </property>
@@ -71,12 +65,6 @@
           <layout class="QGridLayout">
           <item row="0" column="0">
            <widget class="QLabel" name="MmcDeviceTextLabel">
-             <property name="font">
-             <font>
-              <weight>50</weight>
-              <bold>false</bold>
-             </font>
-            </property>
             <property name="text">
              <string>MMC &amp;Device:</string>
             </property>
@@ -87,12 +75,6 @@
           </item>
           <item row="0" column="1">
            <widget class="QSpinBox" name="MmcDeviceSpinBox">
-            <property name="font">
-             <font>
-              <weight>50</weight>
-              <bold>false</bold>
-             </font>
-            </property>
             <property name="accelerated">
              <bool>true</bool>
             </property>
@@ -122,12 +104,6 @@
        </item>
        <item>
         <widget class="QGroupBox" name="NetworkGroupBox">
-         <property name="font">
-          <font>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
          <property name="title">
           <string>Network</string>
          </property>
@@ -137,12 +113,6 @@
          <layout class="QGridLayout">
           <item row="0" column="0">
            <widget class="QLabel" name="InterfaceTextLabel">
-            <property name="font">
-             <font>
-              <weight>50</weight>
-              <bold>false</bold>
-             </font>
-            </property>
             <property name="text">
              <string>&amp;Interface:</string>
             </property>
@@ -153,12 +123,6 @@
           </item>
           <item row="0" column="1">
            <widget class="QComboBox" name="InterfaceComboBox">
-            <property name="font">
-             <font>
-              <weight>50</weight>
-              <bold>false</bold>
-             </font>
-            </property>
             <property name="editable">
              <bool>true</bool>
             </property>
@@ -166,12 +130,6 @@
           </item>
           <item row="1" column="0">
            <widget class="QLabel" name="UdpAddrTextLabel">
-            <property name="font">
-             <font>
-              <weight>50</weight>
-              <bold>false</bold>
-             </font>
-            </property>
             <property name="text">
              <string>&amp;UDP Address:</string>
             </property>
@@ -182,12 +140,6 @@
           </item>
           <item row="1" column="1" colspan="2">
            <widget class="QComboBox" name="UdpAddrComboBox">
-            <property name="font">
-             <font>
-              <weight>50</weight>
-              <bold>false</bold>
-             </font>
-            </property>
             <property name="editable">
              <bool>true</bool>
             </property>
@@ -195,12 +147,6 @@
           </item>
           <item row="2" column="0">
            <widget class="QLabel" name="UdpPortTextLabel">
-            <property name="font">
-             <font>
-              <weight>50</weight>
-              <bold>false</bold>
-             </font>
-            </property>
             <property name="text">
              <string>UDP &amp;Port:</string>
             </property>
@@ -211,12 +157,6 @@
           </item>
           <item row="2" column="1">
            <widget class="QSpinBox" name="UdpPortSpinBox">
-            <property name="font">
-             <font>
-              <weight>50</weight>
-              <bold>false</bold>
-             </font>
-            </property>
             <property name="accelerated">
              <bool>true</bool>
             </property>

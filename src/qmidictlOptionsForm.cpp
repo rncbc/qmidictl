@@ -85,15 +85,15 @@ qmidictlOptionsForm::qmidictlOptionsForm (
 	m_ui.InterfaceComboBox->addItem("wlan0");
 	m_ui.InterfaceComboBox->addItem("eth0");
 #if defined (Q_OS_ANDROID)
-	m_ui.InterfaceComboBox->setMinimumWidth(192);
-	m_ui.InterfaceComboBox->lineEdit()->setMinimumHeight(48);
+	m_ui.InterfaceComboBox->setMinimumWidth(200);
+	m_ui.InterfaceComboBox->lineEdit()->setMinimumHeight(96);
 #endif
 
 	m_ui.UdpAddrComboBox->clear();
 	m_ui.UdpAddrComboBox->addItem(QMIDICTL_UDP_ADDR);
 #if defined (Q_OS_ANDROID)
-	m_ui.UdpAddrComboBox->setMinimumWidth(192);
-	m_ui.UdpAddrComboBox->lineEdit()->setMinimumHeight(48);
+	m_ui.UdpAddrComboBox->setMinimumWidth(200);
+	m_ui.UdpAddrComboBox->lineEdit()->setMinimumHeight(96);
 #endif
 
 	m_ui.UdpPortSpinBox->setValue(QMIDICTL_UDP_PORT);
@@ -114,7 +114,7 @@ qmidictlOptionsForm::qmidictlOptionsForm (
 	}
 
 #if defined(Q_OS_SYMBIAN) || defined(Q_OS_WINDOWS)
-        m_ui.InterfaceComboBox->setEnabled(false);
+	m_ui.InterfaceComboBox->setEnabled(false);
 #endif
 
 	// Start clean.
