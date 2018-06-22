@@ -27,13 +27,13 @@
     <x>0</x>
     <y>0</y>
     <width>80</width>
-    <height>200</height>
+    <height>220</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>80</width>
-    <height>200</height>
+    <height>220</height>
    </size>
   </property>
   <layout class="QGridLayout">

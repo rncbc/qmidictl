@@ -123,8 +123,8 @@
         </property>
         <property name="minimumSize">
          <size>
-          <width>200</width>
-          <height>200</height>
+          <width>220</width>
+          <height>220</height>
          </size>
         </property>
         <property name="focusPolicy">
