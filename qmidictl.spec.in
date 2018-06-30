@@ -1,6 +1,6 @@
 %define name    @PACKAGE_TARNAME@
 %define version @PACKAGE_VERSION@
-%define release 13
+%define release 14
 
 %define _prefix	@ac_prefix@
 
@@ -76,6 +76,8 @@ for Windows (http://nerds.de).
 %{_datadir}/man/man1/%{name}*.1.gz
 
 %changelog
+* Sat Jun 30 2018 Rui Nuno Capela <rncbc@rncbc.org> 0.5.2
+- Early Summer'18 release.
 * Thu Jan 11 2018 Rui Nuno Capela <rncbc@rncbc.org> 0.5.1
 - Early Winter'18 release.
 * Sat Dec 16 2017 Rui Nuno Capela <rncbc@rncbc.org> 0.5.0
