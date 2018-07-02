@@ -4,6 +4,12 @@ QmidiCtl - A MIDI Remote Controller via UDP/IP Multicast
 ChangeLog
 
 
+GIT HEAD
+
+- AppData/AppStream metadata is now settled under an all
+  permisssive license (FSFAP).
+
+
 0.5.2  2018-06-30  An Early Summer'18 release.
 
 - Fixed all mixer strips for a larger width on main layout.
