@@ -30,7 +30,7 @@
 #endif
 
 #define QMIDICTL_SUBTITLE     "A MIDI Remote Controller via UDP/IP Multicast"
-#define QMIDICTL_WEBSITE      "http://qmidictl.sourceforge.net"
+#define QMIDICTL_WEBSITE      "https://qmidictl.sourceforge.io"
 #define QMIDICTL_COPYRIGHT    "Copyright (C) 2010-2018, rncbc aka Rui Nuno Capela. All rights reserved."
 
 #define QMIDICTL_DOMAIN       "rncbc.org"
