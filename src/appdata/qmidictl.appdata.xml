@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2010-2018 Rui Nuno Capela <rncbc@rncbc.org> -->
 <component type="desktop">
- <id>qmidictl.desktop</id>
+ <id>org.rncbc.qmidictl</id>
  <metadata_license>FSFAP</metadata_license>
  <project_license>GPL-2.0+</project_license>
  <name>QmidiCtl</name>
@@ -9,9 +9,13 @@
  <description>
   <p>QmidiCtl is a MIDI remote controller application that sends MIDI
   data over the network, using UDP/IP multicast. Inspired by multimidicast
-  (http://llg.cubic.org/tools) and designed to be compatible with ipMIDI
-  for Windows (http://nerds.de).</p>
+  (http\://llg.cubic.org/tools) and designed to be compatible with ipMIDI
+  for Windows (http\://nerds.de).</p>
  </description>
+ <launchable type="desktop-id">qmidictl.desktop</launchable>
+ <provides>
+​  <binary>qmidictl</binary>
+​ </provides>
  <screenshots>
   <screenshot type="default">
    <image>http://qmidictl.sourceforge.net/qmidictl-android-phone-1.png</image>
@@ -27,9 +31,7 @@
   <keyword>Qt</keyword>
  </keywords>
  <url type="homepage">https://qmidictl.sourceforge.io</url>
- <updatecontact>rncbc@rncbc.org</updatecontact>
  <project_group>rncbc.org</project_group>
- <kudos>
-  <kudo>ModernToolkit</kudo>
- </kudos>
+ <developer_name>rncbc aka. Rui Nuno Capela</developer_name>
+ <update_contact>rncbc@rncbc.org</update_contact>
 </component>
