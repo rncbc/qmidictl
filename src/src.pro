@@ -90,6 +90,8 @@ unix {
 	appdata.files += appdata/$${TARGET}.appdata.xml
 }
 
+QT += widgets
+
 win32 {
 	LIBS += -lwsock32
 }
@@ -104,10 +106,5 @@ symbian {
 android {
 	DISTFILES += android/AndroidManifest.xml
 	ANDROID_PACKAGE_SOURCE_DIR = $${PWD}/android
-}
-
-# QT5 support
-!lessThan(QT_MAJOR_VERSION, 5) {
-	QT += widgets
 }
 
