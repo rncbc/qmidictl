@@ -38,16 +38,22 @@
   </property>
   <widget class="QWidget" name="MainCentralWidget">
    <layout class="QVBoxLayout" name="MainCentralLayout">
+    <property name="spacing">
+     <number>8</number>
+    </property>
+    <property name="margin">
+     <number>0</number>
+    </property>
     <item>
      <layout class="QGridLayout">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="margin">
+       <number>4</number>
+      </property>
       <item row="0" column="1">
        <layout class="QHBoxLayout">
-        <property name="spacing">
-         <number>8</number>
-        </property>
-        <property name="margin">
-         <number>0</number>
-        </property>
         <item>
          <spacer>
           <property name="orientation">
@@ -99,6 +105,12 @@
       </item>
       <item row="1" column="0">
        <layout class="QHBoxLayout">
+        <property name="spacing">
+         <number>8</number>
+        </property>
+        <property name="margin">
+         <number>4</number>
+        </property>
         <item>
          <widget class="qmidictlMixerStrip" name="strip1" native="true"/>
         </item>
@@ -246,7 +258,7 @@
          <widget class="QPushButton" name="nextStripPageButton">
           <property name="maximumSize">
            <size>
-            <width>72</width>
+            <width>64</width>
             <height>32</height>
            </size>
           </property>
@@ -303,6 +315,7 @@
    <header>qmidictlMixerStrip.h</header>
   </customwidget>
  </customwidgets>
+ <layoutdefault spacing="8" margin="8"/>
  <tabstops>
   <tabstop>prevStripPageButton</tabstop>
   <tabstop>nextStripPageButton</tabstop>

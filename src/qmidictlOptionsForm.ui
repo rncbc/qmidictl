@@ -34,8 +34,7 @@
    <string>Options - QmidiCtl</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="qmidictl.qrc">
-    <normaloff>:/images/qmidictl.png</normaloff>:/images/qmidictl.png</iconset>
+   <iconset resource="qmidictl.qrc">:/images/qmidictl.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="MainCentralLayout">
    <property name="spacing">
@@ -257,6 +256,7 @@
    </item>
   </layout>
  </widget>
+ <layoutdefault spacing="8" margin="8"/>
  <tabstops>
   <tabstop>MmcDeviceSpinBox</tabstop>
   <tabstop>InterfaceComboBox</tabstop>
