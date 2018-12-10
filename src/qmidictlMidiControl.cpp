@@ -1,7 +1,7 @@
 // qmidictlMidiControl.cpp
 //
 /****************************************************************************
-   Copyright (C) 2010-2011, rncbc aka Rui Nuno Capela. All rights reserved.
+   Copyright (C) 2010-2018, rncbc aka Rui Nuno Capela. All rights reserved.
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
@@ -73,13 +73,13 @@ void qmidictlMidiControl::clear (void)
 	mapCommand(REC,        MMC, 0, int(REC));
 	mapCommand(FFWD,       MMC, 0, int(FFWD));
 
-	mapCommand(JOG_WHEEL,  MMC, 0, int(JOG_WHEEL));
-
 	mapCommand(TRACK_SOLO, MMC, 0, int(TRACK_SOLO));
 	mapCommand(TRACK_MUTE, MMC, 0, int(TRACK_MUTE));
 	mapCommand(TRACK_REC,  MMC, 0, int(TRACK_REC));
 
-	mapCommand(TRACK_VOL, CONTROLLER, 15, TrackParam | 0x40);
+	mapCommand(TRACK_VOL,  CONTROLLER, 15, TrackParam | 0x40);
+
+	mapCommand(JOG_WHEEL,  MMC, 0, int(JOG_WHEEL));
 }
 
 
@@ -229,6 +229,23 @@ void qmidictlMidiControl::load ( QSettings& settings )
 
 
 // Textual helpers.
+unsigned short qmidictlMidiControl::keyFromText ( const QString& sText )
+{
+	if (sText == "TrackParam" || sText == "*" || sText.isEmpty())
+		return TrackParam;
+	else
+		return sText.toUShort();
+}
+
+QString qmidictlMidiControl::textFromKey ( unsigned short iKey )
+{
+	if (iKey & TrackParam)
+		return "*"; // "TrackParam";
+	else
+		return QString::number(iKey);
+}
+
+
 qmidictlMidiControl::ControlType qmidictlMidiControl::typeFromText (
 	const QString& sText )
 {
@@ -295,23 +312,6 @@ QString qmidictlMidiControl::textFromType (
 }
 
 
-unsigned short qmidictlMidiControl::keyFromText ( const QString& sText )
-{
-	if (sText == "TrackParam" || sText == "*" || sText.isEmpty())
-		return TrackParam;
-	else
-		return sText.toUShort();
-}
-
-QString qmidictlMidiControl::textFromKey ( unsigned short iKey )
-{
-	if (iKey & TrackParam)
-		return "*"; // "TrackParam";
-	else
-		return QString::number(iKey);
-}
-
-
 qmidictlMidiControl::Command qmidictlMidiControl::commandFromText (
 	const QString& sText )
 {
@@ -333,9 +333,6 @@ qmidictlMidiControl::Command qmidictlMidiControl::commandFromText (
 	if (sText == "FFWD")
 		return FFWD;
 	else
-	if (sText == "JOG_WHEEL")
-		return JOG_WHEEL;
-	else
 	if (sText == "TRACK_SOLO")
 		return TRACK_SOLO;
 	else
@@ -347,6 +344,9 @@ qmidictlMidiControl::Command qmidictlMidiControl::commandFromText (
 	else
 	if (sText == "TRACK_VOL")
 		return TRACK_VOL;
+	else
+	if (sText == "JOG_WHEEL")
+		return JOG_WHEEL;
 	else
 		return Command(0);
 }
@@ -375,9 +375,6 @@ QString qmidictlMidiControl::textFromCommand (
 	case FFWD:
 		sText = "FFWD";
 		break;
-	case JOG_WHEEL:
-		sText = "JOG_WHEEL";
-		break;
 	case TRACK_SOLO:
 		sText = "TRACK_SOLO";
 		break;
@@ -389,6 +386,9 @@ QString qmidictlMidiControl::textFromCommand (
 		break;
 	case TRACK_VOL:
 		sText = "TRACK_VOL";
+		break;
+	case JOG_WHEEL:
+		sText = "JOG_WHEEL";
 		break;
 	}
 

@@ -80,52 +80,52 @@ qmidictlMidiControlForm::qmidictlMidiControlForm (
 
 	// Populate command list.
 	m_ui.CommandComboBox->addItem(QIcon(":/images/formReset.png"),
-		qmidictlMidiControl::textFromCommand(qmidictlMidiControl::RST));
+		tr("RST"), qmidictlMidiControl::RST);
 	m_ui.CommandComboBox->addItem(QIcon(":/images/formRewind.png"),
-		qmidictlMidiControl::textFromCommand(qmidictlMidiControl::REW));
+		tr("REW"), qmidictlMidiControl::REW);
 	m_ui.CommandComboBox->addItem(QIcon(":/images/formStop.png"),
-		qmidictlMidiControl::textFromCommand(qmidictlMidiControl::STOP));
+		tr("STOP"), qmidictlMidiControl::STOP);
 	m_ui.CommandComboBox->addItem(QIcon(":/images/formPlay.png"),
-		qmidictlMidiControl::textFromCommand(qmidictlMidiControl::PLAY));
+		tr("PLAY"), qmidictlMidiControl::PLAY);
 	m_ui.CommandComboBox->addItem(QIcon(":/images/formRecord.png"),
-		qmidictlMidiControl::textFromCommand(qmidictlMidiControl::REC));
+		tr("REC"), qmidictlMidiControl::REC);
 	m_ui.CommandComboBox->addItem(QIcon(":/images/formForward.png"),
-		qmidictlMidiControl::textFromCommand(qmidictlMidiControl::FFWD));
+		tr("FFWD"), qmidictlMidiControl::FFWD);
 	m_ui.CommandComboBox->addItem(
-		qmidictlMidiControl::textFromCommand(qmidictlMidiControl::JOG_WHEEL));
+		tr("Track Solo (S)"), qmidictlMidiControl::TRACK_SOLO);
 	m_ui.CommandComboBox->addItem(
-		qmidictlMidiControl::textFromCommand(qmidictlMidiControl::TRACK_SOLO));
+		tr("Track Mute (M)"), qmidictlMidiControl::TRACK_MUTE);
 	m_ui.CommandComboBox->addItem(
-		qmidictlMidiControl::textFromCommand(qmidictlMidiControl::TRACK_MUTE));
+		tr("Track Record (R)"), qmidictlMidiControl::TRACK_REC);
 	m_ui.CommandComboBox->addItem(
-		qmidictlMidiControl::textFromCommand(qmidictlMidiControl::TRACK_REC));
+		tr("Track Volume (fader)"), qmidictlMidiControl::TRACK_VOL);
 	m_ui.CommandComboBox->addItem(
-		qmidictlMidiControl::textFromCommand(qmidictlMidiControl::TRACK_VOL));
+		tr("Jog Wheel"), qmidictlMidiControl::JOG_WHEEL);
 
 	// Populate command list.
 	m_ui.ControlTypeComboBox->addItem(
-		qmidictlMidiControl::textFromType(qmidictlMidiControl::MMC));
+		tr("MMC"), qmidictlMidiControl::MMC);
 	m_ui.ControlTypeComboBox->addItem(
-		qmidictlMidiControl::textFromType(qmidictlMidiControl::NOTE_ON));
+		tr("None On"), qmidictlMidiControl::NOTE_ON);
 	m_ui.ControlTypeComboBox->addItem(
-		qmidictlMidiControl::textFromType(qmidictlMidiControl::NOTE_OFF));
+		tr("Note Off"), qmidictlMidiControl::NOTE_OFF);
 	m_ui.ControlTypeComboBox->addItem(
-		qmidictlMidiControl::textFromType(qmidictlMidiControl::KEY_PRESS));
+		tr("Key Press"), qmidictlMidiControl::KEY_PRESS);
 	m_ui.ControlTypeComboBox->addItem(
-		qmidictlMidiControl::textFromType(qmidictlMidiControl::CONTROLLER));
+		tr("Controller"), qmidictlMidiControl::CONTROLLER);
 	m_ui.ControlTypeComboBox->addItem(
-		qmidictlMidiControl::textFromType(qmidictlMidiControl::PGM_CHANGE));
+		tr("Pgm Change"), qmidictlMidiControl::PGM_CHANGE);
 	m_ui.ControlTypeComboBox->addItem(
-		qmidictlMidiControl::textFromType(qmidictlMidiControl::CHAN_PRESS));
+		tr("Chan Press"), qmidictlMidiControl::CHAN_PRESS);
 	m_ui.ControlTypeComboBox->addItem(
-		qmidictlMidiControl::textFromType(qmidictlMidiControl::PITCH_BEND));
+		tr("Pitch Bend"), qmidictlMidiControl::PITCH_BEND);
 
 	// Start clean.
 	m_iDirtyCount = 0;
 	m_iDirtySetup = 0;
 
 	// Populate param list.
-	activateCommand(m_ui.CommandComboBox->currentText());
+	activateCommand(m_ui.CommandComboBox->currentIndex());
 
 	// Try to fix window geometry.
 #if defined(Q_OS_ANDROID) || defined(Q_OS_SYMBIAN)
@@ -136,11 +136,11 @@ qmidictlMidiControlForm::qmidictlMidiControlForm (
 
 	// UI signal/slot connections...
 	QObject::connect(m_ui.CommandComboBox,
-		SIGNAL(activated(const QString&)),
-		SLOT(activateCommand(const QString&)));
+		SIGNAL(activated(int)),
+		SLOT(activateCommand(int)));
 	QObject::connect(m_ui.ControlTypeComboBox,
-		SIGNAL(activated(const QString&)),
-		SLOT(activateControlType(const QString&)));
+		SIGNAL(activated(int)),
+		SLOT(activateControlType(int)));
 	QObject::connect(m_ui.ChannelSpinBox,
 		SIGNAL(valueChanged(int)),
 		SLOT(change()));
@@ -180,18 +180,17 @@ qmidictlMidiControlForm::~qmidictlMidiControlForm (void)
 
 
 // List view item activation.
-void qmidictlMidiControlForm::activateCommand (
-	const QString& sCommand )
+void qmidictlMidiControlForm::activateCommand ( int iCommand )
 {
 #ifdef CONFIG_DEBUG
-	qDebug("qmidictlMidiControlForm::activateCommand(\"%s\")",
-		sCommand.toUtf8().constData());
+	qDebug("qmidictlMidiControlForm::activateCommand(%d)", iCommand);
 #endif
 
 	m_iDirtySetup++;
 
 	qmidictlMidiControl::Command command
-		= qmidictlMidiControl::commandFromText(sCommand);
+		= qmidictlMidiControl::Command(
+			m_ui.CommandComboBox->itemData(iCommand).toInt());
 	bool bEnabled = (command != qmidictlMidiControl::Command(0));
 
 	qmidictlMidiControl *pMidiControl = qmidictlMidiControl::getInstance();
@@ -216,11 +215,10 @@ void qmidictlMidiControlForm::activateCommand (
 	if (bEnabled) {
 		const qmidictlMidiControl::MapKey& key
 			= pMidiControl->commandMap().value(command);
-		const QString& sControlType
-			= qmidictlMidiControl::textFromType(key.type());
-		m_ui.ControlTypeComboBox->setCurrentIndex(
-			m_ui.ControlTypeComboBox->findText(sControlType));
-		activateControlType(sControlType);
+		const int iControlType
+			= m_ui.ControlTypeComboBox->findData(key.type());
+		m_ui.ControlTypeComboBox->setCurrentIndex(iControlType);
+		activateControlType(iControlType);
 		int iChannel = 0;
 		if (m_ui.ChannelSpinBox->isEnabled())
 			iChannel = (key.isChannelTrack() ? 0 : key.channel() + 1);
@@ -248,16 +246,15 @@ void qmidictlMidiControlForm::activateCommand (
 }
 
 
-void qmidictlMidiControlForm::activateControlType (
-	const QString& sControlType )
+void qmidictlMidiControlForm::activateControlType ( int iControlType )
 {
 #ifdef CONFIG_DEBUG
-	qDebug("qmidictlMidiControlForm::activateControlType(\"%s\")",
-		sControlType.toUtf8().constData());
+	qDebug("qmidictlMidiControlForm::activateControlType(%d)", iControlType);
 #endif
 
 	qmidictlMidiControl::ControlType ctype
-		= qmidictlMidiControl::typeFromText(sControlType);
+		= qmidictlMidiControl::ControlType(
+			m_ui.ControlTypeComboBox->itemData(iControlType).toInt());
 	if (!ctype)
 		return;
 
@@ -332,15 +329,19 @@ void qmidictlMidiControlForm::change (void)
 	if (pMidiControl == NULL)
 		return;
 
-	const QString& sCommand = m_ui.CommandComboBox->currentText();
+	const int iCommand
+		= m_ui.CommandComboBox->currentIndex();
 	qmidictlMidiControl::Command command
-		= qmidictlMidiControl::commandFromText(sCommand);
+		= qmidictlMidiControl::Command(
+			m_ui.CommandComboBox->itemData(iCommand).toInt());
 	if (!command)
 		return;
 
-	const QString& sControlType = m_ui.ControlTypeComboBox->currentText();
+	const int iControlType
+		= m_ui.ControlTypeComboBox->currentIndex();
 	qmidictlMidiControl::ControlType ctype
-		= qmidictlMidiControl::typeFromText(sControlType);
+		= qmidictlMidiControl::ControlType(
+			m_ui.ControlTypeComboBox->itemData(iControlType).toInt());
 	if (!ctype)
 		return;
 
@@ -476,9 +477,8 @@ void qmidictlMidiControlForm::reset (void)
 		m_iDirtyCount++;
 	}
 
-	activateCommand(m_ui.CommandComboBox->currentText());
+	activateCommand(m_ui.CommandComboBox->currentIndex());
 }
 
 
 // end of qmidictlMidiControlForm.cpp
-

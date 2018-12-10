@@ -49,8 +49,8 @@ public:
 
 protected slots:
 
-	void activateCommand(const QString&);
-	void activateControlType(const QString&);
+	void activateCommand(int);
+	void activateControlType(int);
 	void change();
 
 	void buttonClick(QAbstractButton *);

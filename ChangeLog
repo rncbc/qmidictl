@@ -6,6 +6,10 @@ ChangeLog
 
 GIT HEAD
 
+- Added proper display names to Command and Control Type
+  entry fields on Configure dialog (ie. MIDI controller
+  assignments dialog).
+
 - Old deprecated Qt4 build support is no more.
 
 - AppData/AppStream metadata is now settled under an all

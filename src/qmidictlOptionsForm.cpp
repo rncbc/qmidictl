@@ -86,7 +86,7 @@ qmidictlOptionsForm::qmidictlOptionsForm (
 	m_ui.InterfaceComboBox->addItem("eth0");
 #if defined (Q_OS_ANDROID)
 //	m_ui.InterfaceComboBox->setMinimumWidth(240);
-	m_ui.InterfaceComboBox->setMinimumHeight(128);
+	m_ui.InterfaceComboBox->setMinimum7Height(128);
 	m_ui.InterfaceComboBox->lineEdit()->setMinimumHeight(96);
 #endif
 

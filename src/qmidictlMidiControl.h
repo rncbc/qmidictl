@@ -1,7 +1,7 @@
 // qmidictlMidiControl.h
 //
 /****************************************************************************
-   Copyright (C) 2010-2011, rncbc aka Rui Nuno Capela. All rights reserved.
+   Copyright (C) 2010-2018, rncbc aka Rui Nuno Capela. All rights reserved.
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
@@ -58,11 +58,11 @@ public:
 		PLAY       = 4,
 		REC        = 5,
 		FFWD       = 6,
-		JOG_WHEEL  = 7,
-		TRACK_SOLO = 8,
-		TRACK_MUTE = 9,
-		TRACK_REC  = 10,
-		TRACK_VOL  = 11
+		TRACK_SOLO = 7,
+		TRACK_MUTE = 8,
+		TRACK_REC  = 9,
+		TRACK_VOL  = 10,
+		JOG_WHEEL  = 11
 	};
 
 	// Key param masks (wildcard flags).
@@ -188,11 +188,13 @@ public:
 	static unsigned short keyFromText(const QString& sText);
 	static QString textFromKey(unsigned short iKey);
 
-	static Command commandFromText(const QString& sText);
-	static QString textFromCommand(Command command);
-
 	static const QString& controllerName(unsigned short iParam);
 	static const QString  noteName(unsigned short iParam, bool fDrums = false);
+
+protected:
+
+	static Command commandFromText(const QString& sText);
+	static QString textFromCommand(Command command);
 
 private:
 

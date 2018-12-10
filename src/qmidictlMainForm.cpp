@@ -889,10 +889,8 @@ void qmidictlMainForm::recvData ( unsigned char *data, unsigned short len )
 		if (key.isLogarithmic())
 			iValue = int(127.0f * cubef2(float(iValue) / 127.0f));
 	#ifdef CONFIG_DEBUG
-		qDebug("recvData: Command=\"%s\" Type=\"%s\" Track=%d Value=%d",
-			qmidictlMidiControl::textFromCommand(command).toUtf8().constData(),
-			qmidictlMidiControl::textFromType(ctype).toUtf8().constData(),
-			iTrack, iValue);
+		qDebug("recvData: Command=0x%04x Type=0x%04x Track=%d Value=%d",
+			uint(command), uint(ctype), iTrack, iValue);
 	#endif
 		switch (command) {
 		case qmidictlMidiControl::RST:
