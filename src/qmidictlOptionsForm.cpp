@@ -1,7 +1,7 @@
 // qmidictlOptionsForm.cpp
 //
 /****************************************************************************
-   Copyright (C) 2010-2018, rncbc aka Rui Nuno Capela. All rights reserved.
+   Copyright (C) 2010-2019, rncbc aka Rui Nuno Capela. All rights reserved.
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
@@ -86,7 +86,7 @@ qmidictlOptionsForm::qmidictlOptionsForm (
 	m_ui.InterfaceComboBox->addItem("eth0");
 #if defined (Q_OS_ANDROID)
 //	m_ui.InterfaceComboBox->setMinimumWidth(240);
-	m_ui.InterfaceComboBox->setMinimum7Height(128);
+	m_ui.InterfaceComboBox->setMinimumHeight(128);
 	m_ui.InterfaceComboBox->lineEdit()->setMinimumHeight(96);
 #endif
 
