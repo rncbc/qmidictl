@@ -4,7 +4,7 @@ QmidiCtl - A MIDI Remote Controller via UDP/IP Multicast
 ChangeLog
 
 
-GIT HEAD
+0.5.3  2019-01-08  An Early Winter'19 Release
 
 - Added proper display names to Command and Control Type
   entry fields on Configure dialog (ie. MIDI controller
