@@ -4,6 +4,11 @@ QmidiCtl - A MIDI Remote Controller via UDP/IP Multicast
 ChangeLog
 
 
+GIT HEAD
+
+- HiDPI display screen support (Qt >= 5.6). (EXPERIMENTAL)
+
+
 0.5.3  2019-01-08  An Early Winter'19 Release
 
 - Added proper display names to Command and Control Type

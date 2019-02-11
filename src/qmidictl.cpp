@@ -1,7 +1,7 @@
 // qmidictl.cpp
 //
 /****************************************************************************
-   Copyright (C) 2010-2018, rncbc aka Rui Nuno Capela. All rights reserved.
+   Copyright (C) 2010-2019, rncbc aka Rui Nuno Capela. All rights reserved.
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
@@ -154,6 +154,9 @@ int main ( int argc, char *argv[] )
 	app.setApplicationName(QMIDICTL_TITLE);
 	app.setApplicationDisplayName(
 		QMIDICTL_TITLE " - " + QObject::tr(QMIDICTL_SUBTITLE));
+#endif
+#if QT_VERSION >= 0x050600
+	app.setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
 
 	qmidictlOptions opt;
