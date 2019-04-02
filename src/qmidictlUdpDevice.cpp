@@ -1,7 +1,7 @@
 // qmidictlUdpDevice.cpp
 //
 /****************************************************************************
-   Copyright (C) 2010-2018, rncbc aka Rui Nuno Capela. All rights reserved.
+   Copyright (C) 2010-2019, rncbc aka Rui Nuno Capela. All rights reserved.
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
@@ -25,18 +25,18 @@
 #include <string.h>
 
 #if defined(Q_OS_SYMBIAN)
-#include <sys/select.h>
 #include <arpa/inet.h>
 #include <unistd.h>
+#include <sys/select.h>
 inline void closesocket(int s) { ::close(s); }
 #else
 #if defined(__WIN32__) || defined(_WIN32) || defined(WIN32)
 static WSADATA g_wsaData;
 typedef int socklen_t;
 #else
-#include <sys/select.h>
 #include <unistd.h>
 #include <sys/ioctl.h>
+#include <sys/select.h>
 inline void closesocket(int s) { ::close(s); }
 #endif
 #endif

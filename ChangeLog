@@ -6,6 +6,10 @@ ChangeLog
 
 GIT HEAD
 
+- Fix build on linux with musl (according to POSIX.1-2001,
+  POSIX.1-2008; PR#3 by Andreas Müller aka. schnitzeltony,
+  thanks).
+
 - HiDPI display screen support (Qt >= 5.6). (EXPERIMENTAL)
 
 
