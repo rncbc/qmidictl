@@ -34,6 +34,7 @@ inline void closesocket(int s) { ::close(s); }
 static WSADATA g_wsaData;
 typedef int socklen_t;
 #else
+#include <sys/select.h>
 #include <unistd.h>
 #include <sys/ioctl.h>
 inline void closesocket(int s) { ::close(s); }
