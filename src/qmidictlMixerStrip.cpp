@@ -1,7 +1,7 @@
 // qmidictlMixerStrip.cpp
 //
 /****************************************************************************
-   Copyright (C) 2010-2018, rncbc aka Rui Nuno Capela. All rights reserved.
+   Copyright (C) 2010-2019, rncbc aka Rui Nuno Capela. All rights reserved.
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
@@ -49,6 +49,9 @@ qmidictlMixerStrip::qmidictlMixerStrip (
 	pal.setColor(QPalette::Highlight, Qt::cyan);
 	m_ui.soloButton->setPalette(pal);
 #endif
+
+	// Enable multi-touch gestures...
+	m_ui.stripSlider->setAttribute(Qt::WA_AcceptTouchEvents);
 
 	// UI widgets signal/slot connections...
 	QObject::connect(m_ui.recordButton,
