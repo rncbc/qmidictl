@@ -4,13 +4,13 @@ QmidiCtl - A MIDI Remote Controller via UDP/IP Multicast
 ChangeLog
 
 
-GIT HEAD
+0.5.4  2019-04-11  A Spring-Break'19 Release
 
 - Fix build on linux with musl (according to POSIX.1-2001,
   POSIX.1-2008; PR#3 by Andreas Müller aka. schnitzeltony,
   thanks).
 
-- HiDPI display screen support (Qt >= 5.6). (EXPERIMENTAL)
+- HiDPI display screen support (Qt >= 5.6).
 
 
 0.5.3  2019-01-08  An Early Winter'19 Release
