@@ -2,8 +2,9 @@ Source: qmidictl
 Section: user/multimedia
 Priority: extra
 Maintainer: Rui Nuno Capela <rncbc@rncbc.org>
-Build-Depends: debhelper (>= 5), automake, pkg-config, qtbase5-dev (>= 5.1),
-  qtbase5-dev-tools (>= 5.1), qttools5-dev-tools (>= 5.1), qtchooser
+Build-Depends: debhelper (>= 5), automake, pkg-config,
+  qtchooser, qtbase5-dev (>= 5.1), qtbase5-dev-tools (>= 5.1),
+  qttools5-dev-tools (>= 5.1)
 Standards-Version: 3.7.2
 Homepage: https://garage.maemo.org/projects/qmidictl/
 XSBC-Bugtracker: https://garage.maemo.org/tracker/?atid=5228&group_id=1436
