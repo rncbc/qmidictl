@@ -97,7 +97,7 @@ win32 {
 }
 
 symbian {
-	VERSION = 0.5.0
+	VERSION = 0.5.5
 	LIBS += -lcone -leikcore -lavkon
 	ICON += data/symbian/qmidictl.svg
 	TARGET.CAPABILITY += NetworkServices LocalServices
@@ -107,4 +107,8 @@ android {
 	DISTFILES += android/AndroidManifest.xml
 	ANDROID_PACKAGE_SOURCE_DIR = $${PWD}/android
 }
+
+DISTFILES += \
+    android/build.gradle \
+    android/res/values/libs.xml
 
