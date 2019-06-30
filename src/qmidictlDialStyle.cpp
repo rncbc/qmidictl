@@ -1,7 +1,7 @@
 // qmidictlDialStyle.cpp
 //
 /****************************************************************************
-   Copyright (C) 2010, rncbc aka Rui Nuno Capela. All rights reserved.
+   Copyright (C) 2010-2019, rncbc aka Rui Nuno Capela. All rights reserved.
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
@@ -45,8 +45,8 @@ QString uniqueName ( const QString &key, const QStyleOption *option, const QSize
 {
 	const QStyleOptionComplex *complexOption = qstyleoption_cast<const QStyleOptionComplex *>(option);
 	QString tmp = QString::fromLatin1("%1-%2-%3-%4-%5-%6x%7").arg(key).arg(uint(option->state)).arg(option->direction)
-				   .arg(complexOption ? uint(complexOption->activeSubControls) : uint(0))
-				   .arg(option->palette.cacheKey()).arg(size.width()).arg(size.height());
+					.arg(complexOption ? uint(complexOption->activeSubControls) : uint(0))
+					.arg(option->palette.cacheKey()).arg(size.width()).arg(size.height());
 	return tmp;
 }
 
@@ -159,7 +159,7 @@ void drawDial ( const QStyleOptionSlider *option, QPainter *painter )
 	QString unique = uniqueName((a), option, option->rect.size());
 	int txType = painter->deviceTransform().type() | painter->worldTransform().type();
 	bool doPixmapCache = txType <= QTransform::TxTranslate;
-	if (doPixmapCache && QPixmapCache::find(unique, internalPixmapCache)) {
+	if (doPixmapCache && QPixmapCache::find(unique, &internalPixmapCache)) {
 		painter->drawPixmap(option->rect.topLeft(), internalPixmapCache);
 	} else {
 		if (doPixmapCache) {
