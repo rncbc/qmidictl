@@ -109,7 +109,7 @@ qmidictlMainForm::qmidictlMainForm (
 	// Special action-bar for the android stuff.
 	m_pActionBar = new qmidictlActionBar();
 	m_pActionBar->setIcon(QIcon(":/images/qmidictl.png"));
-#if QT_VERSION >= 0x050100
+#if QT_VERSION >= QT_VERSION_CHECK(5, 1, 0)
 	m_pActionBar->setTitle(QApplication::applicationDisplayName());
 #else
 	m_pActionBar->setTitle(QMIDICTL_TITLE " - " + tr(QMIDICTL_SUBTITLE));

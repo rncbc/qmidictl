@@ -41,12 +41,12 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
  */
 
-#if QT_VERSION < 0x050100
 #include "qmidictlAbout.h"
+#include "qmidictlActionBar.h"
+
+#if QT_VERSION < QT_VERSION_CHECK(5, 1, 0)
 #include <QDesktopWidget>
 #endif
-
-#include "qmidictlActionBar.h"
 
 #include <QAction>
 #include <QHBoxLayout>
@@ -189,7 +189,7 @@ void qmidictlActionBar::adjustMenu (void)
 
 void qmidictlActionBar::adjustContent (void)
 {
-#if QT_VERSION >= 0x050100
+#if QT_VERSION >= QT_VERSION_CHECK(5, 1, 0)
 	const int screenWidth = QApplication::primaryScreen()->availableSize().width();
 #else
 	const int screenWidth = QApplication::desktop()->screen()->width();

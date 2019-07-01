@@ -58,7 +58,7 @@ qmidictlActionBarStyle::qmidictlActionBarStyle ( QStyle *style )
 
 int qmidictlActionBarStyle::dpToPixels ( int dp )
 {
-#if QT_VERSION >= 0x050100
+#if QT_VERSION >= QT_VERSION_CHECK(5, 1, 0)
     return (dp * QApplication::primaryScreen()->physicalDotsPerInch()) / 160;
 #else
 	return dp;

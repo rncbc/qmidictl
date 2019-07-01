@@ -128,7 +128,7 @@ static void update_palette ( QPalette& pal )
 			pal.text().color().lighter(),
 			pal.base(),
 			pal.window());
-	#if QT_VERSION >= 0x050000
+	#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 		pal.setColor(QPalette::Disabled,
 			QPalette::Highlight, pal.mid().color());
 		pal.setColor(QPalette::Disabled,
@@ -150,12 +150,12 @@ int main ( int argc, char *argv[] )
 
 	QApplication app(argc, argv);
 
-#if QT_VERSION >= 0x050100
+#if QT_VERSION >= QT_VERSION_CHECK(5, 1, 0)
 	app.setApplicationName(QMIDICTL_TITLE);
 	app.setApplicationDisplayName(
 		QMIDICTL_TITLE " - " + QObject::tr(QMIDICTL_SUBTITLE));
 #endif
-#if QT_VERSION >= 0x050600
+#if QT_VERSION >= QT_VERSION_CHECK(5, 6, 0)
 	app.setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
 
