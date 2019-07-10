@@ -36,6 +36,12 @@
   <property name="windowIcon">
    <iconset resource="qmidictl.qrc">:/images/qmidictl.png</iconset>
   </property>
+  <widget class="QMenuBar" name="MainMenuBar">
+   <addaction name="optionsAction"/>
+   <addaction name="configureAction"/>
+   <addaction name="aboutAction"/>
+   <addaction name="exitAction"/>
+  </widget>
   <widget class="QWidget" name="MainCentralWidget">
    <layout class="QVBoxLayout" name="MainCentralLayout">
     <property name="spacing">
@@ -272,20 +278,6 @@
      </layout>
     </item>
    </layout>
-  </widget>
-  <widget class="QMenuBar" name="MainMenuBar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>720</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <addaction name="optionsAction"/>
-   <addaction name="configureAction"/>
-   <addaction name="aboutAction"/>
-   <addaction name="exitAction"/>
   </widget>
   <action name="optionsAction">
    <property name="text">
