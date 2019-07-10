@@ -50,9 +50,6 @@ qmidictlMixerStrip::qmidictlMixerStrip (
 	m_ui.soloButton->setPalette(pal);
 #endif
 
-	// Enable multi-touch gestures...
-	m_ui.stripSlider->setAttribute(Qt::WA_AcceptTouchEvents);
-
 	// UI widgets signal/slot connections...
 	QObject::connect(m_ui.recordButton,
 		SIGNAL(toggled(bool)),

@@ -1,7 +1,7 @@
 // qmidictlMainForm.h
 //
 /****************************************************************************
-   Copyright (C) 2010-2018, rncbc aka Rui Nuno Capela. All rights reserved.
+   Copyright (C) 2010-2019, rncbc aka Rui Nuno Capela. All rights reserved.
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
@@ -24,6 +24,7 @@
 
 #include "ui_qmidictlMainForm.h"
 
+#include <QHash>
 
 // Forward declarations.
 class qmidictlUdpDevice;
@@ -153,6 +154,9 @@ protected:
 	// Common form stabilizer.
 	void stabilizeForm();
 
+	// Provided for multi-touch support...
+	bool event(QEvent *pEvent);
+
 protected slots:
 
 	// Mixer strip slots.
@@ -230,6 +234,9 @@ private:
 	// Special action-bar for the android stuff.
 	qmidictlActionBar *m_pActionBar;
 #endif
+
+	// Current touch-point-id to widgets map.
+	QHash<int, QWidget *> m_touched;
 
 	// Kind-of singleton reference.
 	static qmidictlMainForm *g_pMainForm;

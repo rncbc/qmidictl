@@ -6,6 +6,8 @@ ChangeLog
 
 GIT HEAD
 
+- Multi-touch/finger support is introduced. (EXPERIMENTAL)
+
 - Updated for the newer Qt5 development tools (>= 5.13).
 
 - Configure updated to check for qtchooser availability.

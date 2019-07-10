@@ -1,7 +1,7 @@
 // qmidictlMainForm.cpp
 //
 /****************************************************************************
-   Copyright (C) 2010-2018, rncbc aka Rui Nuno Capela. All rights reserved.
+   Copyright (C) 2010-2019, rncbc aka Rui Nuno Capela. All rights reserved.
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
@@ -30,13 +30,15 @@
 #include "qmidictlUdpDevice.h"
 #include "qmidictlDialStyle.h"
 
-#include <QTimer>
-
-#include <QMessageBox>
-
 #if defined(Q_OS_ANDROID)
 #include "qmidictlActionBar.h"
 #endif
+
+#include <QTimer>
+#include <QMessageBox>
+
+#include <QTouchEvent>
+
 
 // Possible cubic-root optimization.
 // (borrowed from metamerist.com)
@@ -97,6 +99,9 @@ qmidictlMainForm::qmidictlMainForm (
 	// Hack the jog-wheel dial style and palette...
 	m_pDialStyle = new qmidictlDialStyle();
 	m_ui.jogWheelDial->setStyle(m_pDialStyle);
+
+	// Enable multi-touch gestures...
+	QMainWindow::setAttribute(Qt::WA_AcceptTouchEvents);
 
 #if defined(Q_OS_ANDROID)
 
@@ -1019,6 +1024,93 @@ void qmidictlMainForm::aboutSlot (void)
 void qmidictlMainForm::exitSlot (void)
 {
 	close();
+}
+
+
+// Provided for multi-touch support...
+bool qmidictlMainForm::event ( QEvent *pEvent )
+{
+	if (pEvent->type() == QEvent::TouchBegin  ||
+		pEvent->type() == QEvent::TouchUpdate ||
+		pEvent->type() == QEvent::TouchEnd) {
+		QTouchEvent *pTouchEvent = static_cast<QTouchEvent *> (pEvent);
+		if (pTouchEvent) {
+			// Make up with multi-touch stuff...
+			// -- synthesize mouse events:
+			QEvent::Type etype;
+			QMouseEvent *pMouseEvent;
+			const QList<QTouchEvent::TouchPoint>& points
+				= pTouchEvent->touchPoints();
+			switch (pTouchEvent->type()) {
+			case QEvent::TouchBegin:
+				m_touched.clear();
+				// Fall thru...
+			case QEvent::TouchUpdate:
+				foreach (QTouchEvent::TouchPoint point, points) {
+					const int id = point.id();
+					const QPoint& pos = point.pos().toPoint();
+					const QList<QWidget *>& children
+						= m_ui.MainCentralWidget->findChildren<QWidget *> ();
+					foreach (QWidget *pWidget, children) {
+						const QPoint& wpos = pWidget->mapFrom(this, pos);
+						if (pWidget->rect().contains(wpos) &&
+							pWidget->childAt(wpos) == NULL) {
+							QWidget *pTouchedWidget = m_touched.value(id, NULL);
+							if (pTouchedWidget == pWidget)
+								etype = QEvent::MouseMove;
+							else
+							if (pTouchedWidget) {
+								m_touched.remove(id);
+								etype = QEvent::MouseButtonRelease;
+								pMouseEvent = new QMouseEvent(
+									etype, pTouchedWidget->mapFrom(this, pos),
+									Qt::LeftButton,
+									Qt::LeftButton,
+									Qt::NoModifier);
+								QApplication::postEvent(pTouchedWidget, pMouseEvent);
+								pTouchedWidget = NULL;
+							}
+							if (pTouchedWidget == NULL) {
+								m_touched.insert(id, pWidget);
+								etype = QEvent::MouseButtonPress;
+							}
+							pMouseEvent = new QMouseEvent(
+								etype, wpos,
+								Qt::LeftButton,
+								Qt::LeftButton,
+								Qt::NoModifier);
+							QApplication::postEvent(pWidget, pMouseEvent);
+							break;
+						}
+					}
+				}
+				break;
+			case QEvent::TouchEnd:
+				etype = QEvent::MouseButtonRelease;
+				foreach (QTouchEvent::TouchPoint point, points) {
+					const int id = point.id();
+					const QPoint& pos = point.pos().toPoint();
+					QWidget *pWidget = m_touched.value(id, NULL);
+					if (pWidget) {
+						pMouseEvent = new QMouseEvent(
+							etype, pWidget->mapFrom(this, pos),
+							Qt::LeftButton,
+							Qt::LeftButton,
+							Qt::NoModifier);
+						QApplication::postEvent(pWidget, pMouseEvent);
+					}
+				}
+				m_touched.clear();
+				// Fall thru...
+			default:
+				break;
+			}
+			// Done with multi-touch stuff.
+			return true;
+		}
+	}
+
+	return QMainWindow::event(pEvent);
 }
 
 
