@@ -1035,17 +1035,6 @@ bool qmidictlMainForm::event ( QEvent *pEvent )
 		pEvent->type() == QEvent::TouchEnd) {
 		QTouchEvent *pTouchEvent = static_cast<QTouchEvent *> (pEvent);
 		if (pTouchEvent) {
-		#if 1//DEBUG_TEXT
-			static int s_iEventCount = 0;
-			QString sDebugText = "<%1> QEvent::";
-			switch (pTouchEvent->type()) {
-				case QEvent::TouchBegin:  sDebugText += "TouchBegin";  break;
-				case QEvent::TouchUpdate: sDebugText += "TouchUpdate"; break;
-				case QEvent::TouchEnd:    sDebugText += "TouchEnd";    break;
-				default:                  sDebugText += "Unknown";     break;
-			}
-			sDebugText += ": touchEvents=%2 {";
-		#endif
 			// Make up with multi-touch stuff...
 			// -- synthesize mouse events:
 			int iTouched = 0;
