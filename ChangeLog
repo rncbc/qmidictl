@@ -4,9 +4,9 @@ QmidiCtl - A MIDI Remote Controller via UDP/IP Multicast
 ChangeLog
 
 
-GIT HEAD
+0.5.5  2019-07-12  A Summer'19 Release.
 
-- Multi-touch/finger support is introduced. (EXPERIMENTAL)
+- Multi-touch/finger support has been introduced.
 
 - Updated for the newer Qt5 development tools (>= 5.13).
 
