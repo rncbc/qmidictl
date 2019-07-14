@@ -100,8 +100,9 @@ qmidictlMainForm::qmidictlMainForm (
 	m_pDialStyle = new qmidictlDialStyle();
 	m_ui.jogWheelDial->setStyle(m_pDialStyle);
 
-	// Enable multi-touch gestures...
-	QMainWindow::setAttribute(Qt::WA_AcceptTouchEvents);
+	// Enable multi-gestures...
+	m_ui.MainCentralWidget->setAttribute(Qt::WA_AcceptTouchEvents);
+	m_ui.MainCentralWidget->installEventFilter(this);
 
 #if defined(Q_OS_ANDROID)
 
@@ -133,6 +134,9 @@ qmidictlMainForm::qmidictlMainForm (
 	m_ui.MainCentralLayout->insertWidget(0, m_pActionBar);
 
 #endif
+
+	// Custom swipe gesture trackers.
+	m_bSwipe = false;
 
 	// Pseudo-singleton reference setup.
 	g_pMainForm = this;
@@ -1028,100 +1032,185 @@ void qmidictlMainForm::exitSlot (void)
 
 
 // Provided for multi-touch support...
-bool qmidictlMainForm::event ( QEvent *pEvent )
+bool qmidictlMainForm::eventFilter ( QObject *pObject, QEvent *pEvent )
 {
-	if (pEvent->type() == QEvent::TouchBegin  ||
-		pEvent->type() == QEvent::TouchUpdate ||
-		pEvent->type() == QEvent::TouchEnd) {
-		QTouchEvent *pTouchEvent = static_cast<QTouchEvent *> (pEvent);
-		if (pTouchEvent) {
-			// Make up with multi-touch stuff...
-			// -- synthesize mouse events:
-			int iTouched = 0;
-			QEvent::Type etype;
-			QMouseEvent *pMouseEvent;
-			const QList<QTouchEvent::TouchPoint>& points
-				= pTouchEvent->touchPoints();
-			switch (pTouchEvent->type()) {
-			case QEvent::TouchBegin:
-				// Begin...
-				m_touched.clear();
-				// Fall thru...
-			case QEvent::TouchUpdate:
-				// Assess all touch-point-ids...
-				foreach (QTouchEvent::TouchPoint point, points) {
-					const int id = point.id();
-					const QPoint& pos = point.pos().toPoint();
-					QWidget *pTouchedWidget = m_touched.value(id, NULL);
-					if (pTouchedWidget) {
-						const QPoint& wpos
-							= pTouchedWidget->mapFrom(this, pos);
-						if (point.state() & Qt::TouchPointReleased) {
-							m_touched.remove(id);
-							etype = QEvent::MouseButtonRelease;
-						} else {
-							etype = QEvent::MouseMove;
-						}
-						pMouseEvent = new QMouseEvent(
-							etype, wpos,
-							Qt::LeftButton,
-							Qt::LeftButton,
-							Qt::NoModifier);
-						QApplication::postEvent(pTouchedWidget, pMouseEvent);
-						++iTouched;
-					} else {
-						const QList<QWidget *>& children
-							= m_ui.MainCentralWidget->findChildren<QWidget *> ();
-						foreach (QWidget *pWidget, children) {
-							const QPoint& wpos = pWidget->mapFrom(this, pos);
-							if (pWidget->rect().contains(wpos) &&
-								pWidget->childAt(wpos) == NULL) {
-								m_touched.insert(id, pWidget);
-								etype = QEvent::MouseButtonPress;
-								pMouseEvent = new QMouseEvent(
-									etype, wpos,
-									Qt::LeftButton,
-									Qt::LeftButton,
-									Qt::NoModifier);
-								QApplication::postEvent(pWidget, pMouseEvent);
-								++iTouched;
-								break;
-							}
-						}
-					}
-				}
-				break;
-			case QEvent::TouchEnd:
-				// Release all remaining touch-point-ids...
-				etype = QEvent::MouseButtonRelease;
-				foreach (QTouchEvent::TouchPoint point, points) {
-					const int id = point.id();
-					const QPoint& pos = point.pos().toPoint();
-					QWidget *pTouchedWidget = m_touched.value(id, NULL);
-					if (pTouchedWidget) {
-						const QPoint& wpos
-							= pTouchedWidget->mapFrom(this, pos);
-						pMouseEvent = new QMouseEvent(
-							etype, wpos,
-							Qt::LeftButton,
-							Qt::LeftButton,
-							Qt::NoModifier);
-						QApplication::postEvent(pTouchedWidget, pMouseEvent);
-						++iTouched;
-					}
-				}
-				// End.
-				m_touched.clear();
-				// Fall thru...
-			default:
-				break;
-			}
-			// Done with multi-touch stuff.
-			return (iTouched > 0);
+	if (pObject == m_ui.MainCentralWidget) {
+		if (pEvent->type() == QEvent::TouchBegin  ||
+			pEvent->type() == QEvent::TouchUpdate ||
+			pEvent->type() == QEvent::TouchEnd    ||
+			pEvent->type() == QEvent::TouchCancel) {
+			QTouchEvent *pTouchEvent = static_cast<QTouchEvent *> (pEvent);
+			if (pTouchEvent)
+				return touchEvent(pTouchEvent);
 		}
 	}
 
-	return QMainWindow::event(pEvent);
+	return QMainWindow::eventFilter(pObject, pEvent);
+}
+
+
+bool qmidictlMainForm::touchEvent ( QTouchEvent *pTouchEvent )
+{
+	// Make up with multi-touch stuff...
+	// -- synthesize mouse events:
+	int iTouched = 0;
+
+	QEvent::Type etype;
+	QMouseEvent *pMouseEvent;
+	const QList<QTouchEvent::TouchPoint>& points
+		= pTouchEvent->touchPoints();
+
+	switch (pTouchEvent->type()) {
+	case QEvent::TouchBegin:
+		// Begin...
+		m_touched.clear();
+		m_bSwipe = (points.size() == 1);
+		++iTouched;
+		// Fall thru...
+	case QEvent::TouchUpdate:
+		// Whether currently tracking a swipe gesture...
+		if (m_bSwipe) {
+			const QTouchEvent::TouchPoint& point = points.at(0);
+			const QPointF& p0 = point.startScreenPos();
+			const QPointF& p1 = point.screenPos();
+			const qreal dy = p1.y() - p0.y();
+			if (qAbs(dy) > 60.0 || points.size() > 1) {
+				// Replay...
+				const int id = point.id();
+				const QPoint& pos = p1.toPoint();
+				const QList<QWidget *>& children
+					= m_ui.MainCentralWidget->findChildren<QWidget *> ();
+				foreach (QWidget *pWidget, children) {
+					const QPoint& wpos = pWidget->mapFromGlobal(pos);
+					if (pWidget->rect().contains(wpos) &&
+						pWidget->childAt(wpos) == NULL) {
+						m_touched.insert(id, pWidget);
+						etype = QEvent::MouseButtonPress;
+						pMouseEvent = new QMouseEvent(
+							etype, wpos,
+							Qt::LeftButton,
+							Qt::LeftButton,
+							Qt::NoModifier);
+						QApplication::postEvent(pWidget, pMouseEvent);
+						++iTouched;
+					}
+				}
+				// And cancel...
+				m_bSwipe = false;
+			}
+		}
+		// Whether still tracking a swipe gesture...
+		if (m_bSwipe)
+			break;
+		// Assess all touch-point-ids...
+		foreach (QTouchEvent::TouchPoint point, points) {
+			const int id = point.id();
+			const QPoint& pos = point.pos().toPoint();
+			QWidget *pTouchedWidget = m_touched.value(id, NULL);
+			if (pTouchedWidget) {
+				const QPoint& wpos
+					= pTouchedWidget->mapFrom(this, pos);
+				if (point.state() & Qt::TouchPointReleased) {
+					m_touched.remove(id);
+					etype = QEvent::MouseButtonRelease;
+				} else {
+					etype = QEvent::MouseMove;
+				}
+				pMouseEvent = new QMouseEvent(
+					etype, wpos,
+					Qt::LeftButton,
+					Qt::LeftButton,
+					Qt::NoModifier);
+				QApplication::postEvent(pTouchedWidget, pMouseEvent);
+				++iTouched;
+			} else {
+				const QList<QWidget *>& children
+					= m_ui.MainCentralWidget->findChildren<QWidget *> ();
+				foreach (QWidget *pWidget, children) {
+					const QPoint& wpos = pWidget->mapFrom(this, pos);
+					if (pWidget->rect().contains(wpos) &&
+						pWidget->childAt(wpos) == NULL) {
+						m_touched.insert(id, pWidget);
+						etype = QEvent::MouseButtonPress;
+						pMouseEvent = new QMouseEvent(
+							etype, wpos,
+							Qt::LeftButton,
+							Qt::LeftButton,
+							Qt::NoModifier);
+						QApplication::postEvent(pWidget, pMouseEvent);
+						++iTouched;
+						break;
+					}
+				}
+			}
+		}
+		break;
+	case QEvent::TouchEnd:
+		// Whether currently tracking some swipe gesture...
+		if (m_bSwipe) {
+			const QTouchEvent::TouchPoint& point = points.at(0);
+			const QPointF& p0 = point.startScreenPos();
+			const QPointF& p1 = point.screenPos();
+			const qreal dx = p1.x() - p0.x();
+			if (qAbs(dx) > 240.0) {
+				// Perform swipe...
+				if (dx < 0.0)
+					nextStripPageSlot();
+				else
+					prevStripPageSlot();
+				// Done swipe.
+			} else {
+				// Replay...
+				const int id = point.id();
+				const QPoint& pos = p1.toPoint();
+				const QList<QWidget *>& children
+					= m_ui.MainCentralWidget->findChildren<QWidget *> ();
+				foreach (QWidget *pWidget, children) {
+					const QPoint& wpos = pWidget->mapFromGlobal(pos);
+					if (pWidget->rect().contains(wpos) &&
+						pWidget->childAt(wpos) == NULL) {
+						m_touched.insert(id, pWidget);
+						etype = QEvent::MouseButtonPress;
+						pMouseEvent = new QMouseEvent(
+							etype, wpos,
+							Qt::LeftButton,
+							Qt::LeftButton,
+							Qt::NoModifier);
+						QApplication::postEvent(pWidget, pMouseEvent);
+						++iTouched;
+					}
+				}
+			}
+		}
+		// Release all remaining touch-point-ids...
+		etype = QEvent::MouseButtonRelease;
+		foreach (QTouchEvent::TouchPoint point, points) {
+			const int id = point.id();
+			const QPoint& pos = point.pos().toPoint();
+			QWidget *pTouchedWidget = m_touched.value(id, NULL);
+			if (pTouchedWidget) {
+				const QPoint& wpos
+					= pTouchedWidget->mapFrom(this, pos);
+				pMouseEvent = new QMouseEvent(
+					etype, wpos,
+					Qt::LeftButton,
+					Qt::LeftButton,
+					Qt::NoModifier);
+				QApplication::postEvent(pTouchedWidget, pMouseEvent);
+				++iTouched;
+			}
+		}
+		// Fall thru...
+	case QEvent::TouchCancel:
+		m_touched.clear();
+		m_bSwipe = false;
+		// Fall thru...
+	default:
+		break;
+	}
+
+	// Done with multi-touch stuff.
+	return (iTouched > 0);
 }
 
 

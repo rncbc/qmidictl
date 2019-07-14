@@ -34,6 +34,8 @@ class qmidictlDialStyle;
 class qmidictlActionBar;
 #endif
 
+class QTouchEvent;
+
 
 //----------------------------------------------------------------------------
 // qmidictlMainForm -- UI wrapper form.
@@ -155,7 +157,8 @@ protected:
 	void stabilizeForm();
 
 	// Provided for multi-touch support...
-	bool event(QEvent *pEvent);
+	bool eventFilter(QObject *pObject, QEvent *pEvent);
+	bool touchEvent(QTouchEvent *pTouchEvent);
 
 protected slots:
 
@@ -237,6 +240,9 @@ private:
 
 	// Current touch-point-id to widgets map.
 	QHash<int, QWidget *> m_touched;
+
+	// Custom swipe gesture trackers.
+	bool m_bSwipe;
 
 	// Kind-of singleton reference.
 	static qmidictlMainForm *g_pMainForm;

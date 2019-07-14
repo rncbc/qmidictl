@@ -6,6 +6,9 @@ ChangeLog
 
 GIT HEAD
 
+- Added left/right swipe gestures to navigate over mixer
+  strip pages. (EXPERIMENTAL)
+  
 - Make sure compiler flags comply to c++11 as standard.
 
 
