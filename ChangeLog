@@ -4,6 +4,11 @@ QmidiCtl - A MIDI Remote Controller via UDP/IP Multicast
 ChangeLog
 
 
+GIT HEAD
+
+- Make sure compiler flags comply to c++11 as standard.
+
+
 0.5.5  2019-07-12  A Summer'19 Release.
 
 - Multi-touch/finger support has been introduced.
