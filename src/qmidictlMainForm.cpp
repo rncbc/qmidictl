@@ -1055,6 +1055,9 @@ bool qmidictlMainForm::touchEvent ( QTouchEvent *pTouchEvent )
 	// -- synthesize mouse events:
 	int iTouched = 0;
 
+	const QWidget *pCentralWidget
+		= m_ui.MainCentralWidget;
+
 	QEvent::Type etype;
 	QMouseEvent *pMouseEvent;
 
@@ -1080,11 +1083,11 @@ bool qmidictlMainForm::touchEvent ( QTouchEvent *pTouchEvent )
 			if (dx2 < 0.0 || qAbs(dy) > 60.0 || points.size() > 1) {
 				// Replay...
 				const int id = point.id();
-				const QPoint& pos = p2.toPoint();
+				const QPoint& pos = point.pos().toPoint();
 				const QList<QWidget *>& children
-					= m_ui.MainCentralWidget->findChildren<QWidget *> ();
+					= pCentralWidget->findChildren<QWidget *> ();
 				foreach (QWidget *pWidget, children) {
-					const QPoint& wpos = pWidget->mapFromGlobal(pos);
+					const QPoint& wpos = pWidget->mapFrom(pCentralWidget, pos);
 					if (pWidget->rect().contains(wpos) &&
 						pWidget->childAt(wpos) == NULL) {
 						m_touched.insert(id, pWidget);
@@ -1112,7 +1115,7 @@ bool qmidictlMainForm::touchEvent ( QTouchEvent *pTouchEvent )
 			QWidget *pTouchedWidget = m_touched.value(id, NULL);
 			if (pTouchedWidget) {
 				const QPoint& wpos
-					= pTouchedWidget->mapFrom(this, pos);
+					= pTouchedWidget->mapFrom(pCentralWidget, pos);
 				if (point.state() & Qt::TouchPointReleased) {
 					m_touched.remove(id);
 					etype = QEvent::MouseButtonRelease;
@@ -1128,9 +1131,9 @@ bool qmidictlMainForm::touchEvent ( QTouchEvent *pTouchEvent )
 				++iTouched;
 			} else {
 				const QList<QWidget *>& children
-					= m_ui.MainCentralWidget->findChildren<QWidget *> ();
+					= pCentralWidget->findChildren<QWidget *> ();
 				foreach (QWidget *pWidget, children) {
-					const QPoint& wpos = pWidget->mapFrom(this, pos);
+					const QPoint& wpos = pWidget->mapFrom(pCentralWidget, pos);
 					if (pWidget->rect().contains(wpos) &&
 						pWidget->childAt(wpos) == NULL) {
 						m_touched.insert(id, pWidget);
@@ -1165,11 +1168,11 @@ bool qmidictlMainForm::touchEvent ( QTouchEvent *pTouchEvent )
 			} else {
 				// Replay...
 				const int id = point.id();
-				const QPoint& pos = p2.toPoint();
+				const QPoint& pos = point.pos().toPoint();
 				const QList<QWidget *>& children
-					= m_ui.MainCentralWidget->findChildren<QWidget *> ();
+					= pCentralWidget->findChildren<QWidget *> ();
 				foreach (QWidget *pWidget, children) {
-					const QPoint& wpos = pWidget->mapFromGlobal(pos);
+					const QPoint& wpos = pWidget->mapFrom(pCentralWidget, pos);
 					if (pWidget->rect().contains(wpos) &&
 						pWidget->childAt(wpos) == NULL) {
 						m_touched.insert(id, pWidget);
@@ -1193,7 +1196,7 @@ bool qmidictlMainForm::touchEvent ( QTouchEvent *pTouchEvent )
 			QWidget *pTouchedWidget = m_touched.value(id, NULL);
 			if (pTouchedWidget) {
 				const QPoint& wpos
-					= pTouchedWidget->mapFrom(this, pos);
+					= pTouchedWidget->mapFrom(pCentralWidget, pos);
 				pMouseEvent = new QMouseEvent(
 					etype, wpos,
 					Qt::LeftButton,
