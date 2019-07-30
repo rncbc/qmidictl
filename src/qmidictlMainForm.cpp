@@ -1057,6 +1057,7 @@ bool qmidictlMainForm::touchEvent ( QTouchEvent *pTouchEvent )
 
 	QEvent::Type etype;
 	QMouseEvent *pMouseEvent;
+
 	const QList<QTouchEvent::TouchPoint>& points
 		= pTouchEvent->touchPoints();
 
@@ -1072,12 +1073,14 @@ bool qmidictlMainForm::touchEvent ( QTouchEvent *pTouchEvent )
 		if (m_bSwipe) {
 			const QTouchEvent::TouchPoint& point = points.at(0);
 			const QPointF& p0 = point.startScreenPos();
-			const QPointF& p1 = point.screenPos();
-			const qreal dy = p1.y() - p0.y();
-			if (qAbs(dy) > 60.0 || points.size() > 1) {
+			const QPointF& p1 = point.lastScreenPos();
+			const QPointF& p2 = point.screenPos();
+			const qreal dx2 = (p2.x() - p1.x()) * (p1.x() - p0.x());
+			const qreal dy = p2.y() - p0.y();
+			if (dx2 < 0.0 || qAbs(dy) > 60.0 || points.size() > 1) {
 				// Replay...
 				const int id = point.id();
-				const QPoint& pos = p1.toPoint();
+				const QPoint& pos = p2.toPoint();
 				const QList<QWidget *>& children
 					= m_ui.MainCentralWidget->findChildren<QWidget *> ();
 				foreach (QWidget *pWidget, children) {
@@ -1150,9 +1153,9 @@ bool qmidictlMainForm::touchEvent ( QTouchEvent *pTouchEvent )
 		if (m_bSwipe) {
 			const QTouchEvent::TouchPoint& point = points.at(0);
 			const QPointF& p0 = point.startScreenPos();
-			const QPointF& p1 = point.screenPos();
-			const qreal dx = p1.x() - p0.x();
-			if (qAbs(dx) > 240.0) {
+			const QPointF& p2 = point.screenPos();
+			const qreal dx = p2.x() - p0.x();
+			if (qAbs(dx) > 120.0) {
 				// Perform swipe...
 				if (dx < 0.0)
 					nextStripPageSlot();
@@ -1162,7 +1165,7 @@ bool qmidictlMainForm::touchEvent ( QTouchEvent *pTouchEvent )
 			} else {
 				// Replay...
 				const int id = point.id();
-				const QPoint& pos = p1.toPoint();
+				const QPoint& pos = p2.toPoint();
 				const QList<QWidget *>& children
 					= m_ui.MainCentralWidget->findChildren<QWidget *> ();
 				foreach (QWidget *pWidget, children) {
