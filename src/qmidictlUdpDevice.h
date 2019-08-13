@@ -50,7 +50,7 @@ class qmidictlUdpDevice : public QObject
 public:
 
 	// Constructor.
-	qmidictlUdpDevice(QObject *pParent = NULL);
+	qmidictlUdpDevice(QObject *pParent = nullptr);
 
 	// Destructor.
 	~qmidictlUdpDevice();

@@ -1,7 +1,7 @@
 // qmidictlMidiControl.cpp
 //
 /****************************************************************************
-   Copyright (C) 2010-2018, rncbc aka Rui Nuno Capela. All rights reserved.
+   Copyright (C) 2010-2019, rncbc aka Rui Nuno Capela. All rights reserved.
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
@@ -34,7 +34,7 @@
 //
 
 // Kind of singleton reference.
-qmidictlMidiControl* qmidictlMidiControl::g_pMidiControl = NULL;
+qmidictlMidiControl* qmidictlMidiControl::g_pMidiControl = nullptr;
 
 // Constructor.
 qmidictlMidiControl::qmidictlMidiControl (void)
@@ -51,7 +51,7 @@ qmidictlMidiControl::qmidictlMidiControl (void)
 qmidictlMidiControl::~qmidictlMidiControl (void)
 {
 	// Pseudo-singleton reference shut-down.
-	g_pMidiControl = NULL;
+	g_pMidiControl = nullptr;
 }
 
 
@@ -469,7 +469,7 @@ static struct
 	{ 80, _TR("Mute Triangle") },
 	{ 81, _TR("Open Triangle") },
 
-	{  0, NULL }
+	{  0, nullptr }
 };
 
 static QHash<unsigned short, QString> g_noteNames;
@@ -576,7 +576,7 @@ static struct
 	{ 126, _TR("Mono Operation") },
 	{ 127, _TR("Poly Operation") },
 
-	{   0, NULL }
+	{   0, nullptr }
 };
 
 static QHash<unsigned short, QString> g_controllerNames;

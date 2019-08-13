@@ -109,7 +109,7 @@ protected:
 
 	// MMC Command dispatcher.
 	void sendMmcCommand (MmcCommand cmd,
-		unsigned char *data = NULL, unsigned short len = 0);
+		unsigned char *data = nullptr, unsigned short len = 0);
 
 	// MMC sub-command codes (as for MASKED_WRITE).
 	enum MmcSubCommand {

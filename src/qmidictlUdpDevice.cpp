@@ -115,7 +115,7 @@ void qmidictlUdpDeviceThread::run (void)
 		tv.tv_sec  = 1;
 		tv.tv_usec = 0;
 
-		int s = ::select(fdmax + 1, &fds, NULL, NULL, &tv);
+		int s = ::select(fdmax + 1, &fds, nullptr, nullptr, &tv);
 		if (s < 0) {
 			::perror("select");
 			break;
@@ -149,7 +149,7 @@ void qmidictlUdpDeviceThread::run (void)
 
 // Constructor.
 qmidictlUdpDevice::qmidictlUdpDevice ( QObject *pParent )
-	: QObject(pParent), m_sockin(-1), m_sockout(-1), m_pRecvThread(NULL)
+	: QObject(pParent), m_sockin(-1), m_sockout(-1), m_pRecvThread(nullptr)
 {
 #if defined(__WIN32__) || defined(_WIN32) || defined(WIN32)
 	WSAStartup(MAKEWORD(1, 1), &g_wsaData);
@@ -183,12 +183,12 @@ bool qmidictlUdpDevice::open (
 #endif
 
 	// Stable interface name...
-	const char *ifname = NULL;
+	const char *ifname = nullptr;
 	const QByteArray aInterface = sInterface.toLocal8Bit();
 	if (!aInterface.isEmpty())
 		ifname = aInterface.constData();
 
-	const char *udp_addr = NULL;
+	const char *udp_addr = nullptr;
 	const QByteArray aUdpAddr = sUdpAddr.toLocal8Bit();
 	if (!aUdpAddr.isEmpty())
 		udp_addr = aUdpAddr.constData();
@@ -301,7 +301,7 @@ void qmidictlUdpDevice::close (void)
 			m_pRecvThread->wait(1200); // Timeout>1sec.
 		}
 		delete m_pRecvThread;
-		m_pRecvThread = NULL;
+		m_pRecvThread = nullptr;
 	}
 }
 

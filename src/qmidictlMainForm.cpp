@@ -67,7 +67,7 @@ static inline float cubef2 ( float x )
 // qmidictlMainForm -- UI wrapper form.
 //
 
-qmidictlMainForm *qmidictlMainForm::g_pMainForm = NULL;
+qmidictlMainForm *qmidictlMainForm::g_pMainForm = nullptr;
 
 // Constructor.
 qmidictlMainForm::qmidictlMainForm (
@@ -82,7 +82,7 @@ qmidictlMainForm::qmidictlMainForm (
 
 	// Strip page/states.
 	m_iStripPages = 4;
-	m_pStripStates = NULL;
+	m_pStripStates = nullptr;
 	m_iCurrentStripPage = 0;
 
 	// Jog-wheel last known state.
@@ -214,7 +214,7 @@ qmidictlMainForm::~qmidictlMainForm (void)
 	delete m_pUdpDevice;
 
 	// Pseudo-singleton reference shut-down.
-	g_pMainForm = NULL;
+	g_pMainForm = nullptr;
 }
 
 
@@ -250,7 +250,7 @@ int qmidictlMainForm::currentStripPage (void) const
 void qmidictlMainForm::setup (void)
 {
 	qmidictlOptions *pOptions = qmidictlOptions::getInstance();
-	if (pOptions == NULL)
+	if (pOptions == nullptr)
 		return;
 
 	if (!m_pUdpDevice->open(
@@ -520,7 +520,7 @@ void qmidictlMainForm::sendData ( unsigned char *data, unsigned short len )
 void qmidictlMainForm::sendCommand ( int iCommand, int iTrack, int iValue )
 {
 	qmidictlMidiControl *pMidiControl = qmidictlMidiControl::getInstance();
-	if (pMidiControl == NULL)
+	if (pMidiControl == nullptr)
 		return;
 	
 	qmidictlMidiControl::Command command
@@ -746,7 +746,7 @@ void qmidictlMainForm::receiveSlot ( const QByteArray& data )
 void qmidictlMainForm::recvData ( unsigned char *data, unsigned short len )
 {
 	qmidictlMidiControl *pMidiControl = qmidictlMidiControl::getInstance();
-	if (pMidiControl == NULL)
+	if (pMidiControl == nullptr)
 		return;
 
 	m_iBusy++;
@@ -1015,7 +1015,7 @@ void qmidictlMainForm::aboutSlot (void)
 	sText += "<small>";
 	sText += QMIDICTL_COPYRIGHT "<br />\n";
 	sText += "<br />\n";
-	sText += tr("This program is free software; you can redistribute it and/or modify it") + "<br />\n";
+	sText += tr("This program is free software; you can redistribute it and/or modify it") + '\n';
 	sText += tr("under the terms of the GNU General Public License version 2 or later.");
 	sText += "</small>";
 	sText += "</p>\n";
@@ -1089,7 +1089,7 @@ bool qmidictlMainForm::touchEvent ( QTouchEvent *pTouchEvent )
 				foreach (QWidget *pWidget, children) {
 					const QPoint& wpos = pWidget->mapFrom(pCentralWidget, pos);
 					if (pWidget->rect().contains(wpos) &&
-						pWidget->childAt(wpos) == NULL) {
+						pWidget->childAt(wpos) == nullptr) {
 						m_touched.insert(id, pWidget);
 						etype = QEvent::MouseButtonPress;
 						pMouseEvent = new QMouseEvent(
@@ -1112,7 +1112,7 @@ bool qmidictlMainForm::touchEvent ( QTouchEvent *pTouchEvent )
 		foreach (QTouchEvent::TouchPoint point, points) {
 			const int id = point.id();
 			const QPoint& pos = point.pos().toPoint();
-			QWidget *pTouchedWidget = m_touched.value(id, NULL);
+			QWidget *pTouchedWidget = m_touched.value(id, nullptr);
 			if (pTouchedWidget) {
 				const QPoint& wpos
 					= pTouchedWidget->mapFrom(pCentralWidget, pos);
@@ -1135,7 +1135,7 @@ bool qmidictlMainForm::touchEvent ( QTouchEvent *pTouchEvent )
 				foreach (QWidget *pWidget, children) {
 					const QPoint& wpos = pWidget->mapFrom(pCentralWidget, pos);
 					if (pWidget->rect().contains(wpos) &&
-						pWidget->childAt(wpos) == NULL) {
+						pWidget->childAt(wpos) == nullptr) {
 						m_touched.insert(id, pWidget);
 						etype = QEvent::MouseButtonPress;
 						pMouseEvent = new QMouseEvent(
@@ -1174,7 +1174,7 @@ bool qmidictlMainForm::touchEvent ( QTouchEvent *pTouchEvent )
 				foreach (QWidget *pWidget, children) {
 					const QPoint& wpos = pWidget->mapFrom(pCentralWidget, pos);
 					if (pWidget->rect().contains(wpos) &&
-						pWidget->childAt(wpos) == NULL) {
+						pWidget->childAt(wpos) == nullptr) {
 						m_touched.insert(id, pWidget);
 						etype = QEvent::MouseButtonPress;
 						pMouseEvent = new QMouseEvent(
@@ -1193,7 +1193,7 @@ bool qmidictlMainForm::touchEvent ( QTouchEvent *pTouchEvent )
 		foreach (QTouchEvent::TouchPoint point, points) {
 			const int id = point.id();
 			const QPoint& pos = point.pos().toPoint();
-			QWidget *pTouchedWidget = m_touched.value(id, NULL);
+			QWidget *pTouchedWidget = m_touched.value(id, nullptr);
 			if (pTouchedWidget) {
 				const QPoint& wpos
 					= pTouchedWidget->mapFrom(pCentralWidget, pos);

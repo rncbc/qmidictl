@@ -1,7 +1,7 @@
 // qmidictlActionBar.cpp
 //
 /****************************************************************************
-   Copyright (C) 2010-2018, rncbc aka Rui Nuno Capela. All rights reserved.
+   Copyright (C) 2010-2019, rncbc aka Rui Nuno Capela. All rights reserved.
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
@@ -164,7 +164,7 @@ QString qmidictlActionBar::title (void) const
 
 void qmidictlActionBar::adjustMenu (void)
 {
-	QObject::disconnect(m_appButton, SIGNAL(clicked(bool)), NULL, NULL);
+	QObject::disconnect(m_appButton, SIGNAL(clicked(bool)), nullptr, nullptr);
 
 	if (!m_appMenu->isEmpty()) {
 		const QList<QAction *>& actions
@@ -175,14 +175,14 @@ void qmidictlActionBar::adjustMenu (void)
 		} else {
 			QAction *action = actions.first();
 			m_appButton->setIcon(action->icon());
-			m_appButton->setMenu(NULL);
+			m_appButton->setMenu(nullptr);
 			QObject::connect(m_appButton,
 				SIGNAL(clicked(bool)),
 				action, SLOT(trigger()));
 		}
 	} else {
 		m_appButton->setIcon(m_appIcon);
-		m_appButton->setMenu(NULL);
+		m_appButton->setMenu(nullptr);
 	}
 }
 
@@ -288,7 +288,7 @@ void qmidictlActionBar::addButton ( QAction *action, int position )
 
 void qmidictlActionBar::removeButton ( QAction* action )
 {
-	QToolButton *button = NULL;
+	QToolButton *button = nullptr;
 	for (int i = 0; i < m_buttonActions.size(); ++i) {
 		if (m_buttonActions.at(i) == action) {
 			button = m_actionButtons.at(i);
