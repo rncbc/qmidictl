@@ -1158,7 +1158,7 @@ bool qmidictlMainForm::touchEvent ( QTouchEvent *pTouchEvent )
 			const QPointF& p0 = point.startScreenPos();
 			const QPointF& p2 = point.screenPos();
 			const qreal dx = p2.x() - p0.x();
-			if (qAbs(dx) > 120.0) {
+			if (qAbs(dx) > 60.0) {
 				// Perform swipe...
 				if (dx < 0.0)
 					nextStripPageSlot();
