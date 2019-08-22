@@ -30,9 +30,6 @@
     <height>240</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string>QmidiCtl</string>
-  </property>
   <property name="windowIcon">
    <iconset resource="qmidictl.qrc">:/images/qmidictl.png</iconset>
   </property>

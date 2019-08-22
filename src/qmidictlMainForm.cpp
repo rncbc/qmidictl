@@ -258,7 +258,7 @@ void qmidictlMainForm::setup (void)
 			pOptions->sUdpAddr,
 			pOptions->iUdpPort)) {
 		QMessageBox::critical(this,
-			tr("Network Inferface Error - %1").arg(QMIDICTL_TITLE),
+			tr("Network Inferface Error"),
 			tr("The network interface could not be established.\n\n"
 			"Please, make sure you have an on-line network connection "
 			"and try again."));
@@ -1020,7 +1020,7 @@ void qmidictlMainForm::aboutSlot (void)
 	sText += "</small>";
 	sText += "</p>\n";
 
-	QMessageBox::about(this, tr("About %1").arg(QMIDICTL_TITLE), sText);
+	QMessageBox::about(this, tr("About"), sText);
 }
 
 
