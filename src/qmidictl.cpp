@@ -148,8 +148,10 @@ int main ( int argc, char *argv[] )
 {
 	Q_INIT_RESOURCE(qmidictl);
 
+#if !defined(Q_OS_ANDROID)
 #if QT_VERSION >= QT_VERSION_CHECK(5, 6, 0)
 	QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+#endif
 #endif
 
 	QApplication app(argc, argv);
