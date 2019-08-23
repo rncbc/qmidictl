@@ -157,8 +157,8 @@ int main ( int argc, char *argv[] )
 	QApplication app(argc, argv);
 #if QT_VERSION >= QT_VERSION_CHECK(5, 1, 0)
 	app.setApplicationName(QMIDICTL_TITLE);
-	app.setApplicationDisplayName(QMIDICTL_TITLE);
-	//	QMIDICTL_TITLE " - " + QObject::tr(QMIDICTL_SUBTITLE));
+	app.setApplicationDisplayName(
+		QMIDICTL_TITLE " - " + QObject::tr(QMIDICTL_SUBTITLE));
 #endif
 
 	qmidictlOptions opt;

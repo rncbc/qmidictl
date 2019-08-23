@@ -64,7 +64,7 @@ qmidictlMidiControlForm::qmidictlMidiControlForm (
 	// Special action-bar for the android stuff.
 	m_pActionBar = new qmidictlActionBar();
 	m_pActionBar->setIcon(QDialog::windowIcon());
-	m_pActionBar->setTitle(QDialog::windowTitle() + " - " QMIDICTL_TITLE);
+	m_pActionBar->setTitle(QDialog::windowTitle());
 	// Action-bar back-button...
 	m_pActionBar->addMenuItem(m_pBackAction);
 	// Action-bar right-overflow button items...
