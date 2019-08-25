@@ -76,9 +76,15 @@ if (UNIX AND NOT APPLE)
   install (TARGETS qmidictl
      RUNTIME DESTINATION bin)
   install (FILES ${CMAKE_CURRENT_BINARY_DIR}/qmidictl.desktop
-     DESTINATION share/applications)
+     DESTINATION share/applications/hildon)
   install (FILES images/qmidictl.png
-     DESTINATION share/pixmaps)
+     DESTINATION share/icons/hicolor/32x32/hildon)
+  install (FILES data/26x26/qmidictl.png
+     DESTINATION share/icons/hicolor/26x26/hildon)
+  install (FILES data/48x48/qmidictl.png
+     DESTINATION share/icons/hicolor/48x48/hildon)
+  install (FILES data/64x64/qmidictl.png
+     DESTINATION share/icons/hicolor/64x64/hildon)
   install (FILES appdata/qmidictl.appdata.xml
      DESTINATION share/metainfo)
 endif ()
