@@ -12,8 +12,6 @@ link_directories (
 
 configure_file (cmake_config.h ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 
-set (ac_prefix ${CMAKE_INSTALL_PREFIX})
-
 configure_file (qmidictl.desktop ${CMAKE_CURRENT_BINARY_DIR}/qmidictl.desktop)
 
 set (HEADERS
@@ -66,11 +64,8 @@ add_executable (qmidictl
   ${SOURCES}
 )
 
-target_link_libraries (qmidictl
-  ${QT_LIBRARIES}
-)
+target_link_libraries (qmidictl PRIVATE Qt5::Widgets)
 
-qt5_use_modules (qmidictl Core Gui Widgets Network)
 
 if (UNIX AND NOT APPLE)
   install (TARGETS qmidictl RUNTIME
