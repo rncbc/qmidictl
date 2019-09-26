@@ -62,6 +62,13 @@ AC_SUBST(ac_mandir)
 AC_DEFINE_UNQUOTED(CONFIG_MANDIR, ["$ac_mandir"], [Default man page path.])
 
 
+# Enable Network IPv6 support option.
+AC_ARG_ENABLE(ipv6,
+  AS_HELP_STRING([--enable-ipv6], [enable Network IPv6 support (EXPERIMENTAL) (default=no)]),
+  [ac_ipv6="$enableval"],
+  [ac_ipv6="no"])
+
+
 # Enable debugging argument option.
 AC_ARG_ENABLE(debug,
   AS_HELP_STRING([--enable-debug], [enable debugging (default=no)]),
@@ -282,6 +289,17 @@ AC_CHECK_LIB(Xext, main)
 # Check for specific libraries.
 
 
+# Check for new IPv6 support.
+if test "x$ac_ipv6" = "xyes"; then
+   PKG_CHECK_MODULES([QT5NETWORK], [Qt5Network], [ac_qt5network="yes"], [ac_qt5network="no"])
+   if test "x$ac_qt5network" = "xyes"; then
+      AC_DEFINE(CONFIG_IPV6, 1, [Define if IPv6 support is enabled.])
+      ac_qnetwork="network"
+   fi
+fi
+AC_SUBST(ac_qnetwork)
+
+
 # Checks for header files.
 AC_HEADER_STDC
 AC_HEADER_SYS_WAIT
@@ -310,6 +328,8 @@ echo
 echo "  $PACKAGE_NAME $ac_build_version"
 echo
 echo "  Build target . . . . . . . . . . . . . . . . . . .: $ac_debug"
+echo
+echo "  Network IPv6 support (EXPERIMENTAL)  . . . . . . .: $ac_ipv6"
 echo
 echo "  Install prefix . . . . . . . . . . . . . . . . . .: $ac_prefix"
 echo

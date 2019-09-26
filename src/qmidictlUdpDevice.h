@@ -22,8 +22,11 @@
 #ifndef __qmidictlUdpDevice_h
 #define __qmidictlUdpDevice_h
 
+#include "qmidictlAbout.h"
+
 #include <stdio.h>
 
+#if !defined(CONFIG_IPV6)
 #if defined(__SYMBIAN32__)
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -35,9 +38,15 @@
 #include <net/if.h>
 #endif
 #endif
+#endif	// !CONFIG_IPV6
 
 #include <QObject>
 #include <QString>
+
+#if defined(CONFIG_IPV6)
+#include <QUdpSocket>
+#include <QHostAddress>
+#endif
 
 
 //----------------------------------------------------------------------------
@@ -55,6 +64,9 @@ public:
 	// Destructor.
 	~qmidictlUdpDevice();
 
+	// Kind of singleton reference.
+	static qmidictlUdpDevice *getInstance();
+
 	// Device initialization method.
 	bool open(const QString& sInterface, const QString& sUdpAddr, int iUdpPort);
 
@@ -65,22 +77,39 @@ public:
 	bool sendData(unsigned char *data, unsigned short len) const;
 	void recvData(unsigned char *data, unsigned short len);
 
-	// Listener socket accessor.
-	int sockin() const;
-
 signals:
 
 	// Received data signal.
 	void received(const QByteArray& data);
 
+#if defined(CONFIG_IPV6)
+protected slots:
+
+	// Process incoming datagrams.
+	void readPendingDatagrams();
+
+#else
 protected:
 
 	// Get interface address from supplied name.
 	static bool get_address(int sock, struct in_addr *iaddr, const char *ifname);
 
+#endif	// !CONFIG_IPV6
+
 private:
 
 	// Instance variables,
+#if defined(CONFIG_IPV6)
+
+	QUdpSocket *m_sockin;
+	QUdpSocket *m_sockout;
+
+	QHostAddress m_udpaddr;
+
+	int m_udpport;
+
+#else
+
 	int m_sockin;
 	int m_sockout;
 
@@ -88,6 +117,11 @@ private:
 
 	// Network receiver thread.
 	class qmidictlUdpDeviceThread *m_pRecvThread;
+
+#endif	// !CONFIG_IPV6
+
+	// Kind-of singleton reference.
+	static qmidictlUdpDevice *g_pDevice;
 };
 
 

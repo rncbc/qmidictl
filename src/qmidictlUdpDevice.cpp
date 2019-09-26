@@ -21,6 +21,13 @@
 
 #include "qmidictlUdpDevice.h"
 
+#if defined(CONFIG_IPV6)
+
+#include <QNetworkInterface>
+#include <QByteArray>
+
+#else
+
 #include <stdlib.h>
 #include <string.h>
 
@@ -54,7 +61,7 @@ class qmidictlUdpDeviceThread : public QThread
 public:
 
 	// Constructor.
-	qmidictlUdpDeviceThread(qmidictlUdpDevice *pUdpDevice);
+	qmidictlUdpDeviceThread(int sockin);
 
 	// Run-state accessors.
 	void setRunState(bool bRunState);
@@ -68,7 +75,7 @@ protected:
 private:
 
 	// The listener socket.
-	qmidictlUdpDevice *m_pUdpDevice;
+	int m_sockin;
 
 	// Whether the thread is logically running.
 	volatile bool m_bRunState;
@@ -76,8 +83,8 @@ private:
 
 
 // Constructor.
-qmidictlUdpDeviceThread::qmidictlUdpDeviceThread ( qmidictlUdpDevice *pUdpDevice )
-	: QThread(), m_pUdpDevice(pUdpDevice), m_bRunState(false)
+qmidictlUdpDeviceThread::qmidictlUdpDeviceThread ( int sockin )
+	: QThread(), m_sockin(sockin), m_bRunState(false)
 {
 }
 
@@ -102,13 +109,11 @@ void qmidictlUdpDeviceThread::run (void)
 	while (m_bRunState) {
 
 		// Wait for an network event...
-		int sockin = m_pUdpDevice->sockin();
-
 		fd_set fds;
 		FD_ZERO(&fds);
-		FD_SET(sockin, &fds);
+		FD_SET(m_sockin, &fds);
 
-		int fdmax = sockin;
+		int fdmax = m_sockin;
 
 		// Set timeout period (1 second)...
 		struct timeval tv;
@@ -126,15 +131,15 @@ void qmidictlUdpDeviceThread::run (void)
 		}
 
 		// A Network event
-		if (FD_ISSET(sockin, &fds)) {
+		if (FD_ISSET(m_sockin, &fds)) {
 			// Read from network...
 			unsigned char buf[1024];
 			struct sockaddr_in sender;
 			socklen_t slen = sizeof(sender);
-			int r = ::recvfrom(sockin, (char *) buf, sizeof(buf),
+			int r = ::recvfrom(m_sockin, (char *) buf, sizeof(buf),
 				0, (struct sockaddr *) &sender, &slen);
 			if (r > 0)
-				m_pUdpDevice->recvData(buf, r);
+				qmidictlUdpDevice::getInstance()->recvData(buf, r);
 			else
 			if (r < 0)
 				::perror("recvfrom");
@@ -142,18 +147,31 @@ void qmidictlUdpDeviceThread::run (void)
 	}
 }
 
+#endif	// !CONFIG_IPV6
 
+ 
 //----------------------------------------------------------------------------
 // qmidictlUdpDevice -- Network interface device (UDP/IP).
 //
 
+qmidictlUdpDevice *qmidictlUdpDevice::g_pDevice = nullptr;
+
 // Constructor.
 qmidictlUdpDevice::qmidictlUdpDevice ( QObject *pParent )
-	: QObject(pParent), m_sockin(-1), m_sockout(-1), m_pRecvThread(nullptr)
+	: QObject(pParent),
+#if defined(CONFIG_IPV6)
+	m_sockin(nullptr), m_sockout(nullptr), m_udpport(-1)
+#else
+	m_sockin(-1), m_sockout(-1), m_pRecvThread(nullptr)
+#endif	// !CONFIG_IPV6
 {
+#if !defined(CONFIG_IPV6)
 #if defined(__WIN32__) || defined(_WIN32) || defined(WIN32)
 	WSAStartup(MAKEWORD(1, 1), &g_wsaData);
 #endif
+#endif	// !CONFIG_IPV6
+
+	g_pDevice = this;
 }
 
 // Destructor.
@@ -161,9 +179,20 @@ qmidictlUdpDevice::~qmidictlUdpDevice (void)
 {
 	close();
 
+	g_pDevice = nullptr;
+
+#if !defined(CONFIG_IPV6)
 #if defined(__WIN32__) || defined(_WIN32) || defined(WIN32)
 	WSACleanup();
 #endif
+#endif	// !CONFIG_IPV6
+}
+
+
+// Kind of singleton reference.
+qmidictlUdpDevice *qmidictlUdpDevice::getInstance (void)
+{
+	return g_pDevice;
 }
 
 
@@ -173,6 +202,83 @@ bool qmidictlUdpDevice::open (
 {
 	// Close if already open.
 	close();
+
+#if defined(CONFIG_IPV6)
+
+	// Setup host address for udp multicast...
+	m_udpaddr.setAddress(sUdpAddr);
+
+	// Check whether is real for udp multicast...
+	if (!m_udpaddr.isMulticast()) {
+		qWarning() << "open(hostaddr):" << sUdpAddr
+			<< "not an udp multicast address";
+		return false;
+	}
+
+	// Check whether protocol is IPv4 or IPv6...
+	const bool ipv6_protocol
+		= (m_udpaddr.protocol() != QAbstractSocket::IPv4Protocol);
+
+	// Setup network interface...
+	QNetworkInterface iface;
+	if (!sInterface.isEmpty())
+		iface = QNetworkInterface::interfaceFromName(sInterface);
+
+	// Allocate sockets and addresses...
+	m_sockin  = new QUdpSocket();
+	m_sockout = new QUdpSocket();
+
+	m_udpport = iUdpPort;
+
+	// Bind input socket...
+	if (!m_sockin->bind(ipv6_protocol
+			? QHostAddress::AnyIPv6
+			: QHostAddress::AnyIPv4,
+			iUdpPort, QUdpSocket::ShareAddress)) {
+		qWarning() << "open(sockin)"
+			<< "udp socket error "
+			<< m_sockin->error()
+			<< m_sockin->errorString();
+		return false;
+	}
+
+#if defined(Q_OS_WIN)
+	m_sockin->setSocketOption(
+		QAbstractSocket::MulticastLoopbackOption, 0);
+#endif
+
+	if (iface.isValid())
+		m_sockin->joinMulticastGroup(m_udpaddr, iface);
+	else
+		m_sockin->joinMulticastGroup(m_udpaddr);
+
+	QObject::connect(m_sockin,
+		SIGNAL(readyRead()),
+		SLOT(readPendingDatagrams()));
+
+	// Bind output socket...
+	if (!m_sockout->bind(ipv6_protocol
+			? QHostAddress::AnyIPv6
+			: QHostAddress::AnyIPv4,
+			m_sockout->localPort())) {
+		qWarning() << "open(sockout):"
+			<< "udp socket error"
+			<< m_sockout->error()
+			<< m_sockout->errorString();
+		return false;
+	}
+
+	m_sockout->setSocketOption(
+		QAbstractSocket::MulticastTtlOption, 1);
+#if defined(Q_OS_UNIX)
+	m_sockout->setSocketOption(
+		QAbstractSocket::MulticastLoopbackOption, 0);
+#endif
+
+	if (iface.isValid())
+		m_sockout->setMulticastInterface(iface);
+
+#else
 
 	// Setup network protocol...
 	int protonum = 0;
@@ -278,8 +384,10 @@ bool qmidictlUdpDevice::open (
 	}
 
 	// Start listener thread...
-	m_pRecvThread = new qmidictlUdpDeviceThread(this);
+	m_pRecvThread = new qmidictlUdpDeviceThread(m_sockin);
 	m_pRecvThread->start();
+
+#endif	// !CONFIG_IPV6
 
 	// Done.
 	return true;
@@ -289,6 +397,23 @@ bool qmidictlUdpDevice::open (
 // Device termination method.
 void qmidictlUdpDevice::close (void)
 {
+#if defined(CONFIG_IPV6)
+
+	if (m_sockin) {
+		delete m_sockin;
+		m_sockin = nullptr;
+	}
+
+	if (m_sockout) {
+		delete m_sockout;
+		m_sockout = nullptr;
+	}
+
+	m_udpaddr.clear();
+	m_udpport = -1;
+
+#else
+
 	if (m_sockin >= 0)
 		::closesocket(m_sockin);
 	if (m_sockout >= 0)
@@ -303,12 +428,38 @@ void qmidictlUdpDevice::close (void)
 		delete m_pRecvThread;
 		m_pRecvThread = nullptr;
 	}
+
+#endif	// !CONFIG_IPV6
 }
 
 
 // Data transmission methods.
 bool qmidictlUdpDevice::sendData ( unsigned char *data, unsigned short len ) const
 {
+#if defined(CONFIG_IPV6)
+
+	if (m_sockout == nullptr)
+		return false;
+
+	if (!m_sockout->isValid()
+		|| m_sockout->state() != QAbstractSocket::BoundState) {
+		qWarning() << "sendData:"
+			<< "udp socket has invalid state"
+			<< m_sockout->state();
+		return false;
+	}
+
+	QByteArray datagram((const char *) data, len);
+	if (m_sockout->writeDatagram(datagram, m_udpaddr, m_udpport) < len) {
+		qWarning() << "sendData:"
+			<< "udp socket error"
+			<< m_sockout->error() << " "
+			<< m_sockout->errorString();
+		return false;
+	}
+
+#else
+
 	if (m_sockout < 0)
 		return false;
 
@@ -318,9 +469,33 @@ bool qmidictlUdpDevice::sendData ( unsigned char *data, unsigned short len ) con
 		return false;
 	}
 
+#endif	// !CONFIG_IPV6
+
 	return true;
 }
 
+
+#if defined(CONFIG_IPV6)
+
+// Process incoming datagrams.
+void qmidictlUdpDevice::readPendingDatagrams (void)
+{
+	if (m_sockin == nullptr)
+		return;
+
+	while (m_sockin->hasPendingDatagrams()) {
+		QByteArray datagram;
+		int nread = m_sockin->pendingDatagramSize();
+		datagram.resize(nread);
+		nread = m_sockin->readDatagram(datagram.data(), datagram.size());
+		if (nread > 0) {
+			datagram.resize(nread);
+			emit received(datagram);
+		}
+	}
+}
+
+#else
 
 void qmidictlUdpDevice::recvData ( unsigned char *data, unsigned short len )
 {
@@ -366,11 +541,7 @@ bool qmidictlUdpDevice::get_address (
 }
 
 
-// Listener socket accessor.
-int qmidictlUdpDevice::sockin (void) const
-{
-	return m_sockin;
-}
+#endif	// !CONFIG_IPV6
 
 
 // end of qmidictlUdpDevice.h

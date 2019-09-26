@@ -54,6 +54,10 @@ set (CONFIG_DATADIR "${CONFIG_PREFIX}/${CMAKE_INSTALL_DATADIR}")
 set (CONFIG_MANDIR  "${CONFIG_PREFIX}/${CMAKE_INSTALL_MANDIR}")
 
 
+# Enable Network IPv6 support option.
+option (CONFIG_IPV6 "Enable Network IPv6 support (EXPERIMENTAL) (default=no)" 0)
+
+
 # Fix for new CMAKE_REQUIRED_LIBRARIES policy.
 if (POLICY CMP0075)
   cmake_policy (SET CMP0075 NEW)
@@ -61,6 +65,10 @@ endif ()
 
 # Check for Qt
 find_package (Qt5 REQUIRED COMPONENTS Core Gui Widgets Network)
+
+if (CONFIG_IPV6)
+  find_package (Qt5 REQUIRED COMPONENTS Network)
+endif ()
 
 #find_package (Qt5LinguistTools)
 
@@ -94,6 +102,7 @@ endmacro ()
 
 
 message   ("\n  ${PACKAGE_NAME} ${PACKAGE_VERSION}")
-message   ("\n  Build target . . . . . . . . . . . . . . . . . . .: ${CONFIG_BUILD_TYPE}")
+message   ("\n  Build target . . . . . . . . . . . . . . . . . . .: ${CONFIG_BUILD_TYPE}\n")
+show_option ("  Network IPv6 support (EXPERIMENTAL)  . . . . . . ." CONFIG_IPV6)
 message   ("\n  Install prefix . . . . . . . . . . . . . . . . . .: ${CMAKE_INSTALL_PREFIX}")
 message   ("\nNow type 'make', followed by 'make install' as root.\n")
