@@ -55,7 +55,7 @@ set (CONFIG_MANDIR  "${CONFIG_PREFIX}/${CMAKE_INSTALL_MANDIR}")
 
 
 # Enable Network IPv6 support option.
-option (CONFIG_IPV6 "Enable Network IPv6 support (EXPERIMENTAL) (default=no)" 0)
+option (CONFIG_IPV6 "Enable Network IPv6 support (EXPERIMENTAL) (default=yes)" 1)
 
 
 # Fix for new CMAKE_REQUIRED_LIBRARIES policy.

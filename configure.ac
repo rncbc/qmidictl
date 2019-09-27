@@ -64,9 +64,9 @@ AC_DEFINE_UNQUOTED(CONFIG_MANDIR, ["$ac_mandir"], [Default man page path.])
 
 # Enable Network IPv6 support option.
 AC_ARG_ENABLE(ipv6,
-  AS_HELP_STRING([--enable-ipv6], [enable Network IPv6 support (EXPERIMENTAL) (default=no)]),
+  AS_HELP_STRING([--enable-ipv6], [enable Network IPv6 support (EXPERIMENTAL) (default=yes)]),
   [ac_ipv6="$enableval"],
-  [ac_ipv6="no"])
+  [ac_ipv6="yes"])
 
 
 # Enable debugging argument option.

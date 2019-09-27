@@ -210,7 +210,7 @@ bool qmidictlUdpDevice::open (
 
 	// Check whether is real for udp multicast...
 	if (!m_udpaddr.isMulticast()) {
-		qWarning() << "open(hostaddr):" << sUdpAddr
+		qWarning() << "open(udpaddr):" << sUdpAddr
 			<< "not an udp multicast address";
 		return false;
 	}
@@ -235,8 +235,8 @@ bool qmidictlUdpDevice::open (
 			? QHostAddress::AnyIPv6
 			: QHostAddress::AnyIPv4,
 			iUdpPort, QUdpSocket::ShareAddress)) {
-		qWarning() << "open(sockin)"
-			<< "udp socket error "
+		qWarning() << "open(sockin):"
+			<< "udp socket error"
 			<< m_sockin->error()
 			<< m_sockin->errorString();
 		return false;
@@ -247,10 +247,17 @@ bool qmidictlUdpDevice::open (
 		QAbstractSocket::MulticastLoopbackOption, 0);
 #endif
 
+	bool joined = false;
 	if (iface.isValid())
-		m_sockin->joinMulticastGroup(m_udpaddr, iface);
+		joined = m_sockin->joinMulticastGroup(m_udpaddr, iface);
 	else
-		m_sockin->joinMulticastGroup(m_udpaddr);
+		joined = m_sockin->joinMulticastGroup(m_udpaddr);
+	if (!joined) {
+		qWarning() << "open(sockin):"
+			<< "udp socket error"
+			<< m_sockin->error()
+			<< m_sockin->errorString();
+	}
 
 	QObject::connect(m_sockin,
 		SIGNAL(readyRead()),
@@ -443,7 +450,7 @@ bool qmidictlUdpDevice::sendData ( unsigned char *data, unsigned short len ) con
 
 	if (!m_sockout->isValid()
 		|| m_sockout->state() != QAbstractSocket::BoundState) {
-		qWarning() << "sendData:"
+		qWarning() << "sendData(sockout):"
 			<< "udp socket has invalid state"
 			<< m_sockout->state();
 		return false;
@@ -451,7 +458,7 @@ bool qmidictlUdpDevice::sendData ( unsigned char *data, unsigned short len ) con
 
 	QByteArray datagram((const char *) data, len);
 	if (m_sockout->writeDatagram(datagram, m_udpaddr, m_udpport) < len) {
-		qWarning() << "sendData:"
+		qWarning() << "sendData(sockout):"
 			<< "udp socket error"
 			<< m_sockout->error() << " "
 			<< m_sockout->errorString();
