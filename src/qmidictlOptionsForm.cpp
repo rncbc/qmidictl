@@ -25,11 +25,15 @@
 #include "qmidictlOptions.h"
 
 #include <QMessageBox>
-#include <QLineEdit>
+
+#if defined(CONFIG_IPV6)
+#include <QNetworkInterface>
+#endif
 
 #if defined(Q_OS_ANDROID)
 #include "qmidictlActionBar.h"
 #include <QAction>
+#include <QLineEdit>
 #endif
 
 
@@ -82,9 +86,21 @@ qmidictlOptionsForm::qmidictlOptionsForm (
 	m_sDefInterface = tr("(Any)");
 	m_ui.InterfaceComboBox->clear();
 	m_ui.InterfaceComboBox->addItem(m_sDefInterface);
+#if defined(CONFIG_IPV6)
+	foreach (const QNetworkInterface& iface, QNetworkInterface::allInterfaces()) {
+		if (iface.isValid() &&
+			iface.flags().testFlag(QNetworkInterface::CanMulticast) &&
+			iface.flags().testFlag(QNetworkInterface::IsUp) &&
+			iface.flags().testFlag(QNetworkInterface::IsRunning) &&
+			!iface.flags().testFlag(QNetworkInterface::IsLoopBack)) {
+			m_ui.InterfaceComboBox->addItem(iface.name());
+		}
+	}
+#else
 	m_ui.InterfaceComboBox->addItem("wlan0");
 	m_ui.InterfaceComboBox->addItem("eth0");
-#if defined (Q_OS_ANDROID)
+#endif
+#if defined(Q_OS_ANDROID)
 //	m_ui.InterfaceComboBox->setMinimumWidth(240);
 	m_ui.InterfaceComboBox->setMinimumHeight(128);
 	m_ui.InterfaceComboBox->lineEdit()->setMinimumHeight(96);
@@ -92,7 +108,7 @@ qmidictlOptionsForm::qmidictlOptionsForm (
 
 	m_ui.UdpAddrComboBox->clear();
 	m_ui.UdpAddrComboBox->addItem(QMIDICTL_UDP_ADDR);
-#if defined (Q_OS_ANDROID)
+#if defined(Q_OS_ANDROID)
 //	m_ui.UdpAddrComboBox->setMinimumWidth(240);
 	m_ui.UdpAddrComboBox->setMinimumHeight(128);
 	m_ui.UdpAddrComboBox->lineEdit()->setMinimumHeight(96);
