@@ -97,18 +97,29 @@ win32 {
 }
 
 symbian {
-	VERSION = 0.5.5
 	LIBS += -lcone -leikcore -lavkon
 	ICON += data/symbian/qmidictl.svg
 	TARGET.CAPABILITY += NetworkServices LocalServices
 }
 
 android {
-	DISTFILES += android/AndroidManifest.xml
+
+	defineReplace(androidVersionCode) {
+		vlist = $$split(1, ".")
+		for (vitem, vlist): \
+			vcode = "$$first(vcode)$$format_number($$vitem, width=2 zeropad)"
+		contains(ANDROID_TARGET_ARCH, arm64-v8a): varch = 01
+		else:contains(ANDROID_TARGET_ARCH, armeabi-v7a): varch = 00
+		return($$first(vcode)$$first(varch))
+	}
+
+	ANDROID_VERSION_NAME = $${VERSION}
+	ANDROID_VERSION_CODE = $$androidVersionCode($${ANDROID_VERSION_NAME})
+
+	DISTFILES += \
+		android/AndroidManifest.xml \
+		android/build.gradle \
+		android/res/values/libs.xml
 	ANDROID_PACKAGE_SOURCE_DIR = $${PWD}/android
 }
-
-DISTFILES += \
-    android/build.gradle \
-    android/res/values/libs.xml
 
