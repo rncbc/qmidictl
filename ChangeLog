@@ -4,24 +4,22 @@ QmidiCtl - A MIDI Remote Controller via UDP/IP Multicast
 ChangeLog
 
 
-GIT HEAD
+0.6.0  2019-10-17  An Autumn'19 Release.
 
 - Populate automatically the network interface combo-box
   with detected interface names (after merge request by
   plcl aka. Pedro López-Cabanillas, while on qmidinet).
-  (EXPERIMENTAL)
 
 - Complete rewrite of all the basic network interface code,
   while using the Qt5 framework as far as needed to support
-  IPv4 and IPv6 seamless and interchangeably. (EXPERIMENTAL)
+  IPv4 and IPv6 seamless and interchangeably.
   
 - Added alternate yet non-official CMake build option.
-  (EXPERIMENTAL)
 
 - Fix HiDPI display screen effective support (Qt >= 5.6).
 
 - Added left/right swipe gestures to navigate over mixer
-  strip pages. (EXPERIMENTAL)
+  strip pages.
   
 - Make sure compiler flags comply to c++11 as standard.
 
