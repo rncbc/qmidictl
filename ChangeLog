@@ -4,6 +4,18 @@ QmidiCtl - A MIDI Remote Controller via UDP/IP Multicast
 ChangeLog
 
 
+GIT HEAD
+
+- Provide a default IPv6 address, and feedback to the user
+  in the options dialog (after a merge request by plcl aka.
+  Pedro López-Cabanillas, while on qmidinet). (EXPERIMENTAL)
+
+- When using ./configure --with-qt=... it is also necessary
+  to adjust the PKG_CONFIG_PATH environment variable (also
+  by plcl aka. Pedro López-Cabanillas, while on qmidinet).
+  (EXPERIMENTAL)
+
+
 0.6.0  2019-10-17  An Autumn'19 Release.
 
 - Populate automatically the network interface combo-box
@@ -13,14 +25,14 @@ ChangeLog
 - Complete rewrite of all the basic network interface code,
   while using the Qt5 framework as far as needed to support
   IPv4 and IPv6 seamless and interchangeably.
-  
+
 - Added alternate yet non-official CMake build option.
 
 - Fix HiDPI display screen effective support (Qt >= 5.6).
 
 - Added left/right swipe gestures to navigate over mixer
   strip pages.
-  
+
 - Make sure compiler flags comply to c++11 as standard.
 
 

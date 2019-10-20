@@ -107,7 +107,10 @@ qmidictlOptionsForm::qmidictlOptionsForm (
 #endif
 
 	m_ui.UdpAddrComboBox->clear();
-	m_ui.UdpAddrComboBox->addItem(QMIDICTL_UDP_ADDR);
+	m_ui.UdpAddrComboBox->addItem(QMIDICTL_UDP_IPV4_ADDR);
+#if defined(CONFIG_IPV6)
+	m_ui.UdpAddrComboBox->addItem(QMIDICTL_UDP_IPV6_ADDR);
+#endif
 #if defined(Q_OS_ANDROID)
 //	m_ui.UdpAddrComboBox->setMinimumWidth(240);
 	m_ui.UdpAddrComboBox->setMinimumHeight(128);
@@ -277,7 +280,16 @@ void qmidictlOptionsForm::reset (void)
 	m_ui.MmcDeviceSpinBox->setValue(QMIDICTL_MMC_DEVICE);
 
 	m_ui.InterfaceComboBox->setCurrentIndex(0);
-	m_ui.UdpAddrComboBox->setCurrentIndex(0);
+#if defined(CONFIG_IPV6)
+	const QString& sUdpAddr
+		= m_ui.UdpAddrComboBox->currentText();
+	QHostAddress addr;
+	if (addr.setAddress(sUdpAddr) &&
+		addr.protocol() == QAbstractSocket::IPv6Protocol)
+		m_ui.UdpAddrComboBox->setEditText(QMIDICTL_UDP_IPV6_ADDR);
+	else
+#endif
+		m_ui.UdpAddrComboBox->setEditText(QMIDICTL_UDP_IPV4_ADDR);
 	m_ui.UdpPortSpinBox->setValue(QMIDICTL_UDP_PORT);
 }
 

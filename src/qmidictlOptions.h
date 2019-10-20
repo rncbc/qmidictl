@@ -27,7 +27,8 @@
 
 // Some hard-coded default options....
 #define QMIDICTL_MMC_DEVICE 127
-#define QMIDICTL_UDP_ADDR "225.0.0.37"
+#define QMIDICTL_UDP_IPV4_ADDR "225.0.0.37"
+#define QMIDICTL_UDP_IPV6_ADDR "ff12::37"
 #define QMIDICTL_UDP_PORT  21928
 
 
