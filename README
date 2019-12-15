@@ -9,20 +9,20 @@ QmidiCt [1] has been primarily designed for the Maemo [5] enabled
 handheld devices, namely the Nokia N900 [6] and also being promoted
 to the Maemo Package [7] repositories. Nevertheless, QmidiCtl [1]
 may still be found effective as a regular desktop and, ultimately,
-as an Android application as well [8][9].
+as an Android application as well [8].
 
 Website:
 
-  http://qmidictl.sourceforge.net
   https://qmidictl.sourceforge.io
+  https://qmidictl.sourceforge.net
 
 Project page:
 
-  http://sourceforge.net/projects/qmidictl
+  https://sourceforge.net/projects/qmidictl
 
 Weblog:
 
-  http://www.rncbc.org
+  https://www.rncbc.org
 
 QmidiNet is free, open-source software, distributed under the terms of
 the GNU General Public License (GPL) [2] version 2 or later.
@@ -37,7 +37,7 @@ The software requirements for build and runtime are listed as follows:
 
   [1] Qt framework, C++ class library and tools for
         cross-platform application and UI development
-        http://qt.io/
+        https://qt.io/
 
 
 Installation
@@ -90,10 +90,10 @@ Support
 QmidiCtl is open source free software. For bug reports, feature requests,
 discussion forums, mailling lists, or any other matter related to the
 development of this piece of software, please use the Sourceforge
-project page (http://sourceforge.net/projects/qmidictl).
+project page (https://sourceforge.net/projects/qmidictl).
 
 You can also find timely and closer contact information on my personal
-web site (http://www.rncbc.org).
+web site (https://www.rncbc.org).
 
 
 References
@@ -101,16 +101,16 @@ References
 
  [1] Qt framework, C++ class library and tools for
      cross-platform application and UI development
-     http://qt.io/
+     https://qt.io/
 
  [2] GNU General Public License
-     http://www.gnu.org/copyleft/gpl.html
+     https://www.gnu.org/copyleft/gpl.html
 
  [3] multimidicast - sends and receives MIDI from ALSA sequencers over network
-     http://llg.cubic.org/tools/multimidicast
+     https://llg.cubic.org/tools/multimidicast
 
  [4] ipMIDI - MIDI over Ethernet ports - send MIDI over your LAN
-     http://nerds.de
+     https://nerds.de
 
  [5] Maemo.org - Home of the Maemo community
      http://www.maemo.org
@@ -124,12 +124,9 @@ References
  [8] Get it on Google Play Store
      https://play.google.com/store/apps/details?id=org.rncbc.qmidictl
 
- [9] Get it on Aptoide App Store
-     https://qmidictl.en.aptoide.com/
-
 
 Enjoy.
 
 rncbc aka Rui Nuno Capela
 rncbc at rncbc dot org
-http://www.rncbc.org
+https://www.rncbc.org
