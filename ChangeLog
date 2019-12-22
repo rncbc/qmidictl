@@ -4,16 +4,15 @@ QmidiCtl - A MIDI Remote Controller via UDP/IP Multicast
 ChangeLog
 
 
-GIT HEAD
+0.6.1  2019-12-22  The Winter'19 Release.
 
 - Provide a default IPv6 address, and feedback to the user
   in the options dialog (after a merge request by plcl aka.
-  Pedro López-Cabanillas, while on qmidinet). (EXPERIMENTAL)
+  Pedro López-Cabanillas, while on qmidinet).
 
 - When using ./configure --with-qt=... it is also necessary
   to adjust the PKG_CONFIG_PATH environment variable (also
   by plcl aka. Pedro López-Cabanillas, while on qmidinet).
-  (EXPERIMENTAL)
 
 
 0.6.0  2019-10-17  An Autumn'19 Release.
