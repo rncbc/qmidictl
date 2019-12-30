@@ -182,7 +182,7 @@ void drawDial ( const QStyleOptionSlider *option, QPainter *painter )
 		buttonColor.setHsv(buttonColor .hue(),
 						   qMin(140, buttonColor .saturation()),
 						   qMax(180, buttonColor.value()));
-		QColor shadowColor(0, 0, 0, 20);
+	//	QColor shadowColor(0, 0, 0, 20);
 
 		if (enabled) {
 			// Drop shadow

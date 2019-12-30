@@ -1104,13 +1104,12 @@ bool qmidictlMainForm::touchEvent ( QTouchEvent *pTouchEvent )
 						++iTouched;
 					}
 				}
-				// And cancel...
+				// And cancel swipe...
 				m_bSwipe = false;
 			}
-		}
-		// Whether still tracking a swipe gesture...
-		if (m_bSwipe)
+			// Done with swipe tracking, for now...
 			break;
+		}
 		// Assess all touch-point-ids...
 		foreach (QTouchEvent::TouchPoint point, points) {
 			const int id = point.id();
