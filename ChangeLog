@@ -6,6 +6,8 @@ ChangeLog
 
 GIT HEAD
 
+- Updated to build Android App Bundles (Qt >= 5.14.0).
+
 - Avoid some touch-events while tracking a swipe gesture.
 
 - Bumped copyright headers into the New Year (2020).
