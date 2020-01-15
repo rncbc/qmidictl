@@ -6,6 +6,9 @@ ChangeLog
 
 GIT HEAD
 
+- Make man page compression reproducible (after request
+  by Jelle van der Waa, while on the Vee-Ones, thanks).
+
 - Updated to build Android App Bundles (Qt >= 5.14.0).
 
 - Avoid some touch-events while tracking a swipe gesture.
