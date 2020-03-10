@@ -109,6 +109,8 @@ if (UNIX AND NOT APPLE)
      DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/48x48/hildon)
   install (FILES data/64x64/${NAME}.png
      DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/64x64/hildon)
+  install (FILES images/${NAME}.svg
+     DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/scalable/apps)
   install (FILES appdata/${NAME}.appdata.xml
      DESTINATION ${CMAKE_INSTALL_DATADIR}/metainfo)
 endif ()

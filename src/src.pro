@@ -67,7 +67,7 @@ unix {
 	DEFINES += PKGDATADIR=\"$${PKGDATADIR}\"
 
 	# make install
-	INSTALLS += target desktop icon icon26 icon48 icon64 appdata
+	INSTALLS += target desktop icon icon26 icon48 icon64 icon_scalable appdata
 
 	target.path = $${BINDIR}
 
@@ -85,6 +85,9 @@ unix {
 
 	icon64.path = $${DATADIR}/icons/hicolor/64x64/hildon
 	icon64.files += data/64x64/$${TARGET}.png
+
+	icon_scalable.path = $${DATADIR}/icons/hicolor/scalable/apps
+	icon_scalable.files += images/$${TARGET}.svg
 
 	appdata.path = $${DATADIR}/metainfo
 	appdata.files += appdata/$${TARGET}.appdata.xml
