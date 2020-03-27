@@ -70,9 +70,8 @@ static inline float cubef2 ( float x )
 qmidictlMainForm *qmidictlMainForm::g_pMainForm = nullptr;
 
 // Constructor.
-qmidictlMainForm::qmidictlMainForm (
-	QWidget *pParent, Qt::WindowFlags wflags )
-	: QMainWindow(pParent, wflags)
+qmidictlMainForm::qmidictlMainForm ( QWidget *pParent )
+	: QMainWindow(pParent)
 {
 	// Setup UI struct...
 	m_ui.setupUi(this);

@@ -47,7 +47,7 @@ class qmidictlMainForm : public QMainWindow
 public:
 
 	// Constructor.
-	qmidictlMainForm(QWidget *pParent = 0, Qt::WindowFlags wflags = 0);
+	qmidictlMainForm(QWidget *pParent = nullptr);
 	// Destructor.
 	~qmidictlMainForm();
 
