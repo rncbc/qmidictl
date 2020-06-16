@@ -1,7 +1,7 @@
 // qmidictlActionBar.cpp
 //
 /****************************************************************************
-   Copyright (C) 2010-2019, rncbc aka Rui Nuno Capela. All rights reserved.
+   Copyright (C) 2010-2020, rncbc aka Rui Nuno Capela. All rights reserved.
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
@@ -76,7 +76,7 @@ qmidictlActionBar::qmidictlActionBar ( QWidget *parent ) : QWidget(parent)
 	// Create layout
 	m_layout = new QHBoxLayout(this);
 	m_layout->setSpacing(24);
-	m_layout->setMargin(8);
+	m_layout->setContentsMargins(8, 8, 8, 8);
 //	m_layout->setContentsMargins(0, 0, 0, 0);
 	m_layout->setSizeConstraint(QLayout::SetNoConstraint);
 
