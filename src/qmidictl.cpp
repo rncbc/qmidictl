@@ -150,7 +150,9 @@ int main ( int argc, char *argv[] )
 
 #if !defined(Q_OS_ANDROID)
 #if QT_VERSION >= QT_VERSION_CHECK(5, 6, 0)
+#if QT_VERSION <  QT_VERSION_CHECK(6, 0, 0)
 	QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+#endif
 #endif
 #endif
 

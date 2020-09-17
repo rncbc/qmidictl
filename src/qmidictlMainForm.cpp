@@ -1079,13 +1079,11 @@ bool qmidictlMainForm::touchEvent ( QTouchEvent *pTouchEvent )
 			const QTouchEvent::TouchPoint& point = points.at(0);
 		#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 			const QPointF& p0 = point.globalPressPosition();
-		#else
-			const QPointF& p0 = point.startScreenPos();
-		#endif
-			const QPointF& p1 = point.lastScreenPos();
-		#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+			const QPointF& p1 = point.globalLastPosition();
 			const QPointF& p2 = point.globalPosition();
 		#else
+			const QPointF& p0 = point.startScreenPos();
+			const QPointF& p1 = point.lastScreenPos();
 			const QPointF& p2 = point.screenPos();
 		#endif
 			const qreal dx2 = (p2.x() - p1.x()) * (p1.x() - p0.x());
