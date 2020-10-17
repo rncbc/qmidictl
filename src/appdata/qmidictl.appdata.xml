@@ -14,8 +14,8 @@
  </description>
  <launchable type="desktop-id">qmidictl.desktop</launchable>
  <provides>
-​  <binary>qmidictl</binary>
-​ </provides>
+  <binary>qmidictl</binary>
+ </provides>
  <screenshots>
   <screenshot type="default">
    <image>https://qmidictl.sourceforge.io/image/qmidictl-android-phone-1.png</image>
