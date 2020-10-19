@@ -1064,7 +1064,11 @@ bool qmidictlMainForm::touchEvent ( QTouchEvent *pTouchEvent )
 	QMouseEvent *pMouseEvent;
 
 	const QList<QTouchEvent::TouchPoint>& points
+	#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+		= pTouchEvent->points();
+	#else
 		= pTouchEvent->touchPoints();
+	#endif
 
 	switch (pTouchEvent->type()) {
 	case QEvent::TouchBegin:
