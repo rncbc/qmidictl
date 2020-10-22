@@ -319,16 +319,20 @@ AC_CHECK_LIB(m, main)
 AC_CHECK_LIB(X11, main)
 AC_CHECK_LIB(Xext, main)
 
-# Check for specific libraries.
 
+# Check for specific libraries.
 
 # Check for new IPv6 support.
 if test "x$ac_ipv6" = "xyes"; then
-   PKG_CHECK_MODULES([QT5NETWORK], [Qt5Network], [ac_qt5network="yes"], [ac_qt5network="no"])
-   if test "x$ac_qt5network" = "xyes"; then
-      AC_DEFINE(CONFIG_IPV6, 1, [Define if IPv6 support is enabled.])
-      ac_qnetwork="network"
+   if test $ac_qt_version_major -lt 6; then
+      PKG_CHECK_MODULES([QT5NETWORK], [Qt5Network], [ac_ipv6="yes"], [ac_ipv6="no"])
+   else
+      PKG_CHECK_MODULES([QT6NETWORK], [Qt6Network], [ac_ipv6="yes"], [ac_ipv6="no"])
    fi
+fi
+if test "x$ac_ipv6" = "xyes"; then
+   AC_DEFINE(CONFIG_IPV6, 1, [Define if IPv6 support is enabled.])
+   ac_qnetwork="network"
 fi
 AC_SUBST(ac_qnetwork)
 
