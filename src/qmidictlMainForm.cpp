@@ -1012,6 +1012,12 @@ void qmidictlMainForm::aboutSlot (void)
 	sText += "</font></small><br />\n";
 #endif
 	sText += "<br />\n";
+	sText += tr("Using: Qt %1").arg(qVersion());
+#if defined(QT_STATIC)
+	sText += "-static";
+#endif
+	sText += "<br />\n";
+	sText += "<br />\n";
 	sText += tr("Website") + ": <a href=\"" QMIDICTL_WEBSITE "\">" QMIDICTL_WEBSITE "</a><br />\n";
 	sText += "<br />\n";
 	sText += "<small>";

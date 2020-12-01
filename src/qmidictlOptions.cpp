@@ -1,7 +1,7 @@
 // qmidictlOptions.cpp
 //
 /****************************************************************************
-   Copyright (C) 2010-2019, rncbc aka Rui Nuno Capela. All rights reserved.
+   Copyright (C) 2010-2020, rncbc aka Rui Nuno Capela. All rights reserved.
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
@@ -209,8 +209,11 @@ bool qmidictlOptions::parse_args ( const QStringList& args )
 			return false;
 		}
 		else if (sArg == "-v" || sArg == "--version") {
-			out << QString("Qt: %1\n")
-				.arg(qVersion());
+			out << QString("Qt: %1").arg(qVersion());
+		#if defined(QT_STATIC)
+			out << "-static";
+		#endif
+			out << '\n';
 			out << QString("%1: %2\n")
 				.arg(QMIDICTL_TITLE)
 				.arg(CONFIG_BUILD_VERSION);
