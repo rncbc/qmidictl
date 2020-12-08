@@ -1,4 +1,4 @@
-project(QMIDICTL)
+project(qmidictl)
 
 cmake_minimum_required(VERSION 3.1)
 
@@ -60,6 +60,10 @@ option (CONFIG_IPV6 "Enable Network IPv6 support (EXPERIMENTAL) (default=yes)" 1
 # Fix for new CMAKE_REQUIRED_LIBRARIES policy.
 if (POLICY CMP0075)
   cmake_policy (SET CMP0075 NEW)
+endif ()
+
+if (ANDROID)
+    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src/android")
 endif ()
 
 # Check for Qt
