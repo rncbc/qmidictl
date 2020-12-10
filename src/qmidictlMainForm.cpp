@@ -193,8 +193,8 @@ qmidictlMainForm::qmidictlMainForm ( QWidget *pParent )
 
 	// Network signal/slot connections...
 	QObject::connect(m_pUdpDevice,
-		SIGNAL(received(const QByteArray&)),
-		SLOT(receiveSlot(const QByteArray&)));
+		SIGNAL(received(QByteArray)),
+		SLOT(receiveSlot(QByteArray)));
 }
 
 
@@ -740,7 +740,7 @@ void qmidictlMainForm::forwardSlot ( bool bOn )
 
 
 // Network listener/receiver slot.
-void qmidictlMainForm::receiveSlot ( const QByteArray& data )
+void qmidictlMainForm::receiveSlot ( QByteArray data )
 {
 	recvData((unsigned char *) data.constData(), data.length());
 }

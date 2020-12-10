@@ -80,7 +80,7 @@ public:
 signals:
 
 	// Received data signal.
-	void received(const QByteArray& data);
+	void received(QByteArray data);
 
 #if defined(CONFIG_IPV6)
 protected slots:

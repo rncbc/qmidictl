@@ -183,7 +183,7 @@ protected slots:
 	void forwardSlot(bool bOn);
 
 	// Network listener/receiver slot.
-	void receiveSlot(const QByteArray& data);
+	void receiveSlot(QByteArray data);
 
 	// Timer slot funtion.
 	void timerSlot();
