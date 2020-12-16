@@ -116,10 +116,7 @@ android {
 		vlist = $$split(1, ".")
 		for (vitem, vlist): \
 			vcode = "$$first(vcode)$$format_number($$vitem, width=2 zeropad)"
-		contains(ANDROID_TARGET_ARCH, x86_64): varch = 03
-		else:contains(ANDROID_TARGET_ARCH, x86): varch = 02
-		else:contains(ANDROID_TARGET_ARCH, arm64-v8a): varch = 01
-		else:contains(ANDROID_TARGET_ARCH, armeabi-v7a): varch = 00
+		varch = 04
 		return($$first(vcode)$$first(varch))
 	}
 
@@ -132,3 +129,5 @@ android {
 		android/res/values/libs.xml
 	ANDROID_PACKAGE_SOURCE_DIR = $${PWD}/android
 }
+
+ANDROID_ABIS = armeabi-v7a arm64-v8a x86 x86_64
