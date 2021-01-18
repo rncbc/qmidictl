@@ -1,9 +1,6 @@
 # project(qmidictl)
 
-include_directories (
-  ${CMAKE_CURRENT_SOURCE_DIR}
-  ${CMAKE_CURRENT_BINARY_DIR}
-)
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 configure_file (cmake_config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 
@@ -46,9 +43,15 @@ set (RESOURCES
   qmidictl.qrc
 )
 
-qt_wrap_ui (UI_SOURCES ${FORMS})
-qt_wrap_cpp (MOC_SOURCES ${HEADERS})
-qt_add_resources (QRC_SOURCES ${RESOURCES})
+if (QT_VERSION VERSION_LESS 5.15.0)
+  qt5_wrap_ui (UI_SOURCES ${FORMS})
+  qt5_wrap_cpp (MOC_SOURCES ${HEADERS})
+  qt5_add_resources (QRC_SOURCES ${RESOURCES})
+else ()
+  qt_wrap_ui (UI_SOURCES ${FORMS})
+  qt_wrap_cpp (MOC_SOURCES ${HEADERS})
+  qt_add_resources (QRC_SOURCES ${RESOURCES})
+endif ()
 
 if (WIN32)
   set (RC_FILE ${CMAKE_CURRENT_SOURCE_DIR}/win32/${PROJECT_NAME}.rc)
@@ -70,6 +73,7 @@ if (APPLE)
   set_source_files_properties (${ICON_FILE} PROPERTIES
     MACOSX_PACKAGE_LOCATION Resources)
 endif ()
+
 
 if (ANDROID)
   add_library (${PROJECT_NAME} SHARED

@@ -1,6 +1,6 @@
-project(qmidictl)
+cmake_minimum_required(VERSION 3.10)
 
-cmake_minimum_required(VERSION 3.1)
+project(qmidictl)
 
 set (VERSION "0.9.1")
 
