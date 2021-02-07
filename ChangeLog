@@ -1,4 +1,4 @@
-QmidiCtl - A MIDI Remote Controller via UDP/IP Multicast
+QmidiCtl - A MIDI Remote Controller via UDP/IP Multicast 
 --------------------------------------------------------
 
 ChangeLog
@@ -11,8 +11,8 @@ ChangeLog
 
 0.9.0  2020-12-17  A Winter'20 Release.
 
-- Early fixing to build for Qt >= 6.0.0 and comply
-  with C++17 standard.
+- Early fixing to build for Qt >= 6.0.0 and comply with C++17 
+  standard.
 
 
 0.6.3  2020-07-31  A Summer'20 Release.
@@ -24,8 +24,8 @@ ChangeLog
 
 - A scalable (.svg) icon version has been added.
 
-- Make man page compression reproducible (after request
-  by Jelle van der Waa, while on the Vee-Ones, thanks).
+- Make man page compression reproducible (after request by Jelle
+  van der Waa, while on the Vee-Ones, thanks).
 
 - Updated to build Android App Bundles (Qt >= 5.14.0).
 
@@ -36,20 +36,20 @@ ChangeLog
 
 0.6.1  2019-12-22  The Winter'19 Release.
 
-- Provide a default IPv6 address, and feedback to the user
-  in the options dialog (after a merge request by plcl aka.
-  Pedro López-Cabanillas, while on qmidinet).
+- Provide a default IPv6 address, and feedback to the user in the 
+  options dialog (after a merge request by plcl aka. Pedro 
+  López-Cabanillas, while on qmidinet).
 
-- When using ./configure --with-qt=... it is also necessary
-  to adjust the PKG_CONFIG_PATH environment variable (also
-  by plcl aka. Pedro López-Cabanillas, while on qmidinet).
+- When using ./configure --with-qt=... it is also necessary to 
+  adjust the PKG_CONFIG_PATH environment variable (also by plcl aka. 
+  Pedro López-Cabanillas, while on qmidinet).
 
 
 0.6.0  2019-10-17  An Autumn'19 Release.
 
-- Populate automatically the network interface combo-box
-  with detected interface names (after merge request by
-  plcl aka. Pedro López-Cabanillas, while on qmidinet).
+- Populate automatically the network interface combo-box with 
+  detected interface names (after merge request by plcl aka.
+  Pedro López-Cabanillas, while on qmidinet).
 
 - Complete rewrite of all the basic network interface code,
   while using the Qt5 framework as far as needed to support
@@ -59,8 +59,8 @@ ChangeLog
 
 - Fix HiDPI display screen effective support (Qt >= 5.6).
 
-- Added left/right swipe gestures to navigate over mixer
-  strip pages.
+- Added left/right swipe gestures to navigate over mixer strip 
+  pages.
 
 - Make sure compiler flags comply to c++11 as standard.
 
@@ -78,7 +78,7 @@ ChangeLog
 
 0.5.4  2019-04-11  A Spring-Break'19 Release
 
-- Fix build on linux with musl (according to POSIX.1-2001,
+- Fix build on linux with musl (according to POSIX.1-2001, 
   POSIX.1-2008; PR#3 by Andreas Müller aka. schnitzeltony,
   thanks).
 
@@ -87,16 +87,15 @@ ChangeLog
 
 0.5.3  2019-01-08  An Early Winter'19 Release
 
-- Added proper display names to Command and Control Type
-  entry fields on Configure dialog (ie. MIDI controller
-  assignments dialog).
+- Added proper display names to Command and Control Type entry 
+  fields on Configure dialog (ie. MIDI controller assignments
+  dialog).
 
 - Old deprecated Qt4 build support is no more.
 
-- AppData/AppStream metadata is now settled under an all
-  permisssive license (FSFAP); also updated to be the most
-  compliant with latest freedesktop.org specification and
-  recommendation.
+- AppData/AppStream metadata is now settled under an all permisssive 
+  license (FSFAP); also updated to be the most compliant with latest 
+  freedesktop.org specification and recommendation.
 
 
 0.5.2  2018-06-30  An Early Summer'18 release.
@@ -112,25 +111,25 @@ ChangeLog
 
 - A little hardening on the configure (autoconf) macro side.
 
-- A rather naive attempt to port to the Android-Qt platform;
-  also introducing an (Android) Action Bar menu look-a-like.
+- A rather naive attempt to port to the Android-Qt platform; also 
+  introducing an (Android) Action Bar menu look-a-like.
 
 
 0.5.0  2017-12-16  End of Autum'17 release.
 
-- Desktop entry specification file is now finally independent
-  from build/configure template chains.
+- Desktop entry specification file is now finally independent from 
+  build/configure template chains.
 
-- Updated target path for freedesktop.org's AppStream metainfo
-  file (formerly AppData).
+- Updated target path for freedesktop.org's AppStream metainfo file 
+  (formerly AppData).
 
 
 0.4.3  2017-04-27  Pre-LAC2017 release frenzy.
 
 - Added French man page (by Olivier Humbert, thanks).
 
-- Make builds reproducible byte for byte, by getting rid of
-  the configure build date and time stamps.
+- Make builds reproducible byte for byte, by getting rid of the 
+  configure build date and time stamps.
 
 
 0.4.2  2016-11-14  A Fall'16 release.
@@ -142,9 +141,9 @@ ChangeLog
 
 0.4.1  2016-09-14  End of Summer'16 release.
 
-- Dropped the --enable-qt5 from configure as found redundant
-  given that's the build default anyway (suggestion by Guido
-  Scholz, while for Qtractor, thanks).
+- Dropped the --enable-qt5 from configure as found redundant given 
+  that's the build default anyway (suggestion by Guido Scholz, while 
+  for Qtractor, thanks).
 
 
 0.4.0  2016-04-05  Spring'16 release frenzy.
@@ -168,8 +167,8 @@ ChangeLog
 
 - Added application description as freedesktop.org's AppData.
 
-- Previously hard-coded UDP/IP multicast address (225.0.0.37) is
-  now an user configurable option.
+- Previously hard-coded UDP/IP multicast address (225.0.0.37)
+  is now an user configurable option.
 
 - A man page has beed added.
 
@@ -184,7 +183,7 @@ ChangeLog
 
 - Make(ing) -jN parallel builds now available for the masses.
 
-- Fixed Makefile.in handling of installation directories to the
+- Fixed Makefile.in handling of installation directories to the 
   configure script eg. --datadir.
 
 - Symbian^3 port (by Pedro Lopez-Cabanillas).
