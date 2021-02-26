@@ -19,12 +19,15 @@ before_install:
 - sudo apt-get update -qq
 
 install:
-- sudo apt-get install -qq qt515base qt515tools libgl-dev; source /opt/qt515/bin/qt515-env.sh
+- sudo apt-get install -qq qt515base qt515tools qt515translations 
+- sudo apt-get install -qq qt515svg qt515wayland libgl-dev
 
 before_script:
 - git fetch --unshallow --tags -q
 - ./autogen.sh
 
 script:
+- source /opt/qt515/bin/qt515-env.sh
 - ./configure
-- make && sudo make install
+- make
+- sudo make install
