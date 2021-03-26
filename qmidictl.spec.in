@@ -57,11 +57,10 @@ over the network, using UDP/IP multicast. Inspired by multimidicast
 for Windows (http://nerds.de).
 
 %prep
-%setup
-[ -x ./autogen.sh ] && ./autogen.sh
+%setup -q
 
 %build
-%configure
+cmake -DCMAKE_INSTALL_PREFIX=%{_prefix}
 %__make %{?_smp_mflags}
 
 %install
