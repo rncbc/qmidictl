@@ -72,8 +72,14 @@ if (ANDROID)
     set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src/android")
 endif ()
 
-# Check for Qt
-find_package (QT NAMES Qt6 Qt5 COMPONENTS Core REQUIRED)
+# Check for Qt...
+find_package (Qt6 QUIET)
+if (Qt6_FOUND)
+  find_package (QT QUIET NAMES Qt6)
+else ()
+  find_package (QT QUIET NAMES Qt5)
+endif ()
+
 find_package (Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Gui Widgets)
 
 if (CONFIG_IPV6)
@@ -111,7 +117,7 @@ macro (SHOW_OPTION text value)
 endmacro ()
 
 
-message   ("\n  ${PACKAGE_NAME} ${PACKAGE_VERSION}")
+message   ("\n  ${PACKAGE_NAME} ${PACKAGE_VERSION} (Qt ${QT_VERSION})")
 message   ("\n  Build target . . . . . . . . . . . . . . . . . . .: ${CONFIG_BUILD_TYPE}\n")
 show_option ("  Network IPv6 support (EXPERIMENTAL)  . . . . . . ." CONFIG_IPV6)
 message   ("\n  Install prefix . . . . . . . . . . . . . . . . . .: ${CMAKE_INSTALL_PREFIX}")
