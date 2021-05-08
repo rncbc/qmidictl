@@ -116,7 +116,7 @@ android {
 		vlist = $$split(1, ".")
 		for (vitem, vlist): \
 			vcode = "$$first(vcode)$$format_number($$vitem, width=2 zeropad)"
-		varch = 04
+		varch = 00
 		return($$first(vcode)$$first(varch))
 	}
 
