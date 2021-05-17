@@ -1,5 +1,5 @@
 # Process this file with autoconf to produce a configure script.
-AC_INIT(QmidiCtl, 0.9.3, rncbc@rncbc.org, qmidictl)
+AC_INIT(QmidiCtl, 0.9.4, rncbc@rncbc.org, qmidictl)
 
 AC_CONFIG_SRCDIR(src/qmidictl.cpp)
 AC_CONFIG_HEADERS(src/config.h)
@@ -78,9 +78,9 @@ AC_ARG_ENABLE(debug,
 
 # Enable Qt6 build preference.
 AC_ARG_ENABLE(qt6,
-  AS_HELP_STRING([--enable-qt6], [enable Qt6 build (default=no)]),
+  AS_HELP_STRING([--enable-qt6], [enable Qt6 build (default=yes)]),
   [ac_qt6="$enableval"],
-  [ac_qt6="no"])
+  [ac_qt6="yes"])
 
 
 if test "x$ac_debug" = "xyes"; then
