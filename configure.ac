@@ -375,10 +375,6 @@ AC_SUBST(ac_ldflags)
 AC_SUBST(ac_incpath)
 AC_SUBST(ac_libs)
 
-if test "x$ac_debug" = "xyes"; then
-  ac_cflags="-g -fsanitize=address -fno-omit-frame-pointer $ac_cflags"
-  ac_libs="$ac_libs -lasan"
-fi
 
 # Checks for typedefs, structures, and compiler characteristics.
 # AC_C_CONST
