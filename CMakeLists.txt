@@ -77,10 +77,6 @@ if (POLICY CMP0075)
   cmake_policy (SET CMP0075 NEW)
 endif ()
 
-if (ANDROID)
-    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src/android")
-endif ()
-
 # Check for Qt...
 if (CONFIG_QT6)
   find_package (Qt6 QUIET)

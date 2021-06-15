@@ -11,6 +11,10 @@ if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/config.h)
 endif ()
 configure_file (cmake_config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 
+if (ANDROID)
+  set (ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
+endif ()
+
 set (HEADERS
   qmidictlAbout.h
   qmidictlOptions.h
@@ -72,21 +76,29 @@ if (APPLE)
     MACOSX_PACKAGE_LOCATION Resources)
 endif ()
 
-
-if (ANDROID)
-  add_library (${PROJECT_NAME} SHARED
+if (ANDROID AND QT_VERSION_MAJOR GREATER_EQUAL 6)
+  qt_add_executable (${PROJECT_NAME} MANUAL_FINALIZATION
     ${HEADERS}
     ${SOURCES}
     ${FORMS}
     ${RESOURCES}
   )
 else ()
-  add_executable (${PROJECT_NAME}
-    ${HEADERS}
-    ${SOURCES}
-    ${FORMS}
-    ${RESOURCES}
+  if (ANDROID)
+    add_library (${PROJECT_NAME} SHARED
+      ${HEADERS}
+      ${SOURCES}
+      ${FORMS}
+      ${RESOURCES}
+    )
+  else ()
+    add_executable (${PROJECT_NAME}
+      ${HEADERS}
+      ${SOURCES}
+      ${FORMS}
+      ${RESOURCES}
   )
+  endif ()
 endif ()
 
 # Add some debugger flags.
@@ -111,8 +123,7 @@ if (CONFIG_IPV6)
   target_link_libraries (${PROJECT_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::Network)
 endif ()
 
-
-if (UNIX AND NOT APPLE)
+if (UNIX AND NOT APPLE AND NOT ANDROID)
   install (TARGETS ${PROJECT_NAME} RUNTIME
      DESTINATION ${CMAKE_INSTALL_BINDIR})
   install (FILES ${PROJECT_NAME}.desktop
@@ -137,3 +148,8 @@ if (WIN32)
    install (FILES ${QM_FILES}
      DESTINATION ${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME}/translations)
 endif ()
+
+if (ANDROID AND QT_VERSION_MAJOR GREATER_EQUAL 6)
+  qt_finalize_executable (${PROJECT_NAME})
+endif ()
+

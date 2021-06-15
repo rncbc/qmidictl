@@ -1,7 +1,5 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0"?>
 <manifest package="org.rncbc.qmidictl" xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="-- %%INSERT_VERSION_NAME%% --" android:versionCode="-- %%INSERT_VERSION_CODE%% --" android:installLocation="auto">
-    <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="29"/>
-
     <!-- The following comment will be replaced upon deployment with default permissions based on the dependencies of the application.
          Remove the comment if you do not require these default permissions. -->
     <!-- %%INSERT_PERMISSIONS -->
@@ -11,20 +9,19 @@
     <!-- %%INSERT_FEATURES -->
 
     <supports-screens android:largeScreens="true" android:normalScreens="true" android:anyDensity="true" android:smallScreens="true"/>
-
-    <application android:hardwareAccelerated="true" android:name="org.qtproject.qt5.android.bindings.QtApplication" android:label="-- %%INSERT_APP_NAME%% --" android:icon="@drawable/icon" android:extractNativeLibs="true">
+    <application android:hardwareAccelerated="true" android:name="org.qtproject.qt.android.bindings.QtApplication" android:label="-- %%INSERT_APP_NAME%% --" android:extractNativeLibs="true" android:requestLegacyExternalStorage="true">
         <activity android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|layoutDirection|locale|fontScale|keyboard|keyboardHidden|navigation|mcc|mnc|density"
-                  android:name="org.qtproject.qt5.android.bindings.QtActivity"
-                  android:label="-- %%INSERT_APP_NAME%% --"
-                  android:screenOrientation="landscape"
-                  android:launchMode="singleTop">
+				  android:name="org.qtproject.qt.android.bindings.QtActivity"
+				  android:label="-- %%INSERT_APP_NAME%% --"
+				  android:screenOrientation="landscape"
+				  android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
 
             <!-- Application arguments -->
-            <!-- meta-data android:name="android.app.arguments" android:value="arg1 arg2 arg3"/ -->
+            <meta-data android:name="android.app.arguments" android:value="-- %%INSERT_APP_ARGUMENTS%% --"/>
             <!-- Application arguments -->
 
             <meta-data android:name="android.app.lib_name" android:value="-- %%INSERT_APP_LIB_NAME%% --"/>
@@ -68,10 +65,6 @@
                           signal is sent! -->
             <meta-data android:name="android.app.background_running" android:value="false"/>
             <!-- Background running -->
-
-            <!-- auto screen scale factor -->
-            <meta-data android:name="android.app.auto_screen_scale_factor" android:value="false"/>
-            <!-- auto screen scale factor -->
 
             <!-- extract android style -->
             <!-- available android:values :
