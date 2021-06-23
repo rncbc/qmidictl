@@ -102,7 +102,7 @@ else ()
 endif ()
 
 # Add some debugger flags.
-if (CONFIG_DEBUG AND NOT ANDROID)
+if (CONFIG_DEBUG AND UNIX AND NOT APPLE AND NOT ANDROID)
   target_compile_options (${PROJECT_NAME} PRIVATE -g -fsanitize=address -fno-omit-frame-pointer)
   target_link_libraries (${PROJECT_NAME} PRIVATE asan)
 endif ()
