@@ -11,9 +11,6 @@ if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/config.h)
 endif ()
 configure_file (config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 
-if (ANDROID)
-  set (ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
-endif ()
 
 set (HEADERS
   qmidictlAbout.h
@@ -101,6 +98,12 @@ else ()
   endif ()
 endif ()
 
+if (ANDROID)
+  set_property(TARGET ${PROJECT_NAME}
+    APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
+	  ${CMAKE_CURRENT_SOURCE_DIR}/android)
+endif ()
+
 # Add some debugger flags.
 if (CONFIG_DEBUG AND UNIX AND NOT APPLE AND NOT ANDROID)
   target_compile_options (${PROJECT_NAME} PRIVATE -g -fsanitize=address -fno-omit-frame-pointer)
@@ -125,28 +128,28 @@ endif ()
 
 if (UNIX AND NOT APPLE AND NOT ANDROID)
   install (TARGETS ${PROJECT_NAME} RUNTIME
-     DESTINATION ${CMAKE_INSTALL_BINDIR})
+    DESTINATION ${CMAKE_INSTALL_BINDIR})
   install (FILES ${PROJECT_NAME}.desktop
-     DESTINATION ${CMAKE_INSTALL_DATADIR}/applications/hildon)
+    DESTINATION ${CMAKE_INSTALL_DATADIR}/applications/hildon)
   install (FILES images/${PROJECT_NAME}.png
-     DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/32x32/hildon)
+    DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/32x32/hildon)
   install (FILES data/26x26/${PROJECT_NAME}.png
-     DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/26x26/hildon)
+    DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/26x26/hildon)
   install (FILES data/48x48/${PROJECT_NAME}.png
-     DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/48x48/hildon)
+    DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/48x48/hildon)
   install (FILES data/64x64/${PROJECT_NAME}.png
-     DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/64x64/hildon)
+    DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/64x64/hildon)
   install (FILES images/${PROJECT_NAME}.svg
-     DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/scalable/apps)
+    DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/scalable/apps)
   install (FILES appdata/${PROJECT_NAME}.appdata.xml
-     DESTINATION ${CMAKE_INSTALL_DATADIR}/metainfo)
+    DESTINATION ${CMAKE_INSTALL_DATADIR}/metainfo)
 endif ()
 
 if (WIN32)
-   install (TARGETS ${PROJECT_NAME} RUNTIME
-     DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-   install (FILES ${QM_FILES}
-     DESTINATION ${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME}/translations)
+  install (TARGETS ${PROJECT_NAME} RUNTIME
+    DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+  install (FILES ${QM_FILES}
+    DESTINATION ${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME}/translations)
 endif ()
 
 if (ANDROID AND QT_VERSION_MAJOR GREATER_EQUAL 6)
