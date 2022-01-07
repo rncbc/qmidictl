@@ -129,7 +129,7 @@ endif ()
 if (UNIX AND NOT APPLE AND NOT ANDROID)
   install (TARGETS ${PROJECT_NAME} RUNTIME
     DESTINATION ${CMAKE_INSTALL_BINDIR})
-  install (FILES ${PROJECT_NAME}.desktop
+  install (FILES org.rncbc.${PROJECT_NAME}.desktop
     DESTINATION ${CMAKE_INSTALL_DATADIR}/applications/hildon)
   install (FILES images/${PROJECT_NAME}.png
     DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/32x32/hildon)
@@ -141,7 +141,7 @@ if (UNIX AND NOT APPLE AND NOT ANDROID)
     DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/64x64/hildon)
   install (FILES images/${PROJECT_NAME}.svg
     DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/scalable/apps)
-  install (FILES appdata/${PROJECT_NAME}.appdata.xml
+  install (FILES appdata/org.rncbc.${PROJECT_NAME}.xml
     DESTINATION ${CMAKE_INSTALL_DATADIR}/metainfo)
 endif ()
 
