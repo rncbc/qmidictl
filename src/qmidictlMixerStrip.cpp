@@ -54,7 +54,10 @@ qmidictlMixerStrip::qmidictlMixerStrip ( QWidget *pParent )
 	m_ui.recordButton->setMaximumWidth(48);
 	m_ui.muteButton->setMaximumWidth(48);
 	m_ui.soloButton->setMaximumWidth(48);
-	m_ui.stripSlider->setMinimumWidth(48);
+	m_ui.recordButton->setMinimumHeight(32);
+	m_ui.muteButton->setMinimumHeight(32);
+	m_ui.soloButton->setMinimumHeight(32);
+	m_ui.stripSlider->setMinimumWidth(32);
 #endif
 #endif
 
