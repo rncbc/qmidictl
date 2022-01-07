@@ -1,7 +1,7 @@
 // qmidictlActionBarStyle.cpp
 //
 /****************************************************************************
-   Copyright (C) 2010-2018, rncbc aka Rui Nuno Capela. All rights reserved.
+   Copyright (C) 2010-2022, rncbc aka Rui Nuno Capela. All rights reserved.
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
@@ -59,7 +59,7 @@ qmidictlActionBarStyle::qmidictlActionBarStyle ( QStyle *style )
 int qmidictlActionBarStyle::dpToPixels ( int dp )
 {
 #if QT_VERSION >= QT_VERSION_CHECK(5, 1, 0)
-    return (dp * QApplication::primaryScreen()->physicalDotsPerInch()) / 160;
+	return (dp * QApplication::primaryScreen()->physicalDotsPerInch()) / 160;
 #else
 	return dp;
 #endif
@@ -68,7 +68,7 @@ int qmidictlActionBarStyle::dpToPixels ( int dp )
 
 void qmidictlActionBarStyle::drawComplexControl (
 	ComplexControl control, const QStyleOptionComplex *option,
-	QPainter *painter, const QWidget *widget) const
+	QPainter *painter, const QWidget *widget ) const
 {
 	if (control == CC_ToolButton) {
 		const QStyleOptionToolButton *opt
@@ -141,19 +141,24 @@ void qmidictlActionBarStyle::drawControl ( ControlElement control,
 
 
 int qmidictlActionBarStyle::pixelMetric (
-	PixelMetric metric, const QStyleOption* option, const QWidget* widget) const
+	PixelMetric metric, const QStyleOption* option, const QWidget* widget ) const
 {
 	switch (metric) {
 	case PM_ButtonIconSize:
 	case PM_SmallIconSize:
 	case PM_ToolBarIconSize:
-		return dpToPixels(24);
+		return dpToPixels(32);
 	case PM_LargeIconSize:
 		return dpToPixels(48);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 1, 0)
+	case PM_SliderThickness:
+	case PM_SliderLength:
+		return dpToPixels(32);
+#endif
 	default:
 		return QProxyStyle::pixelMetric(metric, option, widget);
 	}
 }
 
 
-// end of qmidictlActionBar.cpp
+// end of qmidictlActionBarStyle.cpp

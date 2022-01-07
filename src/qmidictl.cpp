@@ -1,7 +1,7 @@
 // qmidictl.cpp
 //
 /****************************************************************************
-   Copyright (C) 2010-2021, rncbc aka Rui Nuno Capela. All rights reserved.
+   Copyright (C) 2010-2022, rncbc aka Rui Nuno Capela. All rights reserved.
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
@@ -29,7 +29,9 @@
 
 #if defined(Q_OS_ANDROID)
 #include "qmidictlActionBarStyle.h"
+#if QT_VERSION < QT_VERSION_CHECK(6, 1, 0)
 #include <QStyleFactory>
+#endif
 #endif
 
 #if defined(Q_OS_SYMBIAN)
@@ -180,8 +182,12 @@ int main ( int argc, char *argv[] )
 	app.setPalette(pal);
 
 	// Custom style theme....
+#if QT_VERSION < QT_VERSION_CHECK(6, 1, 0)
 	QStyle *pAndroidStyle = QStyleFactory::create("Android");
 	app.setStyle(new qmidictlActionBarStyle(pAndroidStyle));
+#else
+	app.setStyle(new qmidictlActionBarStyle());
+#endif
 
 	// Custom font size...
 	const QFont& font = app.font();

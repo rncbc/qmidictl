@@ -1,7 +1,7 @@
 // qmidictlOptionsForm.cpp
 //
 /****************************************************************************
-   Copyright (C) 2010-2020, rncbc aka Rui Nuno Capela. All rights reserved.
+   Copyright (C) 2010-2022, rncbc aka Rui Nuno Capela. All rights reserved.
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
@@ -100,9 +100,11 @@ qmidictlOptionsForm::qmidictlOptionsForm ( QWidget *pParent )
 	m_ui.InterfaceComboBox->addItem("eth0");
 #endif
 #if defined(Q_OS_ANDROID)
+#if QT_VERSION < QT_VERSION_CHECK(6, 1, 0)
 //	m_ui.InterfaceComboBox->setMinimumWidth(240);
 	m_ui.InterfaceComboBox->setMinimumHeight(128);
 	m_ui.InterfaceComboBox->lineEdit()->setMinimumHeight(96);
+#endif
 #endif
 
 	m_ui.UdpAddrComboBox->clear();
@@ -111,9 +113,11 @@ qmidictlOptionsForm::qmidictlOptionsForm ( QWidget *pParent )
 	m_ui.UdpAddrComboBox->addItem(QMIDICTL_UDP_IPV6_ADDR);
 #endif
 #if defined(Q_OS_ANDROID)
+#if QT_VERSION < QT_VERSION_CHECK(6, 1, 0)
 //	m_ui.UdpAddrComboBox->setMinimumWidth(240);
 	m_ui.UdpAddrComboBox->setMinimumHeight(128);
 	m_ui.UdpAddrComboBox->lineEdit()->setMinimumHeight(96);
+#endif
 #endif
 
 	m_ui.UdpPortSpinBox->setValue(QMIDICTL_UDP_PORT);

@@ -1,7 +1,7 @@
 // qmidictlMainForm.cpp
 //
 /****************************************************************************
-   Copyright (C) 2010-2020, rncbc aka Rui Nuno Capela. All rights reserved.
+   Copyright (C) 2010-2022, rncbc aka Rui Nuno Capela. All rights reserved.
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
@@ -111,8 +111,10 @@ qmidictlMainForm::qmidictlMainForm ( QWidget *pParent )
 	m_ui.aboutAction->setIcon(QIcon(":/images/actionAbout.png"));
 //	m_ui.exitAction->setIcon(QIcon(":/images/actionCancel.png"));
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 1, 0)
 	m_ui.prevStripPageButton->setMaximumSize(96, 48);
 	m_ui.nextStripPageButton->setMaximumSize(96, 48);
+#endif
 
 	// Special action-bar for the android stuff.
 	m_pActionBar = new qmidictlActionBar();
@@ -122,11 +124,13 @@ qmidictlMainForm::qmidictlMainForm ( QWidget *pParent )
 #else
 	m_pActionBar->setTitle(QMIDICTL_TITLE " - " + tr(QMIDICTL_SUBTITLE));
 #endif
+#if QT_VERSION < QT_VERSION_CHECK(6, 1, 0)
 	// Action-bar left-drop-down menu items...
 	m_pActionBar->addMenuItem(m_ui.optionsAction);
 	m_pActionBar->addMenuItem(m_ui.configureAction);
 	m_pActionBar->addMenuItem(m_ui.aboutAction);
 //	m_pActionBar->addMenuItem(m_ui.exitAction);
+#endif
 	// Action-bar right-overflow button items...
 	m_pActionBar->addButton(m_ui.optionsAction);
 	m_pActionBar->addButton(m_ui.configureAction);

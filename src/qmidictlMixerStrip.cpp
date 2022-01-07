@@ -1,7 +1,7 @@
 // qmidictlMixerStrip.cpp
 //
 /****************************************************************************
-   Copyright (C) 2010-2020, rncbc aka Rui Nuno Capela. All rights reserved.
+   Copyright (C) 2010-2022, rncbc aka Rui Nuno Capela. All rights reserved.
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
@@ -47,6 +47,15 @@ qmidictlMixerStrip::qmidictlMixerStrip ( QWidget *pParent )
 	m_ui.muteButton->setPalette(pal);
 	pal.setColor(QPalette::Highlight, Qt::cyan);
 	m_ui.soloButton->setPalette(pal);
+#endif
+
+#if defined(Q_OS_ANDROID)
+#if QT_VERSION >= QT_VERSION_CHECK(6, 1, 0)
+	m_ui.recordButton->setMaximumWidth(48);
+	m_ui.muteButton->setMaximumWidth(48);
+	m_ui.soloButton->setMaximumWidth(48);
+	m_ui.stripSlider->setMinimumWidth(48);
+#endif
 #endif
 
 	// UI widgets signal/slot connections...
