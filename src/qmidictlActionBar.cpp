@@ -73,11 +73,13 @@ qmidictlActionBar::qmidictlActionBar ( QWidget *parent ) : QWidget(parent)
 	QWidget::setPalette(pal);
 #endif
 
+	// Make sure the background is filled accordingly...
+	QWidget::setAutoFillBackground(true);
+
 	// Create layout
 	m_layout = new QHBoxLayout(this);
-	m_layout->setSpacing(24);
+	m_layout->setSpacing(16);
 	m_layout->setContentsMargins(8, 8, 8, 8);
-//	m_layout->setContentsMargins(0, 0, 0, 0);
 	m_layout->setSizeConstraint(QLayout::SetNoConstraint);
 
 	// App Navigation/Menu Button
@@ -93,7 +95,7 @@ qmidictlActionBar::qmidictlActionBar ( QWidget *parent ) : QWidget(parent)
 	// View Control Button
 	m_appTitle = new QLabel();
 	const QFont& font = QWidget::font();
-	m_appTitle->setFont(QFont(font.family(), font.pointSize() + 1, 75));
+	m_appTitle->setFont(QFont(font.family(), font.pointSize() + 1, QFont::Bold));
 	m_layout->addWidget(m_appTitle);
 
 	// Spacer
