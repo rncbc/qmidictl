@@ -416,7 +416,7 @@ void qmidictlMainForm::sendMmcCommand (
 	sendData(pSysex, iSysex);
 
 	// Done.
-	delete pSysex;
+	delete [] pSysex;
 }
 
 
@@ -1073,29 +1073,62 @@ bool qmidictlMainForm::touchEvent ( QTouchEvent *pTouchEvent )
 	QEvent::Type etype;
 	QMouseEvent *pMouseEvent;
 
-	const QList<QTouchEvent::TouchPoint>& points
-	#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+	const QList<QEventPoint>& points
 		= pTouchEvent->points();
-	#else
+#else
+	const QList<QTouchEvent::TouchPoint>& points
 		= pTouchEvent->touchPoints();
-	#endif
+#endif
 
 	switch (pTouchEvent->type()) {
 	case QEvent::TouchBegin:
 		// Begin...
 		m_touched.clear();
-		m_bSwipe = (points.size() == 1);
-		++iTouched;
+		if (points.size() == 1) {
+		#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+			const QEventPoint& point = points.at(0);
+		#else
+			const QTouchEvent::TouchPoint& point = points.at(0);
+		#endif
+			// Replay as first mouse-press...
+			const int id = point.id();
+		#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+			const QPoint& pos = point.position().toPoint();
+		#else
+			const QPoint& pos = point.pos().toPoint();
+		#endif
+			const QList<QWidget *>& children
+				= pCentralWidget->findChildren<QWidget *> ();
+			foreach (QWidget *pWidget, children) {
+				const QPoint& wpos = pWidget->mapFrom(pCentralWidget, pos);
+				if (pWidget->rect().contains(wpos) &&
+					pWidget->childAt(wpos) == nullptr) {
+					m_touched.insert(id, pWidget);
+					etype = QEvent::MouseButtonPress;
+					pMouseEvent = new QMouseEvent(
+						etype, wpos,
+						Qt::LeftButton,
+						Qt::LeftButton,
+						Qt::NoModifier);
+					QApplication::postEvent(pWidget, pMouseEvent);
+					++iTouched;
+				}
+			}
+			// Start tracking a swipe gesture...
+			m_bSwipe = true;
+		}
 		// Fall thru...
 	case QEvent::TouchUpdate:
 		// Whether currently tracking a swipe gesture...
 		if (m_bSwipe) {
-			const QTouchEvent::TouchPoint& point = points.at(0);
 		#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+			const QEventPoint& point = points.at(0);
 			const QPointF& p0 = point.globalPressPosition();
 			const QPointF& p1 = point.globalLastPosition();
 			const QPointF& p2 = point.globalPosition();
 		#else
+			const QTouchEvent::TouchPoint& point = points.at(0);
 			const QPointF& p0 = point.startScreenPos();
 			const QPointF& p1 = point.lastScreenPos();
 			const QPointF& p2 = point.screenPos();
@@ -1103,30 +1136,6 @@ bool qmidictlMainForm::touchEvent ( QTouchEvent *pTouchEvent )
 			const qreal dx2 = (p2.x() - p1.x()) * (p1.x() - p0.x());
 			const qreal dy = p2.y() - p0.y();
 			if (dx2 < 0.0 || qAbs(dy) > 60.0 || points.size() > 1) {
-				// Replay...
-				const int id = point.id();
-			#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-				const QPoint& pos = point.position().toPoint();
-			#else
-				const QPoint& pos = point.pos().toPoint();
-			#endif
-				const QList<QWidget *>& children
-					= pCentralWidget->findChildren<QWidget *> ();
-				foreach (QWidget *pWidget, children) {
-					const QPoint& wpos = pWidget->mapFrom(pCentralWidget, pos);
-					if (pWidget->rect().contains(wpos) &&
-						pWidget->childAt(wpos) == nullptr) {
-						m_touched.insert(id, pWidget);
-						etype = QEvent::MouseButtonPress;
-						pMouseEvent = new QMouseEvent(
-							etype, wpos,
-							Qt::LeftButton,
-							Qt::LeftButton,
-							Qt::NoModifier);
-						QApplication::postEvent(pWidget, pMouseEvent);
-						++iTouched;
-					}
-				}
 				// And cancel swipe...
 				m_bSwipe = false;
 			}
@@ -1134,18 +1143,23 @@ bool qmidictlMainForm::touchEvent ( QTouchEvent *pTouchEvent )
 			break;
 		}
 		// Assess all touch-point-ids...
-		foreach (QTouchEvent::TouchPoint point, points) {
-			const int id = point.id();
-		#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+	#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+		foreach (QEventPoint point, points) {
 			const QPoint& pos = point.position().toPoint();
-		#else
+	#else
+		foreach (QTouchEvent::TouchPoint point, points) {
 			const QPoint& pos = point.pos().toPoint();
-		#endif
+	#endif
+			const int id = point.id();
 			QWidget *pTouchedWidget = m_touched.value(id, nullptr);
 			if (pTouchedWidget) {
 				const QPoint& wpos
 					= pTouchedWidget->mapFrom(pCentralWidget, pos);
+			#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+				if (point.state() & QEventPoint::Released) {
+			#else
 				if (point.state() & Qt::TouchPointReleased) {
+			#endif
 					m_touched.remove(id);
 					etype = QEvent::MouseButtonRelease;
 				} else {
@@ -1183,11 +1197,12 @@ bool qmidictlMainForm::touchEvent ( QTouchEvent *pTouchEvent )
 	case QEvent::TouchEnd:
 		// Whether currently tracking some swipe gesture...
 		if (m_bSwipe) {
-			const QTouchEvent::TouchPoint& point = points.at(0);
 		#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+			const QEventPoint& point = points.at(0);
 			const QPointF& p0 = point.globalPressPosition();
 			const QPointF& p2 = point.globalPosition();
 		#else
+			const QTouchEvent::TouchPoint& point = points.at(0);
 			const QPointF& p0 = point.startScreenPos();
 			const QPointF& p2 = point.screenPos();
 		#endif
@@ -1201,12 +1216,12 @@ bool qmidictlMainForm::touchEvent ( QTouchEvent *pTouchEvent )
 				// Done swipe.
 			} else {
 				// Replay...
-				const int id = point.id();
 			#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 				const QPoint& pos = point.position().toPoint();
 			#else
 				const QPoint& pos = point.pos().toPoint();
 			#endif
+				const int id = point.id();
 				const QList<QWidget *>& children
 					= pCentralWidget->findChildren<QWidget *> ();
 				foreach (QWidget *pWidget, children) {
@@ -1228,13 +1243,14 @@ bool qmidictlMainForm::touchEvent ( QTouchEvent *pTouchEvent )
 		}
 		// Release all remaining touch-point-ids...
 		etype = QEvent::MouseButtonRelease;
-		foreach (QTouchEvent::TouchPoint point, points) {
-			const int id = point.id();
-		#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+	#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+		foreach (QEventPoint point, points) {
 			const QPoint& pos = point.position().toPoint();
-		#else
+	#else
+		foreach (QTouchEvent::TouchPoint point, points) {
 			const QPoint& pos = point.pos().toPoint();
-		#endif
+	#endif
+			const int id = point.id();
 			QWidget *pTouchedWidget = m_touched.value(id, nullptr);
 			if (pTouchedWidget) {
 				const QPoint& wpos
