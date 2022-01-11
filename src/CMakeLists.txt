@@ -159,7 +159,7 @@ if (UNIX AND NOT APPLE AND NOT ANDROID)
     DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/64x64/hildon)
   install (FILES images/${PROJECT_NAME}.svg
     DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/scalable/apps)
-  install (FILES appdata/org.rncbc.${PROJECT_NAME}.xml
+  install (FILES appdata/org.rncbc.${PROJECT_NAME}.metainfo.xml
     DESTINATION ${CMAKE_INSTALL_DATADIR}/metainfo)
 endif ()
 
