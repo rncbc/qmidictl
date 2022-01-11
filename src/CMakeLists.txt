@@ -148,15 +148,9 @@ if (UNIX AND NOT APPLE AND NOT ANDROID)
   install (TARGETS ${PROJECT_NAME} RUNTIME
     DESTINATION ${CMAKE_INSTALL_BINDIR})
   install (FILES org.rncbc.${PROJECT_NAME}.desktop
-    DESTINATION ${CMAKE_INSTALL_DATADIR}/applications/hildon)
+    DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
   install (FILES images/${PROJECT_NAME}.png
-    DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/32x32/hildon)
-  install (FILES data/26x26/${PROJECT_NAME}.png
-    DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/26x26/hildon)
-  install (FILES data/48x48/${PROJECT_NAME}.png
-    DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/48x48/hildon)
-  install (FILES data/64x64/${PROJECT_NAME}.png
-    DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/64x64/hildon)
+    DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/32x32)
   install (FILES images/${PROJECT_NAME}.svg
     DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/scalable/apps)
   install (FILES appdata/org.rncbc.${PROJECT_NAME}.metainfo.xml
