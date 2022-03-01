@@ -65,8 +65,10 @@ set (CONFIG_MANDIR  "${CONFIG_PREFIX}/${CMAKE_INSTALL_MANDIR}")
 
 
 # Enable Network IPv6 support option.
-option (CONFIG_IPV6 "Enable Network IPv6 support (EXPERIMENTAL) (default=yes)" 1)
+option (CONFIG_IPV6 "Enable Network IPv6 support (default=yes)" 1)
 
+# Enable Wayland support option.
+option (CONFIG_WAYLAND "Enable Wayland support (EXPERIMENTAL) (default=no)" 0)
 
 # Enable Qt6 build preference.
 option (CONFIG_QT6 "Enable Qt6 build (default=yes)" 1)
@@ -129,5 +131,5 @@ endmacro ()
 
 message   ("\n  ${PACKAGE_NAME} ${PACKAGE_VERSION} (Qt ${QT_VERSION})")
 message   ("\n  Build target . . . . . . . . . . . . . . . . . . .: ${CONFIG_BUILD_TYPE}\n")
-show_option ("  Network IPv6 support (EXPERIMENTAL)  . . . . . . ." CONFIG_IPV6)
+show_option ("  Network IPv6 support . . . . . . . . . . . . . . ." CONFIG_IPV6)
 message   ("\n  Install prefix . . . . . . . . . . . . . . . . . .: ${CONFIG_PREFIX}\n")

@@ -43,4 +43,7 @@
 /* Define if IPv6 is supported */
 #cmakedefine CONFIG_IPV6 @CONFIG_IPV6@
 
+/* Define if Wayland is supported */
+#cmakedefine CONFIG_WAYLAND @CONFIG_WAYLAND@
+
 #endif /* CONFIG_H */

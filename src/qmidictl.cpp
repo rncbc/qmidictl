@@ -151,7 +151,7 @@ int main ( int argc, char *argv[] )
 	Q_INIT_RESOURCE(qmidictl);
 
 #if !defined(Q_OS_ANDROID)
-#if defined(Q_OS_LINUX)
+#if defined(Q_OS_LINUX) && !defined(CONFIG_WAYLAND)
 	::setenv("QT_QPA_PLATFORM", "xcb", 0);
 #endif
 #if QT_VERSION >= QT_VERSION_CHECK(5, 6, 0)
