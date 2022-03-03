@@ -165,7 +165,11 @@ int main ( int argc, char *argv[] )
 #if QT_VERSION >= QT_VERSION_CHECK(5, 1, 0)
 	app.setApplicationName(QMIDICTL_TITLE);
 	app.setApplicationDisplayName(
-	QMIDICTL_TITLE " - " + QObject::tr(QMIDICTL_SUBTITLE));
+		QMIDICTL_TITLE " - " + QObject::tr(QMIDICTL_SUBTITLE));
+#if QT_VERSION >= QT_VERSION_CHECK(5, 7, 0)
+	app.setDesktopFileName(
+		QString("org.rncbc.%1").arg(PACKAGE_TARNAME));
+#endif
 	QString sVersion(CONFIG_BUILD_VERSION);
 	sVersion += '\n';
 	sVersion += QString("Qt: %1").arg(qVersion());
