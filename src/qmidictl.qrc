@@ -1,6 +1,7 @@
 <RCC version="1.0">
 	<qresource>
 		<file>images/qmidictl.png</file>
+		<file>images/qmidictl.svg</file>
 		<file>images/actionMenu.png</file>
 		<file>images/actionOverflow.png</file>
 		<file>images/actionOptions.png</file>

@@ -31,7 +31,7 @@
    </rect>
   </property>
   <property name="windowIcon">
-   <iconset resource="qmidictl.qrc">:/images/qmidictl.png</iconset>
+   <iconset resource="qmidictl.qrc">:/images/qmidictl.svg</iconset>
   </property>
   <widget class="QMenuBar" name="MainMenuBar">
    <addaction name="optionsAction"/>

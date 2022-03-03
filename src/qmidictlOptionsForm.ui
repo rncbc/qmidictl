@@ -34,7 +34,7 @@
    <string>Options</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="qmidictl.qrc">:/images/qmidictl.png</iconset>
+   <iconset resource="qmidictl.qrc">:/images/qmidictl.svg</iconset>
   </property>
   <layout class="QVBoxLayout" name="MainCentralLayout">
    <property name="spacing">

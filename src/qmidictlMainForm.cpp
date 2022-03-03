@@ -118,7 +118,7 @@ qmidictlMainForm::qmidictlMainForm ( QWidget *pParent )
 
 	// Special action-bar for the android stuff.
 	m_pActionBar = new qmidictlActionBar();
-	m_pActionBar->setIcon(QIcon(":/images/qmidictl.png"));
+	m_pActionBar->setIcon(QIcon(":/images/qmidictl.svg"));
 #if QT_VERSION >= QT_VERSION_CHECK(5, 1, 0)
 	m_pActionBar->setTitle(QApplication::applicationDisplayName());
 #else
