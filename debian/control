@@ -17,7 +17,8 @@ XSBC-Bugtracker: https://garage.maemo.org/tracker/?atid=5228&group_id=1436
 
 Package: qmidictl
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends},
+  qt6-qpa-plugins | libqt5opengl5
 Description: A MIDI remote controller via UDP/IP multicast
   A MIDI remote controller application that sends MIDI data
   over the network, using UDP/IP multicast. Inspired by
