@@ -18,6 +18,7 @@ XSBC-Bugtracker: https://garage.maemo.org/tracker/?atid=5228&group_id=1436
 Package: qmidictl
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends},
+  libqt6svg6 (>= 6.1) | libqt5svg5 (>= 5.1),
   qt6-qpa-plugins | base-files (<< 12)
 Description: A MIDI remote controller via UDP/IP multicast
   A MIDI remote controller application that sends MIDI data
