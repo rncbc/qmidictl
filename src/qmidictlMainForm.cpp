@@ -1109,7 +1109,7 @@ bool qmidictlMainForm::touchEvent ( QTouchEvent *pTouchEvent )
 					m_touched.insert(id, pWidget);
 					etype = QEvent::MouseButtonPress;
 					pMouseEvent = new QMouseEvent(
-						etype, wpos,
+						etype, wpos, pos,
 						Qt::LeftButton,
 						Qt::LeftButton,
 						Qt::NoModifier);
@@ -1168,7 +1168,7 @@ bool qmidictlMainForm::touchEvent ( QTouchEvent *pTouchEvent )
 					etype = QEvent::MouseMove;
 				}
 				pMouseEvent = new QMouseEvent(
-					etype, wpos,
+					etype, wpos, pos,
 					Qt::LeftButton,
 					Qt::LeftButton,
 					Qt::NoModifier);
@@ -1184,7 +1184,7 @@ bool qmidictlMainForm::touchEvent ( QTouchEvent *pTouchEvent )
 						m_touched.insert(id, pWidget);
 						etype = QEvent::MouseButtonPress;
 						pMouseEvent = new QMouseEvent(
-							etype, wpos,
+							etype, wpos, pos,
 							Qt::LeftButton,
 							Qt::LeftButton,
 							Qt::NoModifier);
@@ -1233,7 +1233,7 @@ bool qmidictlMainForm::touchEvent ( QTouchEvent *pTouchEvent )
 						m_touched.insert(id, pWidget);
 						etype = QEvent::MouseButtonPress;
 						pMouseEvent = new QMouseEvent(
-							etype, wpos,
+							etype, wpos, pos,
 							Qt::LeftButton,
 							Qt::LeftButton,
 							Qt::NoModifier);
@@ -1258,7 +1258,7 @@ bool qmidictlMainForm::touchEvent ( QTouchEvent *pTouchEvent )
 				const QPoint& wpos
 					= pTouchedWidget->mapFrom(pCentralWidget, pos);
 				pMouseEvent = new QMouseEvent(
-					etype, wpos,
+					etype, wpos, pos,
 					Qt::LeftButton,
 					Qt::LeftButton,
 					Qt::NoModifier);
