@@ -73,7 +73,7 @@ BuildRequires:	pkgconfig(Qt6Network)
 %else
 BuildRequires:	cmake(Qt5LinguistTools)
 BuildRequires:	pkgconfig(Qt5Core)
-BuildRequires:	kgconfig(Qt5Gui)
+BuildRequires:	pkgconfig(Qt5Gui)
 BuildRequires:	pkgconfig(Qt5Widgets)
 BuildRequires:	pkgconfig(Qt5Svg)
 BuildRequires:	pkgconfig(Qt5Network)
