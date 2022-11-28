@@ -55,7 +55,7 @@ BuildRequires:	gcc8-c++ >= 8
 %define CXX		/usr/bin/g++-8
 %endif
 
-BuildRequires:	cmake >= 3.19
+BuildRequires:	cmake >= 3.15
 %if 0%{qt_major_version} == 6
 %if 0%{?sle_version} == 150200 && 0%{?is_opensuse}
 BuildRequires:	qtbase6-static >= 6.1
