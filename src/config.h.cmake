@@ -37,9 +37,6 @@
 /* Define to 1 if you have the <signal.h> header file. */
 #cmakedefine HAVE_SIGNAL_H @HAVE_SIGNAL_H@
 
-/* Define if debugging is enabled. */
-#cmakedefine CONFIG_DEBUG @CONFIG_DEBUG@
-
 /* Define if IPv6 is supported */
 #cmakedefine CONFIG_IPV6 @CONFIG_IPV6@
 
