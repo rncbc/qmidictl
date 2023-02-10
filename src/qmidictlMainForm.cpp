@@ -1,7 +1,7 @@
 // qmidictlMainForm.cpp
 //
 /****************************************************************************
-   Copyright (C) 2010-2022, rncbc aka Rui Nuno Capela. All rights reserved.
+   Copyright (C) 2010-2023, rncbc aka Rui Nuno Capela. All rights reserved.
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
@@ -1007,15 +1007,15 @@ void qmidictlMainForm::configureSlot (void)
 void qmidictlMainForm::aboutSlot (void)
 {
 	// Stuff the about box text...
-	QString sText = "<p>\n";
-	sText += "<b>" QMIDICTL_TITLE " - " + tr(QMIDICTL_SUBTITLE) + "</b><br />\n";
+	QString sText = "<h1>" QMIDICTL_TITLE "</h1>\n";
+	sText += "<p>" + tr(QMIDICTL_SUBTITLE) + "<br />\n";
 	sText += "<br />\n";
 	sText += tr("Version") + ": <b>" CONFIG_BUILD_VERSION "</b><br />\n";
 //	sText += "<small>" + tr("Build") + ": " CONFIG_BUILD_DATE "</small><br />\n";
 #ifdef CONFIG_DEBUG
 	sText += "<small><font color=\"red\">";
 	sText += tr("Debugging option enabled.");
-	sText += "</font></small><br />\n";
+	sText += "</font></small>\n";
 #endif
 	sText += "<br />\n";
 	sText += tr("Using: Qt %1").arg(qVersion());
