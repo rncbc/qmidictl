@@ -1,6 +1,6 @@
 Source: qmidictl
-Section: contrib/sound
-Priority: extra
+Section: sound
+Priority: optional
 Maintainer: Rui Nuno Capela <rncbc@rncbc.org>
 Build-Depends: debhelper (>= 11), cmake, pkg-config,
   qt6-base-dev (>= 6.1) | qtbase5-dev (>= 5.1),
@@ -8,10 +8,11 @@ Build-Depends: debhelper (>= 11), cmake, pkg-config,
   qt6-tools-dev (>= 6.1) | qttools5-dev (>= 5.1),
   qt6-tools-dev-tools (>= 6.1) | qttools5-dev-tools (>= 5.1),
   qt6-l10n-tools (>= 6.1)  | base-files (<< 12),
-  qt6-svg-dev | libqt6svg6-dev | libqt5svg5-dev, libgl-dev
-Standards-Version: 3.9.7
-Homepage: https://garage.maemo.org/projects/qmidictl/
-XSBC-Bugtracker: https://garage.maemo.org/tracker/?atid=5228&group_id=1436
+  qt6-svg-dev | libqt6svg6-dev | libqt5svg5-dev,
+  libxkbcommon-dev, libgl-dev
+Standards-Version: 4.6.2
+Rules-Requires-Root: no
+Homepage: https:/qmidictl.sourceforge.io
 
 Package: qmidictl
 Architecture: any
