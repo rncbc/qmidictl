@@ -1,7 +1,7 @@
 cmake_minimum_required (VERSION 3.15)
 
 project (qmidictl
-  VERSION 0.9.11
+  VERSION 0.9.12
   DESCRIPTION "A MIDI Remote Controller via UDP/IP Multicast"
   LANGUAGES C CXX)
 
