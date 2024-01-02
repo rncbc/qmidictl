@@ -1,7 +1,7 @@
 // qmidictl.cpp
 //
 /****************************************************************************
-   Copyright (C) 2010-2022, rncbc aka Rui Nuno Capela. All rights reserved.
+   Copyright (C) 2010-2024, rncbc aka Rui Nuno Capela. All rights reserved.
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
@@ -168,9 +168,9 @@ int main ( int argc, char *argv[] )
 		QMIDICTL_TITLE " - " + QObject::tr(QMIDICTL_SUBTITLE));
 #if QT_VERSION >= QT_VERSION_CHECK(5, 7, 0)
 	app.setDesktopFileName(
-		QString("org.rncbc.%1").arg(PACKAGE_TARNAME));
+		QString("org.rncbc.%1").arg(PROJECT_NAME));
 #endif
-	QString sVersion(CONFIG_BUILD_VERSION);
+	QString sVersion(PROJECT_VERSION);
 	sVersion += '\n';
 	sVersion += QString("Qt: %1").arg(qVersion());
 #if defined(QT_STATIC)

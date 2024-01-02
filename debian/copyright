@@ -4,7 +4,7 @@ Upstream-Contact: Rui Nuno Capela <rncbc@rncbc.org>
 Source: https://qmidictl.sourceforge.io
 
 Files: *
-Copyright: 2010-2023 Rui Nuno Capela <rncbc@rncbc.org>
+Copyright: 2010-2024 Rui Nuno Capela <rncbc@rncbc.org>
            2010      Muhammad Bashir Al-Noimi
            2023-2023 Nicolas Boulenguez <nicolas@debian.org>
 License: GPL-2+
@@ -22,7 +22,7 @@ License: GPL-2+
  License can be found in /usr/share/common-licenses/GPL-2.
 
 Files: src/qmidictlActionBar.cpp
-Copyright: 2010-2023 Rui Nuno Capela <rncbc@rncbc.org>
+Copyright: 2010-2024 Rui Nuno Capela <rncbc@rncbc.org>
            2015      Muhammad Bashir Al-Noimi
            2014      Stefan Frings
 License: LGPL-2.1
@@ -40,7 +40,7 @@ License: LGPL-2.1
  License can be found in /usr/share/common-licenses/LGPL-2.1.
 
 Files: src/appdata/*
-Copyright: 2010-2023 Rui Nuno Capela <rncbc@rncbc.org>
+Copyright: 2010-2024 Rui Nuno Capela <rncbc@rncbc.org>
 License: FSFAP
  Copying and distribution of this file, with or without modification,
  are permitted in any medium without royalty provided the copyright

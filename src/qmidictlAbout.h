@@ -1,7 +1,7 @@
 // qmidictlAbout.h
 //
 /****************************************************************************
-   Copyright (C) 2010-2023, rncbc aka Rui Nuno Capela. All rights reserved.
+   Copyright (C) 2010-2024, rncbc aka Rui Nuno Capela. All rights reserved.
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
@@ -22,18 +22,15 @@
 #ifndef __qmidictlAbout_h
 #define __qmidictlAbout_h
 
-#if !defined(__WIN32__) && !defined(_WIN32) && !defined(WIN32) && !defined(Q_OS_SYMBIAN)
 #include "config.h"
-#define QMIDICTL_TITLE        PACKAGE_NAME
-#else
-#define QMIDICTL_TITLE        "QmidiCtl"
-#endif
 
-#define QMIDICTL_SUBTITLE     "A MIDI Remote Controller via UDP/IP Multicast"
-#define QMIDICTL_WEBSITE      "https://qmidictl.sourceforge.io"
-#define QMIDICTL_COPYRIGHT    "Copyright (C) 2010-2023, rncbc aka Rui Nuno Capela. All rights reserved."
+#define QMIDICTL_TITLE      "QmidiCtl"
 
-#define QMIDICTL_DOMAIN       "rncbc.org"
+#define QMIDICTL_SUBTITLE   PROJECT_DESCRIPTION
+#define QMIDICTL_WEBSITE    PROJECT_HOMEPAGE_URL
+
+#define QMIDICTL_COPYRIGHT  "Copyright (C) 2010-2024, rncbc aka Rui Nuno Capela. All rights reserved."
+#define QMIDICTL_DOMAIN     "rncbc.org"
 
 #endif  // __qmidictlAbout_h
 
