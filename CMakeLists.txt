@@ -1,10 +1,13 @@
 cmake_minimum_required (VERSION 3.15)
 
-project (qmidictl
+project (QmidiCtl
   VERSION 0.9.12
   DESCRIPTION "A MIDI Remote Controller via UDP/IP Multicast"
   HOMEPAGE_URL "https://qmidictl.sourceforge.io"
   LANGUAGES C CXX)
+
+set (PROJECT_TITLE "${PROJECT_NAME}")
+string (TOLOWER "${PROJECT_TITLE}" PROJECT_NAME)
 
 execute_process (
   COMMAND git describe --tags --dirty --abbrev=6
@@ -111,7 +114,7 @@ macro (SHOW_OPTION text value)
   endif ()
 endmacro ()
 
-message   ("\n  ${PACKAGE_NAME} ${PACKAGE_VERSION} (Qt ${QT_VERSION})")
+message   ("\n  ${PROJECT_TITLE} ${PROJECT_VERSION} (Qt ${QT_VERSION})")
 message   ("\n  Build target . . . . . . . . . . . . . . . . . . .: ${CONFIG_BUILD_TYPE}\n")
 show_option ("  Network IPv6 support . . . . . . . . . . . . . . ." CONFIG_IPV6)
 message   ("\n  Install prefix . . . . . . . . . . . . . . . . . .: ${CONFIG_PREFIX}\n")

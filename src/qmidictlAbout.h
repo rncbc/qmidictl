@@ -24,7 +24,7 @@
 
 #include "config.h"
 
-#define QMIDICTL_TITLE      "QmidiCtl"
+#define QMIDICTL_TITLE      PROJECT_TITLE
 
 #define QMIDICTL_SUBTITLE   PROJECT_DESCRIPTION
 #define QMIDICTL_WEBSITE    PROJECT_HOMEPAGE_URL
