@@ -29,8 +29,8 @@
 #define QMIDICTL_SUBTITLE   PROJECT_DESCRIPTION
 #define QMIDICTL_WEBSITE    PROJECT_HOMEPAGE_URL
 
-#define QMIDICTL_COPYRIGHT  "Copyright (C) 2010-2024, rncbc aka Rui Nuno Capela. All rights reserved."
-#define QMIDICTL_DOMAIN     "rncbc.org"
+#define QMIDICTL_COPYRIGHT  PROJECT_COPYRIGHT
+#define QMIDICTL_DOMAIN     PROJECT_DOMAIN
 
 #endif  // __qmidictlAbout_h
 
