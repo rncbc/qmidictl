@@ -4,6 +4,11 @@ QmidiCtl - A MIDI Remote Controller via UDP/IP Multicast
 ChangeLog
 
 
+GIT HEAD
+
+- Prepping for the unthinkable...
+
+
 0.9.12  2024-01-24  A Winter'24 Release.
 
 - Updated copyright headers into the New Year (2024).
