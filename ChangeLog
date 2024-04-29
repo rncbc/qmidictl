@@ -4,9 +4,12 @@ QmidiCtl - A MIDI Remote Controller via UDP/IP Multicast
 ChangeLog
 
 
-GIT HEAD
+0.9.91  2024-05-01  A Spring'24 Release Candidate 2.
 
-- Prepping the unthinkable (aka. v1.0.0-rc2) (Qt >= 6.7)
+- Prepping the unthinkable (aka. v1.0.0-rc2)
+
+- Updated to latest framework level (Qt >= 6.7)
+
 
 
 0.9.90  2024-04-10  A Spring'24 Release Candidate.
