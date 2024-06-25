@@ -102,8 +102,10 @@ qmidictlMainForm::qmidictlMainForm ( QWidget *pParent )
 	m_ui.jogWheelDial->setStyle(m_pDialStyle);
 
 	// Enable multi-gestures...
+#ifdef CONFIG_MULTI_TOUCH
 	m_ui.MainCentralWidget->setAttribute(Qt::WA_AcceptTouchEvents);
 	m_ui.MainCentralWidget->installEventFilter(this);
+#endif
 
 #if defined(Q_OS_ANDROID)
 

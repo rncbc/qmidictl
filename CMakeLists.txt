@@ -59,6 +59,9 @@ set (CONFIG_MANDIR  "${CONFIG_PREFIX}/${CMAKE_INSTALL_MANDIR}")
 # Enable Network IPv6 support option.
 option (CONFIG_IPV6 "Enable Network IPv6 support (default=yes)" 1)
 
+# Enable Multi-touch support option.
+option (CONFIG_MULTI_TOUCH "Enable multi-touch support (default=yes)" 1)
+
 # Enable Wayland support option.
 option (CONFIG_WAYLAND "Enable Wayland support (EXPERIMENTAL) (default=no)" 0)
 
@@ -120,4 +123,5 @@ endmacro ()
 message   ("\n  ${PROJECT_TITLE} ${PROJECT_VERSION} (Qt ${QT_VERSION})")
 message   ("\n  Build target . . . . . . . . . . . . . . . . . . .: ${CONFIG_BUILD_TYPE}\n")
 show_option ("  Network IPv6 support . . . . . . . . . . . . . . ." CONFIG_IPV6)
+show_option ("  Multi-touch support  . . . . . . . . . . . . . . ." CONFIG_MULTI_TOUCH)
 message   ("\n  Install prefix . . . . . . . . . . . . . . . . . .: ${CONFIG_PREFIX}\n")

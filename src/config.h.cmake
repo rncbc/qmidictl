@@ -38,6 +38,9 @@
 /* Define to 1 if you have the <signal.h> header file. */
 #cmakedefine HAVE_SIGNAL_H @HAVE_SIGNAL_H@
 
+/* Define if multi-touch is supported */
+#cmakedefine CONFIG_MULTI_TOUCH @CONFIG_MULTI_TOUCH@
+
 /* Define if IPv6 is supported */
 #cmakedefine CONFIG_IPV6 @CONFIG_IPV6@
 
