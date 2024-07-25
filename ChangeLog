@@ -9,7 +9,7 @@ GIT HEAD
 - Target platform is now Android 14 (in compliance to Google
   Play Developer Program policies).
 
-- Multi-touch/finger support is now an option. (EXPERIMENTAL)
+- Multi-touch/finger support is now an option.
 
 
 1.0.0  2024-06-19  An Unthinkable Release.
