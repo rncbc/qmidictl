@@ -227,9 +227,6 @@ private:
 	int m_iMidiInLed;
 	int m_iMidiOutLed;
 
-	// Kind of soft-mutex.
-	int m_iBusy;
-
 	// Special style for the jog wheel dial.
 	qmidictlDialStyle *m_pDialStyle;
 

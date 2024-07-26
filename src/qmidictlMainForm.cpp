@@ -94,9 +94,6 @@ qmidictlMainForm::qmidictlMainForm ( QWidget *pParent )
 	m_iMidiInLed  = 0;
 	m_iMidiOutLed = 0;
 
-	// Kind of soft-mutex.
-	m_iBusy = 0;
-
 	// Hack the jog-wheel dial style and palette...
 	m_pDialStyle = new qmidictlDialStyle();
 	m_ui.jogWheelDial->setStyle(m_pDialStyle);
@@ -309,7 +306,7 @@ void qmidictlMainForm::initMixerStrip ( qmidictlMixerStrip *pStrip )
 // Strip states methods.
 void qmidictlMainForm::initStripStates (void)
 {
-	int iStrips = 4 * m_iStripPages;
+	const int iStrips = 4 * m_iStripPages;
 
 	m_pStripStates = new StripState [iStrips];
 
@@ -350,7 +347,7 @@ void qmidictlMainForm::loadStripState ( qmidictlMixerStrip *pStrip, int iStrip )
 
 void qmidictlMainForm::saveStripPage ( int iStripPage )
 {
-	int iStrip = (iStripPage * 4);
+	const int iStrip = (iStripPage * 4);
 
 	saveStripState(m_ui.strip1, iStrip + 0);
 	saveStripState(m_ui.strip2, iStrip + 1);
@@ -361,7 +358,7 @@ void qmidictlMainForm::saveStripPage ( int iStripPage )
 
 void qmidictlMainForm::loadStripPage ( int iStripPage )
 {
-	int iStrip = (iStripPage * 4);
+	const int iStrip = (iStripPage * 4);
 
 	loadStripState(m_ui.strip1, iStrip + 0);
 	loadStripState(m_ui.strip2, iStrip + 1);
@@ -429,7 +426,7 @@ void qmidictlMainForm::sendMmcMaskedWrite (
 	MmcSubCommand scmd, int iTrack, bool bOn )
 {
 	unsigned char data[4];
-	int iMask = (1 << (iTrack < 2 ? iTrack + 5 : (iTrack - 2) % 7));
+	const int iMask = (1 << (iTrack < 2 ? iTrack + 5 : (iTrack - 2) % 7));
 
 	data[0] = scmd;
 	data[1] = (unsigned char) (iTrack < 2 ? 0 : 1 + (iTrack - 2) / 7);
@@ -497,7 +494,7 @@ void qmidictlMainForm::sendData2 (
 void qmidictlMainForm::sendPitchBend ( unsigned short iChannel, int iValue )
 {
 	unsigned char data[3];
-	unsigned short val = (unsigned short) (0x2000 + iValue);
+	const unsigned short val = (unsigned short) (0x2000 + iValue);
 
 	data[0] = 0xe0 + iChannel;
 	data[1] = (val & 0x007f);
@@ -556,7 +553,7 @@ void qmidictlMainForm::sendCommand ( int iCommand, int iTrack, int iValue )
 	if (key.isLogarithmic())
 		iValue = int(127.0f * cbrtf2(float(iValue) / 127.0f));
 
-	bool bOn = (iValue > 0);
+	const bool bOn = (iValue > 0);
 	switch (key.type()) {
 	case qmidictlMidiControl::MMC:
 		switch (command) {
@@ -685,12 +682,7 @@ void qmidictlMainForm::resetSlot (void)
 // Rewind action slot
 void qmidictlMainForm::rewindSlot ( bool bOn )
 {
-	if (m_iBusy > 0)
-		return;
-
-	m_iBusy++;
 	m_ui.forwardButton->setChecked(false);
-	m_iBusy--;
 
 	sendCommand(qmidictlMidiControl::REW, 0, int(bOn));
 }
@@ -699,9 +691,6 @@ void qmidictlMainForm::rewindSlot ( bool bOn )
 // Start/Play action slot
 void qmidictlMainForm::playSlot ( bool bOn )
 {
-	if (m_iBusy > 0)
-		return;
-
 	sendCommand(qmidictlMidiControl::PLAY, 0, int(bOn));
 }
 
@@ -709,15 +698,10 @@ void qmidictlMainForm::playSlot ( bool bOn )
 // Stop action slot
 void qmidictlMainForm::stopSlot (void)
 {
-	if (m_iBusy > 0)
-		return;
-
-	m_iBusy++;
 	m_ui.rewindButton->setChecked(false);
 	m_ui.forwardButton->setChecked(false);
 	m_ui.recordButton->setChecked(false);
 	m_ui.playButton->setChecked(false);
-	m_iBusy--;
 
 	sendCommand(qmidictlMidiControl::STOP);
 }
@@ -726,9 +710,6 @@ void qmidictlMainForm::stopSlot (void)
 // Record action slot
 void qmidictlMainForm::recordSlot ( bool bOn )
 {
-	if (m_iBusy > 0)
-		return;
-
 	sendCommand(qmidictlMidiControl::REC, 0, int(bOn));
 }
 
@@ -736,12 +717,7 @@ void qmidictlMainForm::recordSlot ( bool bOn )
 // Forward action slot
 void qmidictlMainForm::forwardSlot ( bool bOn )
 {
-	if (m_iBusy > 0)
-		return;
-
-	m_iBusy++;
 	m_ui.rewindButton->setChecked(false);
-	m_iBusy--;
 
 	sendCommand(qmidictlMidiControl::FFWD, 0, int(bOn));
 }
@@ -758,8 +734,6 @@ void qmidictlMainForm::recvData ( unsigned char *data, unsigned short len )
 	qmidictlMidiControl *pMidiControl = qmidictlMidiControl::getInstance();
 	if (pMidiControl == nullptr)
 		return;
-
-	m_iBusy++;
 
 #ifdef CONFIG_DEBUG
 	fprintf(stderr, "recvData:");
@@ -967,9 +941,6 @@ void qmidictlMainForm::recvData ( unsigned char *data, unsigned short len )
 		case 3: loadStripState(m_ui.strip4, iTrack); break;
 		}
 	}
-
-	// Done.
-	m_iBusy--;
 }
 
 

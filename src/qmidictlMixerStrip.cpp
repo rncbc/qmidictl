@@ -1,7 +1,7 @@
 // qmidictlMixerStrip.cpp
 //
 /****************************************************************************
-   Copyright (C) 2010-2022, rncbc aka Rui Nuno Capela. All rights reserved.
+   Copyright (C) 2010-2024, rncbc aka Rui Nuno Capela. All rights reserved.
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
@@ -87,7 +87,7 @@ qmidictlMixerStrip::~qmidictlMixerStrip (void)
 void qmidictlMixerStrip::setStrip (
 	int iStrip, bool bRecord, bool bMute, bool bSolo, int iSlider )
 {
-	m_iBusy++;
+	++m_iBusy;
 
 	m_iStrip = iStrip;
 
@@ -98,7 +98,7 @@ void qmidictlMixerStrip::setStrip (
 	m_ui.soloButton->setChecked(bSolo);
 	m_ui.stripSlider->setValue(iSlider);
 
-	m_iBusy--;
+	--m_iBusy;
 }
 
 int qmidictlMixerStrip::strip (void) const
