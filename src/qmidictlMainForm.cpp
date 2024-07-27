@@ -749,7 +749,7 @@ void qmidictlMainForm::recvData ( unsigned char *data, unsigned short len )
 	}
 
 	// Handle immediate incoming MIDI data...
-	int iTracks = (4 * m_iStripPages);
+	const int iTracks = (4 * m_iStripPages);
 	int iTrack  = -1;
 
 	qmidictlMidiControl::ControlType ctype
@@ -761,11 +761,12 @@ void qmidictlMainForm::recvData ( unsigned char *data, unsigned short len )
 	// SysEx (actually)...
 	if (data[0] == 0xf0 && data[len - 1] == 0xf7) {
 		// MMC command...
-		unsigned char mmcid = qmidictlOptions::getInstance()->iMmcDevice;
+		const unsigned char mmcid
+			= qmidictlOptions::getInstance()->iMmcDevice;
 		if (data[1] == 0x7f && data[3] == 0x06
 			&& (mmcid == 0x7f || data[2] == mmcid)) {
 			ctype = qmidictlMidiControl::MMC;
-			MmcCommand cmd = MmcCommand(data[4]);
+			const MmcCommand cmd = MmcCommand(data[4]);
 			switch (cmd) {
 			case MMC_STOP:
 			case MMC_RESET:
@@ -800,7 +801,7 @@ void qmidictlMainForm::recvData ( unsigned char *data, unsigned short len )
 				break;
 			case MMC_MASKED_WRITE:
 				if (int(data[5]) > 3) {
-					MmcSubCommand scmd = MmcSubCommand(data[6]);
+					const MmcSubCommand scmd = MmcSubCommand(data[6]);
 					iTrack = (data[7] > 0 ? (data[7] * 7) : 0) - 5;
 					iValue = int(false);
 					for (int i = 0; i < 7; ++i) {
@@ -872,7 +873,7 @@ void qmidictlMainForm::recvData ( unsigned char *data, unsigned short len )
 		= pMidiControl->find(ctype, iChannel, iParam);
 	if (iter != pMidiControl->controlMap().constEnd()) {
 		const qmidictlMidiControl::MapKey& key = iter.key();
-		qmidictlMidiControl::Command command = iter.value();
+		const qmidictlMidiControl::Command command = iter.value();
 		if (key.isChannelTrack())
 			iTrack  = int(iChannel);
 		else if (key.isParamTrack()) {
@@ -932,7 +933,7 @@ void qmidictlMainForm::recvData ( unsigned char *data, unsigned short len )
 	}
 
 	// Update corresponding strip state, when currently visible...
-	int iStrip = (4 * m_iCurrentStripPage);
+	const int iStrip = (4 * m_iCurrentStripPage);
 	if (iTrack >= iStrip && iTrack < iStrip + 4) {
 		switch (iTrack % 4) {
 		case 0: loadStripState(m_ui.strip1, iTrack); break;
