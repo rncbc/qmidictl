@@ -4,7 +4,7 @@ QmidiCtl - A MIDI Remote Controller via UDP/IP Multicast
 ChangeLog
 
 
-GIT HEAD
+1.0.1  2024-09-28  An Early-Fall'24 Release.
 
 - Target platform is now Android 14 (in compliance to Google
   Play Developer Program policies).
