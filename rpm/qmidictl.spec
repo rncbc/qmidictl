@@ -17,8 +17,8 @@
 
 Summary:	A MIDI Remote Controller via UDP/IP Multicast
 Name:		qmidictl
-Version:	1.0.1
-Release:	4.1
+Version:	1.0.2
+Release:	5.1
 License:	GPL-2.0-or-later
 Group:		Productivity/Multimedia/Sound/Midi
 Source:		%{name}-%{version}.tar.gz
@@ -116,6 +116,8 @@ cmake --install build
 
 
 %changelog
+* Mon Mar 31 2025 Rui Nuno Capela <rncbc@rncbc.org> 1.0.2
+- An Early Spring'25 Release.
 * Sat Sep 28 2024 Rui Nuno Capela <rncbc@rncbc.org> 1.0.1
 - An Early-Fall'24 Release.
 * Wed Jun 19 2024 Rui Nuno Capela <rncbc@rncbc.org> 1.0.0
