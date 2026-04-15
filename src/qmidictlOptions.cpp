@@ -1,7 +1,7 @@
 // qmidictlOptions.cpp
 //
 /****************************************************************************
-   Copyright (C) 2010-2025, rncbc aka Rui Nuno Capela. All rights reserved.
+   Copyright (C) 2010-2026, rncbc aka Rui Nuno Capela. All rights reserved.
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
@@ -181,20 +181,29 @@ bool qmidictlOptions::parse_args ( const QStringList& args )
 		QMIDICTL_TITLE " - " + QObject::tr(QMIDICTL_SUBTITLE));
 
 #if !defined(Q_OS_SYMBIAN) && !defined(Q_OS_WINDOWS)
-	parser.addOption({{"i", "interface"},
+	const QString s_interface  = "interface";
+#endif
+	const QString s_udp_addr   = "udp-addr";
+	const QString s_udp_port   = "udp-port";
+	const QString s_mmc_device = "mmc-device";
+	const QString s_help       = "help";
+
+#if !defined(Q_OS_SYMBIAN) && !defined(Q_OS_WINDOWS)
+	parser.addOption({{"i", s_interface},
 		QObject::tr("Use specific network interface (default = %1)")
 			.arg(sInterface.isEmpty() ? "all" : sInterface), "name"});
 #endif
-	parser.addOption({{"u", "udp-addr"},
+	parser.addOption({{"u", s_udp_addr},
 		QObject::tr("Use specific network address (default = %1)")
 			.arg(sUdpAddr), "addr"});
-	parser.addOption({{"p", "udp-port"},
+	parser.addOption({{"p", s_udp_port},
 		QObject::tr("Use specific network port (default = %1)")
 			.arg(iUdpPort), "port"});
-	parser.addOption({{"m", "mmc-device"},
+	parser.addOption({{"m", s_mmc_device},
 		QObject::tr("Use specific MMC device number (default = %1)")
 			.arg(iMmcDevice), "num"});
-	const QCommandLineOption& helpOption = parser.addHelpOption();
+	parser.addOption({{"h", s_help},
+		QObject::tr("Displays help on command-line options.")});
 	const QCommandLineOption& versionOption = parser.addVersionOption();
 
 	if (!parser.parse(args)) {
@@ -202,7 +211,7 @@ bool qmidictlOptions::parse_args ( const QStringList& args )
 		return false;
 	}
 
-	if (parser.isSet(helpOption)) {
+	if (parser.isSet(s_help)) {
 		show_error(parser.helpText());
 		return false;
 	}
@@ -227,12 +236,12 @@ bool qmidictlOptions::parse_args ( const QStringList& args )
 	}
 
 #if !defined(Q_OS_SYMBIAN) && !defined(Q_OS_WINDOWS)
-	if (parser.isSet("interface")) {
-		sInterface = parser.value("interface"); // Maybe empty!
+	if (parser.isSet(s_interface)) {
+		sInterface = parser.value(s_interface); // Maybe empty!
 	}
 #endif
-	if (parser.isSet("udp-addr")) {
-		const QString& sVal = parser.value("udp-addr");
+	if (parser.isSet(s_udp_addr)) {
+		const QString& sVal = parser.value(s_udp_addr);
 		if (sVal.isEmpty()) {
 			show_error(QObject::tr("Option -u requires an argument (addr)."));
 			return false;
@@ -240,9 +249,9 @@ bool qmidictlOptions::parse_args ( const QStringList& args )
 		sUdpAddr = sVal;
 	}
 
-	if (parser.isSet("udp-port")) {
+	if (parser.isSet(s_udp_port)) {
 		bool bOK = false;
-		const int iVal = parser.value("udp-port").toInt(&bOK);
+		const int iVal = parser.value(s_udp_port).toInt(&bOK);
 		if (!bOK) {
 			show_error(QObject::tr("Option -p requires an argument (port)."));
 			return false;
@@ -250,9 +259,9 @@ bool qmidictlOptions::parse_args ( const QStringList& args )
 		iUdpPort = iVal;
 	}
 
-	if (parser.isSet("mmc-device")) {
+	if (parser.isSet(s_mmc_device)) {
 		bool bOK = false;
-		const int iVal = parser.value("mmc-device").toInt(&bOK);
+		const int iVal = parser.value(s_mmc_device).toInt(&bOK);
 		if (!bOK) {
 			show_error(QObject::tr("Option -m requires an argument (num)."));
 			return false;
