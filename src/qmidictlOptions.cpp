@@ -149,7 +149,7 @@ void qmidictlOptions::print_usage ( const QString& arg0 )
 	out << QMIDICTL_TITLE " - " << QObject::tr(QMIDICTL_SUBTITLE) + sEol;
 	out << QObject::tr("Options:") + sEol;
 #if !defined(Q_OS_SYMBIAN) && !defined(Q_OS_WINDOWS)
-	out << "  -i, --interface=[interface]" + sEot +
+	out << "  -i, --interface <interface>" + sEot +
 		QObject::tr("Use specific network interface (default = %1)")
 			.arg(sInterface.isEmpty() ? "all" : sInterface) + sEol;
 #endif
