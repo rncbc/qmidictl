@@ -153,16 +153,16 @@ void qmidictlOptions::print_usage ( const QString& arg0 )
 		QObject::tr("Use specific network interface (default = %1)")
 			.arg(sInterface.isEmpty() ? "all" : sInterface) + sEol;
 #endif
-	out << "  -u, --udp-addr=[addr]" + sEot +
+	out << "  -u, --udp-addr <addr>" + sEot +
 		QObject::tr("Use specific network address (default = %1)")
 			.arg(sUdpAddr) + sEol;
-	out << "  -p, --udp-port=[port]" + sEot +
+	out << "  -p, --udp-port <port>" + sEot +
 		QObject::tr("Use specific network port (default = %1)")
 			.arg(iUdpPort) + sEol;
-	out << "  -m, --mmc-device=[num]" + sEot +
+	out << "  -m, --mmc-device <num>" + sEot +
 		QObject::tr("Use specific MMC device number (default = %1)")
 			.arg(iMmcDevice) + sEol;
-	out << "  -h, --help" + sEot +
+	out << "  -?, --help" + sEot +
 		QObject::tr("Show help about command line options.") + sEol;
 	out << "  -v, --version" + sEot +
 		QObject::tr("Show version information.") + sEol;
@@ -202,7 +202,7 @@ bool qmidictlOptions::parse_args ( const QStringList& args )
 	parser.addOption({{"m", s_mmc_device},
 		QObject::tr("Use specific MMC device number (default = %1)")
 			.arg(iMmcDevice), "num"});
-	parser.addOption({{"h", s_help},
+	parser.addOption({{"?", s_help},
 		QObject::tr("Displays help on command-line options.")});
 	const QCommandLineOption& versionOption = parser.addVersionOption();
 
@@ -326,7 +326,7 @@ bool qmidictlOptions::parse_args ( const QStringList& args )
 				i++;
 		}
 		else
-		if (sArg == "-h" || sArg == "--help") {
+		if (sArg == "-?" || sArg == "--help") {
 			print_usage(args.at(0));
 			return false;
 		}
