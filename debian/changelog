@@ -1,3 +1,9 @@
+qmidictl (1.0.3-6.1) unstable; urgency=low
+
+  * A Mid-Spring'26 release.
+
+ -- Rui Nuno Capela <rncbc@rncbc.org>  Wed,  3 Jun 2026 19:00:00 +0100
+
 qmidictl (1.0.2-5.1) unstable; urgency=low
 
   * An Early Spring'25 release.
